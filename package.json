@@ -29,6 +29,7 @@
     "validator": "^13.11.0"
   },
   "devDependencies": {
-    "@types/bcryptjs": "^2.4.3"
+    "@types/bcryptjs": "^2.4.3",
+    "@types/validator": "^13.11.1"
   }
 }

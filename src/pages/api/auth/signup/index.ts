@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import validator from "validator";
 
 const prisma = new PrismaClient();
 
@@ -28,6 +29,11 @@ export default async function handler(
     case "POST":
       try {
         //Email validation
+
+        if (!validator.isEmail(email)) {
+          return res.status(400).json("Invalid email format");
+        }
+
         const userWithEmail = await prisma.user.findFirst({
           where: {
             email,
