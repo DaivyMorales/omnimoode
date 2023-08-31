@@ -1,20 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
+import axios, { AxiosError } from "axios";
 
 export default function Register() {
+  const [error, setError] = useState("");
+  console.log(error)
+
   const formik = useFormik({
     initialValues: {
       name: "",
       email: "",
       password: "",
     },
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        const query = await axios.post("/api/auth/signup", values);
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          setError(error.response?.data.message);
+        }
+      }
+      // resetForm();
     },
   });
 
   return (
-    <div className="w-screen h-screen flex justify-center items-center">
+    <div className="w-screen h-screen flex flex-col justify-center items-center">
+      {error && <div className="bg-red-500 text-red-800 p-2 mb-2">{error}</div>}
       <form
         onSubmit={formik.handleSubmit}
         className="bg-black text-white flex flex-col p-3"
