@@ -1,6 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
@@ -46,19 +47,23 @@ export default async function handler(
             .json("The password must be at least 6 characters");
         }
 
+        const hashedPassword = await bcrypt.hash(password, 12);
+
         const newUser = await prisma.user.create({
           data: {
             id,
             name,
             email,
             email_verification,
-            password,
+            password: hashedPassword,
           },
         });
 
         return res.status(200).json(newUser);
       } catch (error) {
-        res.status(500).json(error);
+        if (error instanceof Error) {
+          return res.status(500).json({ message: error.message });
+        }
       }
 
       break;
