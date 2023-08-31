@@ -26,6 +26,26 @@ export default async function handler(
 
     case "POST":
       try {
+        //Email validation
+        const userWithEmail = await prisma.user.findFirst({
+          where: {
+            email,
+          },
+        });
+
+        if (userWithEmail?.email === email) {
+          return res
+            .status(400)
+            .json("There's somebody with that email, change it!");
+        }
+
+        //Password
+        if (!password || password.length < 6) {
+          return res
+            .status(400)
+            .json("The password must be at least 6 characters");
+        }
+
         const newUser = await prisma.user.create({
           data: {
             id,
@@ -35,7 +55,8 @@ export default async function handler(
             password,
           },
         });
-        res.status(200).json(newUser);
+
+        return res.status(200).json(newUser);
       } catch (error) {
         res.status(500).json(error);
       }
