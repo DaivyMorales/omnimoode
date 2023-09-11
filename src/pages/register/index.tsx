@@ -29,7 +29,7 @@ export default function Register() {
   });
 
   return (
-    <div className=" h-screen grid grid-cols-2">
+    <div className=" h-screen grid grid-cols-1 sm:grid-cols-2">
       <div className="background"></div>
       {error && <div className="bg-red-500 text-red-800 p-2 mb-2">{error}</div>}
       <form
@@ -39,7 +39,7 @@ export default function Register() {
         <div className=" flex flex-col justify-center items-center">
           <div className="flex flex-col justify-center items-center">
             <div className="background-logo"></div>
-            <h1>Crear Cuenta</h1>
+            <h2>Crear Cuenta</h2>
             <p>Ingresa tus datos para ingresar</p>
           </div>
 
@@ -108,5 +108,5 @@ export default function Register() {
         </div>
       </form>
     </div>
-  );
+  )
 }

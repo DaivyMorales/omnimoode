@@ -7,6 +7,7 @@
 }
 
 .background {
+  @apply h-full;
   background-image: url('/images/photo2.jpg'); 
   background-size: cover; 
   background-repeat: no-repeat; 
@@ -14,17 +15,16 @@
 
 
 .background-logo {
-
-  width: 540px;
-  height: 215px;
+  width: 400px;
+  height: 160px;
   background-image: url('/images/logoGood.png'); 
   background-size: cover; 
   background-repeat: no-repeat; 
 }
 
-h1 {
+h2 {
   @apply font-medium;
-  font-size: 33px;
+  font-size: 28px;
 }
 
 p {
@@ -46,5 +46,5 @@ input:focus {
 }
 
 button[type="submit"]{
-  @apply bg-black text-white w-full py-2 rounded-lg text-sm
+  @apply bg-black text-white w-full py-3 rounded-lg text-sm
 }
