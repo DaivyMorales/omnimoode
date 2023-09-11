@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { User } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -28,6 +29,7 @@ export const authOptions = {
             email: credentials?.email,
           },
           select: {
+            id: true,
             password: true,
           },
         });
@@ -40,10 +42,12 @@ export const authOptions = {
         );
 
         if (!passwordMatch) throw new Error("PASSWORD!!!");
+        +console.log(userFound);
 
-        console.log(userFound);
-
-        return userFound;
+        return {
+          id: userFound.id.toString(),
+          password: userFound.password,
+        };
       },
     }),
   ],

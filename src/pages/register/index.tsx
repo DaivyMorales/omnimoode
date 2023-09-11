@@ -4,7 +4,7 @@ import axios, { AxiosError } from "axios";
 
 export default function Register() {
   const [error, setError] = useState("");
-  console.log(error)
+  console.log(error);
 
   const formik = useFormik({
     initialValues: {
@@ -15,6 +15,7 @@ export default function Register() {
     onSubmit: async (values, { resetForm }) => {
       try {
         const query = await axios.post("/api/auth/signup", values);
+        console.log(query);
       } catch (error) {
         if (error instanceof AxiosError) {
           setError(error.response?.data.message);
