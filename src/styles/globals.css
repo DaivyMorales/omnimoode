@@ -2,6 +2,49 @@
 @tailwind components;
 @tailwind utilities;
 
-input {
-  @apply text-black;
+:root {
+  font-family: "Roboto Mono", monospace;
+}
+
+.background {
+  background-image: url('/images/photo2.jpg'); 
+  background-size: cover; 
+  background-repeat: no-repeat; 
+}
+
+
+.background-logo {
+
+  width: 540px;
+  height: 215px;
+  background-image: url('/images/logoGood.png'); 
+  background-size: cover; 
+  background-repeat: no-repeat; 
+}
+
+h1 {
+  @apply font-medium;
+  font-size: 33px;
+}
+
+p {
+  @apply font-normal;
+  font-size: 12px;
+}
+
+input{
+  @apply w-full font-normal text-sm placeholder:text-gray-400;
+  background-color: transparent;
+}
+
+input:focus {
+  outline: none;
+}
+
+.inputLogin{
+  @apply bg-[#F2F2F2] w-full p-2 flex justify-start items-center gap-2 rounded-lg
+}
+
+button[type="submit"]{
+  @apply bg-black text-white w-full py-2 rounded-lg text-sm
 }

@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import axios, { AxiosError } from "axios";
+import { HiOutlineMail } from "react-icons/hi";
+import { AiOutlineUser, AiOutlineLock } from "react-icons/ai";
+import Image from "next/image";
 
 export default function Register() {
   const [error, setError] = useState("");
@@ -26,37 +29,83 @@ export default function Register() {
   });
 
   return (
-    <div className="w-screen h-screen flex flex-col justify-center items-center">
+    <div className=" h-screen grid grid-cols-2">
+      <div className="background"></div>
       {error && <div className="bg-red-500 text-red-800 p-2 mb-2">{error}</div>}
       <form
         onSubmit={formik.handleSubmit}
-        className="bg-black text-white flex flex-col p-3"
+        className=" flex flex-col gap-5 justify-center items-center p-3"
       >
-        <label htmlFor="name">Name</label>
-        <input
-          id="name"
-          name="name"
-          type="text"
-          onChange={formik.handleChange}
-          value={formik.values.name}
-        />
-        <label htmlFor="email">Email</label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          onChange={formik.handleChange}
-          value={formik.values.email}
-        />
-        <label htmlFor="password">Password</label>
-        <input
-          id="password"
-          name="password"
-          type="password"
-          onChange={formik.handleChange}
-          value={formik.values.password}
-        />
-        <button type="submit">Submit</button>
+        <div className=" flex flex-col justify-center items-center">
+          <div className="flex flex-col justify-center items-center">
+            <div className="background-logo"></div>
+            <h1>Crear Cuenta</h1>
+            <p>Ingresa tus datos para ingresar</p>
+          </div>
+
+          <div className="flex flex-col gap-3 justify-center items-center p-2 w-72">
+            {/* Email */}
+            <div className="inputLogin">
+              <div className="bg-white p-2 rounded-md">
+                <HiOutlineMail />
+              </div>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                onChange={formik.handleChange}
+                placeholder="Digita tu email"
+                value={formik.values.email}
+              />
+            </div>
+
+            {/* Name */}
+            <div className="inputLogin">
+              <div className="bg-white p-2 rounded-md">
+                <AiOutlineUser />
+              </div>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                placeholder="Digita tu nombre"
+                onChange={formik.handleChange}
+                value={formik.values.name}
+              />
+            </div>
+
+            {/* Password */}
+            <div className="inputLogin">
+              <div className="bg-white p-2 rounded-md">
+                <AiOutlineLock />
+              </div>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                placeholder="Digita una contraseña"
+                onChange={formik.handleChange}
+                value={formik.values.password}
+              />
+            </div>
+
+            {/* Confirm Password */}
+            <div className="inputLogin">
+              <div className="bg-white p-2 rounded-md">
+                <AiOutlineLock />
+              </div>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                placeholder="Confirma tu contraseña"
+                onChange={formik.handleChange}
+                value={formik.values.password}
+              />
+            </div>
+            <button type="submit">Ingresar</button>
+          </div>
+        </div>
       </form>
     </div>
   );
