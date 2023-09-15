@@ -5,9 +5,19 @@ import { HiOutlineMail } from "react-icons/hi";
 import { AiOutlineUser, AiOutlineLock } from "react-icons/ai";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import * as Yup from "yup";
 
 export default function Register() {
   const [error, setError] = useState("");
+
+  const validation = Yup.object({
+    name: Yup.string()
+      .max(50, "No puedes sobrepasar los 50 caracteres!")
+      .required("Haz olvidado escribir tu nombre"),
+    email: Yup.string()
+      .email("correo Invalido")
+      .required("Has olvidado escribir tu email"),
+  });
 
   const router = useRouter();
 
@@ -17,6 +27,7 @@ export default function Register() {
       email: "",
       password: "",
     },
+    validationSchema: validation,
     onSubmit: async (values, { resetForm }) => {
       console.log(values);
 
@@ -28,20 +39,12 @@ export default function Register() {
           setError(error.response?.data.message);
         }
       }
-      // resetForm();
+      resetForm();
     },
   });
 
   return (
     <div className=" h-screen grid grid-cols-1 lg:grid-cols-2">
-      {/* <Image
-        src="/images/photo1.jpg"
-        width={500}
-        height={500}
-        alt="Juan"
-        priority
-        className=" hidden lg:block h-full"
-      /> */}
       <div className="background hidden lg:block h-full"></div>
       {error && <div className="bg-red-500 text-red-800 p-2 mb-2">{error}</div>}
       <form
