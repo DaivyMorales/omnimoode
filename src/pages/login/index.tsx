@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useFormik } from "formik";
 import { signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
 import Image from "next/image";
@@ -9,6 +10,7 @@ import { AiOutlineLock } from "react-icons/ai";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { data: session, status } = useSession();
 
   const [error, setError] = useState("");
   console.log(error);
@@ -35,15 +37,16 @@ export default function LoginPage() {
     },
   });
 
+
   return (
-    <div className=" h-screen grid grid-cols-1 sm:grid-cols-2">
-      {/* <div className="background_login"></div> */}
+    <div className=" h-screen grid grid-cols-1 lg:grid-cols-2">
       <Image
         src="/images/photo3.jpg"
         width={500}
         height={500}
         alt="Juan"
         priority
+        className="hidden lg:block h-full"
       />
       {error && <div className="bg-red-500 text-red-800 p-2 mb-2">{error}</div>}
       <form

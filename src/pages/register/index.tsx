@@ -4,10 +4,12 @@ import axios, { AxiosError } from "axios";
 import { HiOutlineMail } from "react-icons/hi";
 import { AiOutlineUser, AiOutlineLock } from "react-icons/ai";
 import Image from "next/image";
+import { useRouter } from 'next/router';
 
 export default function Register() {
   const [error, setError] = useState("");
-  console.log(error);
+
+  const router = useRouter();
 
   const formik = useFormik({
     initialValues: {
@@ -31,8 +33,15 @@ export default function Register() {
   });
 
   return (
-    <div className=" h-screen grid grid-cols-1 sm:grid-cols-2">
-      <div className="background"></div>
+    <div className=" h-screen grid grid-cols-1 lg:grid-cols-2">
+      <Image
+        src="/images/photo1.jpg"
+        width={500}
+        height={500}
+        alt="Juan"
+        priority
+        className="hidden lg:block h-full"
+      />
       {error && <div className="bg-red-500 text-red-800 p-2 mb-2">{error}</div>}
       <form
         onSubmit={formik.handleSubmit}
@@ -105,8 +114,17 @@ export default function Register() {
                 value={formik.values.password}
               />
             </div> */}
-            <button type="submit">Ingresar</button>
+            <button type="submit">Crear</button>
           </div>
+          <p className="font-semibold">
+            ¿Ya tienes una cuenta?{" "}
+            <span
+              onClick={() => router.push("/login")}
+              className="text-blue-600 underline cursor-pointer"
+            >
+              Accede Aquí
+            </span>
+          </p>
         </div>
       </form>
     </div>
