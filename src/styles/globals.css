@@ -13,6 +13,13 @@
   background-repeat: no-repeat; 
 }
 
+.background_login {
+  @apply h-full;
+  background-image: url('/images/photo3.jpg'); 
+  background-size: cover; 
+  background-repeat: no-repeat; 
+}
+
 
 .background-logo {
   width: 400px;
