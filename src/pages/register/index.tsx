@@ -16,6 +16,8 @@ export default function Register() {
       password: "",
     },
     onSubmit: async (values, { resetForm }) => {
+      console.log(values);
+
       try {
         const query = await axios.post("/api/auth/signup", values);
         console.log(query);
@@ -90,7 +92,7 @@ export default function Register() {
             </div>
 
             {/* Confirm Password */}
-            <div className="inputLogin">
+            {/* <div className="inputLogin">
               <div className="bg-white p-2 rounded-md">
                 <AiOutlineLock />
               </div>
@@ -102,11 +104,11 @@ export default function Register() {
                 onChange={formik.handleChange}
                 value={formik.values.password}
               />
-            </div>
+            </div> */}
             <button type="submit">Ingresar</button>
           </div>
         </div>
       </form>
     </div>
-  )
+  );
 }
