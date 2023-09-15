@@ -40,14 +40,15 @@ export default function LoginPage() {
 
   return (
     <div className=" h-screen grid grid-cols-1 lg:grid-cols-2">
-      <Image
+      {/* <Image
         src="/images/photo3.jpg"
         width={500}
         height={500}
         alt="Juan"
         priority
-        className="hidden lg:block h-full"
-      />
+        className=""
+      /> */}
+      <div className="background_login hidden lg:block h-full"></div>
       {error && <div className="bg-red-500 text-red-800 p-2 mb-2">{error}</div>}
       <form
         onSubmit={formik.handleSubmit}

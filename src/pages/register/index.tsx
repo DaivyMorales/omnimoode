@@ -4,7 +4,7 @@ import axios, { AxiosError } from "axios";
 import { HiOutlineMail } from "react-icons/hi";
 import { AiOutlineUser, AiOutlineLock } from "react-icons/ai";
 import Image from "next/image";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 
 export default function Register() {
   const [error, setError] = useState("");
@@ -33,19 +33,20 @@ export default function Register() {
   });
 
   return (
-    <div className=" h-screen grid grid-cols-1 sm:grid-cols-2">
-      <Image
+    <div className=" h-screen grid grid-cols-1 lg:grid-cols-2">
+      {/* <Image
         src="/images/photo1.jpg"
         width={500}
         height={500}
         alt="Juan"
         priority
-        className="hidden lg:block h-full"
-      />
+        className=" hidden lg:block h-full"
+      /> */}
+      <div className="background hidden lg:block h-full"></div>
       {error && <div className="bg-red-500 text-red-800 p-2 mb-2">{error}</div>}
       <form
         onSubmit={formik.handleSubmit}
-        className=" flex flex-col gap-5 justify-center items-center p-3"
+        className=" flex flex-col w-full  gap-5 justify-center items-center p-3"
       >
         <div className=" flex flex-col justify-center items-center">
           <div className="flex flex-col justify-center items-center">
