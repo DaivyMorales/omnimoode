@@ -33,7 +33,7 @@ export default function Register() {
   });
 
   return (
-    <div className=" h-screen grid grid-cols-1 lg:grid-cols-2">
+    <div className=" h-screen grid grid-cols-1 sm:grid-cols-2">
       <Image
         src="/images/photo1.jpg"
         width={500}
