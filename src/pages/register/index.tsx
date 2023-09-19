@@ -6,33 +6,49 @@ import { AiOutlineUser, AiOutlineLock } from "react-icons/ai";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import * as Yup from "yup";
+import { BiSolidErrorCircle } from "react-icons/bi";
 
 export default function Register() {
   const [error, setError] = useState("");
-
-  const validation = Yup.object({
-    name: Yup.string()
-      .max(50, "No puedes sobrepasar los 50 caracteres!")
-      .required("Haz olvidado escribir tu nombre"),
-    email: Yup.string()
-      .email("correo Invalido")
-      .required("Has olvidado escribir tu email"),
-  });
+  const [nameError, setNameError] = useState(false);
 
   const router = useRouter();
+
+  const inputError = "border-1 border-red-200";
 
   const formik = useFormik({
     initialValues: {
       name: "",
       email: "",
       password: "",
+      confirm_password: "",
     },
-    validationSchema: validation,
+    validationSchema: Yup.object({
+      name: Yup.string()
+        .max(50, "No puedes sobrepasar los 50 caracteres!")
+        .required("Haz olvidado escribir tu nombre"),
+      email: Yup.string()
+        .email("Puede que te haga falta un '@' o un '.com'")
+        .required("Has olvidado escribir tu email"),
+      password: Yup.string()
+        .min(6, "Tu contraseña debe de ser minimo de 6 caracteres")
+        .required("Debes digitar una contraseña"),
+      confirm_password: Yup.string()
+        .oneOf(
+          [Yup.ref("password")],
+          "Las contraseñas deben ser igual, corrigela!"
+        )
+        .required("Debes de nuevo digitar tu contraseña"),
+    }),
     onSubmit: async (values, { resetForm }) => {
       console.log(values);
 
       try {
-        const query = await axios.post("/api/auth/signup", values);
+        const query = await axios.post("/api/auth/signup", {
+          name: values.name,
+          email: values.email,
+          password: values.password,
+        });
         console.log(query);
       } catch (error) {
         if (error instanceof AxiosError) {
@@ -42,6 +58,8 @@ export default function Register() {
       resetForm();
     },
   });
+
+  console.log(formik.errors);
 
   return (
     <div className=" h-screen grid grid-cols-1 lg:grid-cols-2">
@@ -60,65 +78,167 @@ export default function Register() {
 
           <div className="flex flex-col gap-3 justify-center items-center p-2 w-72">
             {/* Email */}
-            <div className="inputLogin">
-              <div className="bg-white p-2 rounded-md">
-                <HiOutlineMail />
+            <div className="flex flex-col w-full justify-center items-center">
+              <div
+                className={`inputLogin ${
+                  formik.touched.email && formik.errors.email ? inputError : ""
+                } `}
+              >
+                <div className="bg-white p-2 rounded-md">
+                  {formik.touched.email && formik.errors.email ? (
+                    <BiSolidErrorCircle size={15} color="red" />
+                  ) : (
+                    <AiOutlineUser />
+                  )}
+                </div>
+                <input
+                  className={`${
+                    formik.touched.email && formik.errors.email
+                      ? "placeholder-red-500"
+                      : ""
+                  }`}
+                  id="email"
+                  name="email"
+                  type="email"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  value={formik.values.email}
+                  placeholder="Digita tu email"
+                />
               </div>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                onChange={formik.handleChange}
-                placeholder="Digita tu email"
-                value={formik.values.email}
-              />
+              {/* ERROR EMAIL */}
+              {formik.touched.email && formik.errors.email ? (
+                <p className="form-errors">{formik.errors.email}</p>
+              ) : null}
             </div>
 
             {/* Name */}
-            <div className="inputLogin">
-              <div className="bg-white p-2 rounded-md">
-                <AiOutlineUser />
+            <div className="flex flex-col w-full justify-center items-center">
+              <div
+                className={`inputLogin ${
+                  formik.touched.name && formik.errors.name ? inputError : ""
+                } `}
+              >
+                <div className="bg-white p-2 rounded-md">
+                  {formik.touched.name && formik.errors.name ? (
+                    <BiSolidErrorCircle size={15} color="red" />
+                  ) : (
+                    <AiOutlineUser />
+                  )}
+                </div>
+                <input
+                  className={`${
+                    formik.touched.name && formik.errors.name
+                      ? "placeholder-red-500"
+                      : ""
+                  }`}
+                  id="name"
+                  name="name"
+                  type="text"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.name}
+                  placeholder="Digita tu nombre"
+                />
               </div>
-              <input
-                id="name"
-                name="name"
-                type="text"
-                placeholder="Digita tu nombre"
-                onChange={formik.handleChange}
-                value={formik.values.name}
-              />
+              {/* ERROR NAME */}
+              {formik.touched.name && formik.errors.name ? (
+                <p className="form-errors">{formik.errors.name}</p>
+              ) : null}
             </div>
 
             {/* Password */}
-            <div className="inputLogin">
-              <div className="bg-white p-2 rounded-md">
-                <AiOutlineLock />
+            <div className="flex flex-col w-full justify-center items-center">
+              <div
+                className={`inputLogin ${
+                  formik.touched.password && formik.errors.password
+                    ? inputError
+                    : ""
+                } `}
+              >
+                <div className="bg-white p-2 rounded-md">
+                  {formik.touched.password && formik.errors.password ? (
+                    <BiSolidErrorCircle size={15} color="red" />
+                  ) : (
+                    <AiOutlineLock />
+                  )}
+                </div>
+                <input
+                  className={`${
+                    formik.touched.password && formik.errors.password
+                      ? "placeholder-red-500"
+                      : ""
+                  }`}
+                  id="password"
+                  name="password"
+                  type="password"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.password}
+                  placeholder="Digita una contraseña"
+                />
               </div>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                placeholder="Digita una contraseña"
-                onChange={formik.handleChange}
-                value={formik.values.password}
-              />
+              {/* ERROR PASSWORD */}
+              {formik.touched.password && formik.errors.password ? (
+                <p className="form-errors">{formik.errors.password}</p>
+              ) : null}
             </div>
 
             {/* Confirm Password */}
-            {/* <div className="inputLogin">
-              <div className="bg-white p-2 rounded-md">
-                <AiOutlineLock />
+            <div className="flex flex-col w-full justify-center items-center">
+              <div
+                className={`inputLogin ${
+                  formik.touched.confirm_password &&
+                  formik.errors.confirm_password
+                    ? inputError
+                    : ""
+                } `}
+              >
+                <div className="bg-white p-2 rounded-md">
+                  {formik.touched.confirm_password &&
+                  formik.errors.confirm_password ? (
+                    <BiSolidErrorCircle size={15} color="red" />
+                  ) : (
+                    <AiOutlineLock />
+                  )}
+                </div>
+                <input
+                  className={`${
+                    formik.touched.confirm_password &&
+                    formik.errors.confirm_password
+                      ? "placeholder-red-500"
+                      : ""
+                  }`}
+                  id="confirm_password"
+                  name="confirm_password"
+                  type="password"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.confirm_password}
+                  placeholder="Confirma tu contraseña"
+                />
               </div>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                placeholder="Confirma tu contraseña"
-                onChange={formik.handleChange}
-                value={formik.values.password}
-              />
-            </div> */}
-            <button type="submit">Crear</button>
+              {/* ERROR CONFIRM PASSWORD */}
+              {formik.touched.confirm_password &&
+              formik.errors.confirm_password ? (
+                <p className="form-errors">{formik.errors.confirm_password}</p>
+              ) : null}
+            </div>
+
+            <button
+              type="submit"
+              className={`text-white w-full py-3 rounded-lg text-sm ${
+                (formik.touched.name && formik.errors.name) ||
+                (formik.touched.email && formik.errors.email) ||
+                (formik.errors.password && formik.errors.password) ||
+                (formik.touched.confirm_password &&
+                  formik.errors.confirm_password)
+                  ? "bg-gray-300 cursor-not-allowed"
+                  : "bg-black"
+              }`}
+            >
+              Crear
+            </button>
           </div>
           <p className="font-semibold">
             ¿Ya tienes una cuenta?{" "}
