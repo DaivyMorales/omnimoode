@@ -1,28 +1,23 @@
 import { ChangeEvent, useState } from "react";
 import { useFormik } from "formik";
 import { signIn } from "next-auth/react";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { motion } from "framer-motion";
-
-import Image from "next/image";
-import { HiMenuAlt4, HiOutlineMail } from "react-icons/hi";
+import { HiOutlineMail } from "react-icons/hi";
 import { AiOutlineLock, AiOutlineReload } from "react-icons/ai";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { data: session, status } = useSession();
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  console.log(error);
 
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
-    onSubmit: async (values, { resetForm }) => {
+    onSubmit: async (values) => {
       setIsLoading(true);
 
       console.log(values);
@@ -38,8 +33,6 @@ export default function LoginPage() {
       if (response?.error) setError(response.error as string);
 
       if (response?.ok) return router.push("/");
-
-      // resetForm();
     },
   });
 
