@@ -1,16 +1,13 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import axios, { AxiosError } from "axios";
-import { HiOutlineMail } from "react-icons/hi";
 import { AiOutlineUser, AiOutlineLock } from "react-icons/ai";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import * as Yup from "yup";
 import { BiSolidErrorCircle } from "react-icons/bi";
 
 export default function Register() {
   const [error, setError] = useState("");
-  const [nameError, setNameError] = useState(false);
 
   const router = useRouter();
 
