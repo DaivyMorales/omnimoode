@@ -33,14 +33,16 @@ export const authOptions = {
           },
         });
 
-        if (!userFound) throw new Error("EMAIL!!!");
+        if (!userFound)
+          throw new Error("Tu correo o contraseña son incorrectos!");
 
         const passwordMatch = await bcrypt.compare(
           credentials!.password,
           userFound.password
         );
 
-        if (!passwordMatch) throw new Error("PASSWORD!!!");
+        if (!passwordMatch)
+          throw new Error("Tu correo o contraseña son incorrectos!");
         +console.log(userFound);
 
         return {

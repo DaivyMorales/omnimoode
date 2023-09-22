@@ -1,17 +1,19 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useFormik } from "formik";
 import { signIn } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { motion } from "framer-motion";
 
 import Image from "next/image";
-import { HiOutlineMail } from "react-icons/hi";
-import { AiOutlineLock } from "react-icons/ai";
+import { HiMenuAlt4, HiOutlineMail } from "react-icons/hi";
+import { AiOutlineLock, AiOutlineReload } from "react-icons/ai";
 
 export default function LoginPage() {
   const router = useRouter();
   const { data: session, status } = useSession();
 
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   console.log(error);
 
@@ -21,6 +23,8 @@ export default function LoginPage() {
       password: "",
     },
     onSubmit: async (values, { resetForm }) => {
+      setIsLoading(true);
+
       console.log(values);
 
       const response = await signIn("credentials", {
@@ -29,27 +33,25 @@ export default function LoginPage() {
         redirect: false,
       });
 
+      setIsLoading(false);
+
       if (response?.error) setError(response.error as string);
 
       if (response?.ok) return router.push("/");
 
-      resetForm();
+      // resetForm();
     },
   });
 
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setError("");
+
+    formik.handleChange(e);
+  };
 
   return (
     <div className=" h-screen grid grid-cols-1 lg:grid-cols-2">
-      {/* <Image
-        src="/images/photo3.jpg"
-        width={500}
-        height={500}
-        alt="Juan"
-        priority
-        className=""
-      /> */}
       <div className="background_login hidden lg:block h-full"></div>
-      {error && <div className="bg-red-500 text-red-800 p-2 mb-2">{error}</div>}
       <form
         onSubmit={formik.handleSubmit}
         className=" flex flex-col gap-5 justify-center items-center p-3"
@@ -71,7 +73,7 @@ export default function LoginPage() {
                 id="email"
                 name="email"
                 type="email"
-                onChange={formik.handleChange}
+                onChange={handleInputChange}
                 placeholder="Digita tu email"
                 value={formik.values.email}
               />
@@ -87,12 +89,39 @@ export default function LoginPage() {
                 name="password"
                 type="password"
                 placeholder="Digita tu contraseña"
-                onChange={formik.handleChange}
+                onChange={handleInputChange}
                 value={formik.values.password}
               />
             </div>
 
-            <button type="submit">Ingresar</button>
+            {error && <p className="form-errors">{error}</p>}
+
+            <button
+              type="submit"
+              className={`text-white w-full py-3 h-12 rounded-lg text-sm ${
+                isLoading || error
+                  ? "bg-gray-300 cursor-not-allowed"
+                  : "bg-black"
+              } `}
+            >
+              {isLoading ? (
+                <motion.div
+                  style={{
+                    display: "inline-block",
+                  }}
+                  animate={{ rotate: "360deg" }}
+                  transition={{
+                    duration: 0.7,
+                    ease: "linear",
+                    repeat: Infinity,
+                  }}
+                >
+                  <AiOutlineReload size={22} />
+                </motion.div>
+              ) : (
+                <>Ingresar</>
+              )}
+            </button>
           </div>
           <p className="font-semibold">
             ¿No tienes cuenta aún?{" "}
