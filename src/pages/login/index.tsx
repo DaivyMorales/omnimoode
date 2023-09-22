@@ -20,8 +20,6 @@ export default function LoginPage() {
     onSubmit: async (values) => {
       setIsLoading(true);
 
-      console.log(values);
-
       const response = await signIn("credentials", {
         email: values.email,
         password: values.password,
@@ -92,9 +90,7 @@ export default function LoginPage() {
             <button
               type="submit"
               className={`text-white w-full py-3 h-12 rounded-lg text-sm ${
-                isLoading || error
-                  ? "bg-gray-300 cursor-not-allowed"
-                  : "bg-black"
+                isLoading || error ? "bg-black cursor-not-allowed" : "bg-black"
               } `}
             >
               {isLoading ? (

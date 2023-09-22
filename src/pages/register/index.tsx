@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import axios, { AxiosError } from "axios";
-import { AiOutlineUser, AiOutlineLock } from "react-icons/ai";
+import { AiOutlineUser, AiOutlineLock, AiOutlineReload } from "react-icons/ai";
 import { useRouter } from "next/router";
 import * as Yup from "yup";
 import { BiSolidErrorCircle } from "react-icons/bi";
+import { signIn } from "next-auth/react";
+import { motion } from "framer-motion";
 
 export default function Register() {
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
@@ -38,25 +41,31 @@ export default function Register() {
         .required("Debes de nuevo digitar tu contraseña"),
     }),
     onSubmit: async (values, { resetForm }) => {
-      console.log(values);
-
       try {
+        setIsLoading(true);
         const query = await axios.post("/api/auth/signup", {
           name: values.name,
           email: values.email,
           password: values.password,
         });
-        console.log(query);
+
+        const res = await signIn("credentials", {
+          email: query.data.email,
+          password: values.password,
+          redirect: false,
+        });
+
+        if (res?.ok) return router.push("/");
+        setIsLoading(false);
       } catch (error) {
         if (error instanceof AxiosError) {
           setError(error.response?.data.message);
         }
       }
+
       resetForm();
     },
   });
-
-  console.log(formik.errors);
 
   return (
     <div className=" h-screen grid grid-cols-1 lg:grid-cols-2">
@@ -234,7 +243,23 @@ export default function Register() {
                   : "bg-black"
               }`}
             >
-              Crear
+              {isLoading ? (
+                <motion.div
+                  style={{
+                    display: "inline-block",
+                  }}
+                  animate={{ rotate: "360deg" }}
+                  transition={{
+                    duration: 0.7,
+                    ease: "linear",
+                    repeat: Infinity,
+                  }}
+                >
+                  <AiOutlineReload size={22} />
+                </motion.div>
+              ) : (
+                <>Crear</>
+              )}
             </button>
           </div>
           <p className="font-semibold">
