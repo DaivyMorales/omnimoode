@@ -1,10 +1,6 @@
 import React, { useState } from "react";
-import Link from "next/link";
 import { BsPerson } from "react-icons/bs";
 import { AiOutlineShoppingCart } from "react-icons/ai";
-import { HiOutlineMenuAlt4, HiOutlineX } from "react-icons/hi";
-import Image from "next/image";
-import ListNavbar from "./ListNavbar";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
