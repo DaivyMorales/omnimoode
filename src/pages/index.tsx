@@ -12,7 +12,11 @@ export default function Home() {
   return (
     <div>
       <Navbar />
-      
+
+      <section className=" h-screen bg-red-500"></section>
+      <section className=" h-screen bg-purple-500"></section>
+      <section className=" h-screen bg-blue-500"></section>
+
       {status === "authenticated" && (
         <>
           <h1>You are Welcome! </h1>
