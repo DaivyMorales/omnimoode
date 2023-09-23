@@ -1,6 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { useSession, signOut } from "next-auth/react";
+import Link from 'next/link';
 
 export default function ProfileDropDown() {
   const router = useRouter();
@@ -30,8 +31,8 @@ export default function ProfileDropDown() {
         </div>
       ) : (
         <div className="absolute dropdown-profile flex flex-col justify-start gap-2 bg-white rounded-md p-2 shadow-lg w-32">
-          <p>Mi cuenta</p>
-          <p>Mis compras</p>
+          <Link href="/profile" className="bg-red-500">Mi cuenta</Link>
+          <a>Mis compras</a>
           <button
             className="text-xs"
             onClick={() => {

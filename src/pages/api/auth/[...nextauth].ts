@@ -30,6 +30,8 @@ export const authOptions = {
           select: {
             id: true,
             name: true,
+            email: true,
+            email_verification: true,
             password: true,
           },
         });
@@ -49,7 +51,8 @@ export const authOptions = {
         return {
           id: userFound.id.toString(),
           name: userFound.name,
-          password: userFound.password,
+          email: userFound.email,
+          email_verification: userFound.email_verification,
         };
       },
     }),
