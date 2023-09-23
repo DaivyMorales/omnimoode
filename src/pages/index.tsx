@@ -2,6 +2,7 @@ import React from "react";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import Navbar from "@/components/Navbar";
 
 export default function Home() {
   const router = useRouter();
@@ -10,7 +11,8 @@ export default function Home() {
 
   return (
     <div>
-      <h1>Hi</h1>
+      <Navbar />
+      
       {status === "authenticated" && (
         <>
           <h1>You are Welcome! </h1>

@@ -29,6 +29,14 @@
   background-repeat: no-repeat; 
 }
 
+.background-logo-navbar {
+  width: 140px;
+  height: 60px;
+  background-image: url('/images/logoGood.png'); 
+  background-size: cover; 
+  background-repeat: no-repeat; 
+}
+
 h2 {
   @apply font-medium;
   font-size: 28px;

@@ -7,6 +7,8 @@ import * as Yup from "yup";
 import { BiSolidErrorCircle } from "react-icons/bi";
 import { signIn } from "next-auth/react";
 import { motion } from "framer-motion";
+import { HiOutlineMail } from "react-icons/hi";
+
 
 export default function Register() {
   const [error, setError] = useState("");
@@ -94,7 +96,7 @@ export default function Register() {
                   {formik.touched.email && formik.errors.email ? (
                     <BiSolidErrorCircle size={15} color="red" />
                   ) : (
-                    <AiOutlineUser />
+                    <HiOutlineMail />
                   )}
                 </div>
                 <input
@@ -233,7 +235,7 @@ export default function Register() {
 
             <button
               type="submit"
-              className={`text-white w-full py-3 rounded-lg text-sm ${
+              className={`text-white w-full py-3 h-12 rounded-lg text-sm ${
                 (formik.touched.name && formik.errors.name) ||
                 (formik.touched.email && formik.errors.email) ||
                 (formik.errors.password && formik.errors.password) ||
