@@ -72,3 +72,8 @@ input:focus {
 .border-1{
   border-width: 1px;
  }
+
+ .dropdown-profile {
+  top: 60px;
+  right: 56px;
+ }
