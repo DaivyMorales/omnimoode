@@ -1,17 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BsPerson } from "react-icons/bs";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import ProfileDropDown from "./ProfileDropDown";
 
-export default function Navbar() {
+interface MyProps {
+  children: React.ReactNode;
+}
+
+export default function Navbar({ children }: MyProps) {
   const [open, setOpen] = useState(false);
-  const [openProfile, setopenProfile] = useState(false);
+  const [openProfile, setOpenProfile] = useState(false);
+  console.log(openProfile);
   const toggleMenu = () => {
     setOpen(!open);
   };
 
+  // useEffect(() => {
+  //   const cambiarEstado = () => setopenProfile(!openProfile);
+  //   window.addEventListener('click', cambiarEstado);
+
+  //   // Limpiar el evento al desmontar el componente
+  //   return () => window.removeEventListener('click', cambiarEstado);
+  // }, [openProfile]);
+
   return (
-    <>
+    <div>
       <nav className="flex items-center justify-center gap-20 py-2 px-6 md:justify-between">
         <div className="background-logo-navbar"></div>
         <ol
@@ -27,7 +40,7 @@ export default function Navbar() {
           <div
             className="relative cursor-pointer"
             onClick={() => {
-              setopenProfile(!openProfile);
+              setOpenProfile(!openProfile);
             }}
           >
             <BsPerson size={20} />
@@ -45,6 +58,7 @@ export default function Navbar() {
         <li className="cursor-pointer hover:text-gray-500">Lo nuevo</li>
         <li className="cursor-pointer hover:text-gray-500">Colecciones</li>
       </ol>
-    </>
+      {children}
+    </div>
   );
 }

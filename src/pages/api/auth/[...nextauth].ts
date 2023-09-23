@@ -29,6 +29,7 @@ export const authOptions = {
           },
           select: {
             id: true,
+            name: true,
             password: true,
           },
         });
@@ -47,6 +48,7 @@ export const authOptions = {
 
         return {
           id: userFound.id.toString(),
+          name: userFound.name,
           password: userFound.password,
         };
       },
