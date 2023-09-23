@@ -7,7 +7,7 @@ interface MyProps {
   children: React.ReactNode;
 }
 
-export default function Navbar({ children }: MyProps) {
+export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
   console.log(openProfile);
@@ -58,7 +58,7 @@ export default function Navbar({ children }: MyProps) {
         <li className="cursor-pointer hover:text-gray-500">Lo nuevo</li>
         <li className="cursor-pointer hover:text-gray-500">Colecciones</li>
       </ol>
-      {children}
+      {/* {children} */}
     </div>
   );
 }
