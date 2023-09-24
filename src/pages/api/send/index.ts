@@ -11,7 +11,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
     const data = await resend.emails.send({
-      from: "Acme <onboarding@resend.dev>",
+      from: "Omnimoode <onboarding@resend.dev>",
       to: [email],
       subject,
       react: VerifyEmail({ name }),
