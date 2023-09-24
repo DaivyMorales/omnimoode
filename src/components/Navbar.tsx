@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BsPerson } from "react-icons/bs";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import ProfileDropDown from "./ProfileDropDown";
+import { useRouter } from "next/router";
 
 interface MyProps {
   children: React.ReactNode;
@@ -15,6 +16,8 @@ export default function Navbar() {
     setOpen(!open);
   };
 
+  const router = useRouter();
+
   // useEffect(() => {
   //   const cambiarEstado = () => setopenProfile(!openProfile);
   //   window.addEventListener('click', cambiarEstado);
@@ -26,7 +29,10 @@ export default function Navbar() {
   return (
     <div>
       <nav className="flex items-center justify-center gap-20 py-2 px-6 md:justify-between">
-        <div className="background-logo-navbar"></div>
+        <div
+          className="background-logo-navbar cursor-pointer"
+          onClick={() => router.push("/")}
+        ></div>
         <ol
           className={`text-black flex justify-center items-center gap-5 font-semibold ${
             open ? "flex md:hidden" : "hidden md:flex"
