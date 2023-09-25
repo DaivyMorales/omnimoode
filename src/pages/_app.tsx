@@ -3,6 +3,8 @@ import type { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
 import Navbar from "../components/Navbar";
 import { useRouter } from "next/router";
+import { store } from "@/redux/store";
+import { Provider } from "react-redux";
 
 export default function App({
   Component,
@@ -10,16 +12,16 @@ export default function App({
 }: AppProps) {
   const router = useRouter();
 
-  // Define an array of routes where you don't want the Navbar to appear
   const excludedRoutes = ["/login", "/register", "/register/confirm"];
 
-  // Check if the current route is in the excludedRoutes array
   const isNavbarVisible = !excludedRoutes.includes(router.pathname);
 
   return (
     <SessionProvider session={session}>
-      {isNavbarVisible && <Navbar />}
-      <Component {...pageProps} />
+      <Provider store={store}>
+        {isNavbarVisible && <Navbar />}
+        <Component {...pageProps} />
+      </Provider>
     </SessionProvider>
   );
 }
