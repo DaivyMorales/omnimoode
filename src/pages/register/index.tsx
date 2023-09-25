@@ -57,7 +57,7 @@ export default function Register() {
           redirect: false,
         });
 
-        if (res?.ok) return router.push("/");
+        if (res?.ok) return router.push("/confirm");
         setIsLoading(false);
       } catch (error) {
         if (error instanceof AxiosError) {

@@ -11,7 +11,7 @@ export default function App({
   const router = useRouter();
 
   // Define an array of routes where you don't want the Navbar to appear
-  const excludedRoutes = ["/login", "/register"];
+  const excludedRoutes = ["/login", "/register", "/register/confirm"];
 
   // Check if the current route is in the excludedRoutes array
   const isNavbarVisible = !excludedRoutes.includes(router.pathname);
