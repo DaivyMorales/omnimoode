@@ -11,7 +11,6 @@ interface MyProps {
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
-  console.log(openProfile);
   const toggleMenu = () => {
     setOpen(!open);
   };

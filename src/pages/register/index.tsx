@@ -267,7 +267,7 @@ export default function Register() {
           <p className="font-semibold">
             ¿Ya tienes una cuenta?{" "}
             <span
-              onClick={() => router.push("/login")}
+              onClick={() => router.push("/register/confirm")}
               className="text-blue-600 underline cursor-pointer"
             >
               Accede Aquí
