@@ -28,34 +28,34 @@ export default async function idClient(
       }
       break;
 
-    // case "PUT":
-    //   try {
-    //     const clientUpdated = await prisma.client.update({
-    //       where: {
-    //         id: clientId,
-    //       },
-    //       data: {
-    //         ...body,
-    //       },
-    //     });
+    case "PUT":
+      try {
+        const userUpdated = await prisma.user.update({
+          where: {
+            id: userId,
+          },
+          data: {
+            ...body,
+          },
+        });
 
-    //     res.status(200).json(clientUpdated);
-    //   } catch (error) {
-    //     res.status(500).json({ message: error });
-    //   }
-    //   break;
+        res.status(200).json(userUpdated);
+      } catch (error) {
+        res.status(500).json({ message: error });
+      }
+      break;
 
-    // case "DELETE":
-    //   try {
-    //     const clientDeleted = await prisma.client.deleteMany({
-    //       where: { id: clientId },
-    //     });
-    //     res.status(200).json(clientDeleted);
-    //   } catch (error) {
-    //     res.status(500).json({ message: error });
-    //   }
+    case "DELETE":
+      try {
+        const userRemoved = await prisma.user.deleteMany({
+          where: { id: userId },
+        });
+        res.status(200).json(userRemoved);
+      } catch (error) {
+        res.status(500).json({ message: error });
+      }
 
-    //   break;
+      break;
 
     default:
       res.status(500).json("That method doesn't exist");
