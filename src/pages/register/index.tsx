@@ -9,7 +9,6 @@ import { signIn } from "next-auth/react";
 import { motion } from "framer-motion";
 import { HiOutlineMail } from "react-icons/hi";
 
-
 export default function Register() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -267,7 +266,7 @@ export default function Register() {
           <p className="font-semibold">
             ¿Ya tienes una cuenta?{" "}
             <span
-              onClick={() => router.push("/register/confirm")}
+              onClick={() => router.push("/login")}
               className="text-blue-600 underline cursor-pointer"
             >
               Accede Aquí
