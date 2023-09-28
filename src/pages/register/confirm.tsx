@@ -33,10 +33,9 @@ export default function ConfirmPage() {
         email: session?.user?.email,
         name: session?.user?.name,
         text: "Haz dado click a el boton para confirmar tu email",
-        number,
+        verificationCode: number,
       });
-      console.log(respose.status)
-
+      console.log(respose.status);
     } catch (error) {
       console.log("Error al enviar email", error);
     }
@@ -44,7 +43,6 @@ export default function ConfirmPage() {
 
   useEffect(() => {
     dispach(generateNumber());
-    // SendEmail();
   }, []);
 
   const formik = useFormik({
@@ -64,11 +62,17 @@ export default function ConfirmPage() {
         0
       );
 
-      console.log("formNumber", formNumber);
-
       if (formNumber === number) {
-        console.log("GOOD");
+        const response = await axios.put(
+          `/api/user/${(session?.user as { id: string }).id}`,
+          {
+            email_verification: true,
+          }
+        );
+        console.log(response);
         router.push("/");
+      } else {
+        setError("El código que digitaste es incorrecto, verifica!");
       }
 
       setIsLoading(false);
@@ -94,9 +98,7 @@ export default function ConfirmPage() {
             <h2>Confirma tu email</h2>
             {isCorrect && (
               <div className=" text-center">
-                <p>
-                  Digita los 6 numeros que te hemos enviado a tu correo!
-                </p>
+                <p>Digita los 6 numeros que te hemos enviado a tu correo!</p>
               </div>
             )}
           </div>
@@ -113,7 +115,7 @@ export default function ConfirmPage() {
                   onChange={handleInputChange}
                   className={`inputNumber ${
                     formik.values.number_one !== "" && "border-gray-700"
-                  }`}
+                  } ${error && "border-red-500 text-red-500"}`}
                   value={formik.values.number_one}
                   onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
                     const inputValue = e.target.value;
@@ -133,7 +135,7 @@ export default function ConfirmPage() {
                   onChange={handleInputChange}
                   className={`inputNumber ${
                     formik.values.number_two !== "" && "border-gray-700"
-                  }`}
+                  } ${error && "border-red-500 text-red-500"}`}
                   value={formik.values.number_two}
                   onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
                     const inputValue = e.target.value;
@@ -152,7 +154,7 @@ export default function ConfirmPage() {
                   onChange={handleInputChange}
                   className={`inputNumber ${
                     formik.values.number_three !== "" && "border-gray-700"
-                  }`}
+                  } ${error && "border-red-500 text-red-500"}`}
                   value={formik.values.number_three}
                   onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
                     const inputValue = e.target.value;
@@ -171,7 +173,7 @@ export default function ConfirmPage() {
                   onChange={handleInputChange}
                   className={`inputNumber ${
                     formik.values.number_four !== "" && "border-gray-700"
-                  }`}
+                  } ${error && "border-red-500 text-red-500"}`}
                   value={formik.values.number_four}
                   onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
                     const inputValue = e.target.value;
@@ -189,7 +191,7 @@ export default function ConfirmPage() {
                   type="number"
                   className={`inputNumber ${
                     formik.values.number_five !== "" && "border-gray-700"
-                  }`}
+                  } ${error && "border-red-500 text-red-500"}`}
                   onChange={handleInputChange}
                   value={formik.values.number_five}
                   onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -208,7 +210,7 @@ export default function ConfirmPage() {
                   type="number"
                   className={`inputNumber ${
                     formik.values.number_six !== "" && "border-gray-700"
-                  }`}
+                  } ${error && "border-red-500 text-red-500"}`}
                   onChange={handleInputChange}
                   value={formik.values.number_six}
                   onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -221,13 +223,19 @@ export default function ConfirmPage() {
                 />
               </div>
 
+              <p className="form-errors text-center">{error && error}</p>
+
               <button
                 type="submit"
                 className={`text-white w-full py-3 h-12 rounded-lg text-sm ${
                   isLoading || error
                     ? "bg-black cursor-not-allowed"
                     : "bg-black"
-                } `}
+                } ${
+                  error ||
+                  (formik.values.number_six === "" &&
+                    "bg-gray-300 cursor-not-allowed")
+                }`}
               >
                 {isLoading ? (
                   <motion.div
@@ -267,15 +275,6 @@ export default function ConfirmPage() {
               </button>
             </div>
           )}
-          {/* <p className="font-semibold">
-            ¿No tienes cuenta aún?{" "}
-            <span
-              onClick={() => router.push("/register")}
-              className="text-blue-600 underline cursor-pointer"
-            >
-              Creala Aquí
-            </span>
-          </p> */}
         </div>
       </form>
     </div>

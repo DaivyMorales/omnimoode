@@ -38,12 +38,12 @@ export default function Email({ name, verificationCode }: EmailProps) {
             Confirma tu correo electronico!
           </Heading>
           <Heading style={h2}>
-            Hola, Daivy Morales. Tu código de confirmación está más abajo.
+            Hola, {name}. Tu código de confirmación está más abajo.
             Introdúzcalo en la ventana abierta de su navegador y le ayudaremos a
             iniciar sesión.{" "}
           </Heading>
           <Section style={codeBox}>
-            <Text style={confirmationCodeText}>343223</Text>
+            <Text style={confirmationCodeText}>{verificationCode}</Text>
           </Section>
 
           <Section>

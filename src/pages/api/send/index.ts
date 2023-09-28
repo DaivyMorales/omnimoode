@@ -1,12 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { VerifyEmail } from "@/components/Verify-Email";
+import Email from "@/emails/welcome";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const {
-    body: { subject, email, name, text, number },
+    body: { subject, email, name, text, verificationCode },
   } = req;
 
   try {
@@ -14,7 +14,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       from: "Omnimoode <onboarding@resend.dev>",
       to: [email],
       subject,
-      react: VerifyEmail({ name, number }),
+      react: Email({ name, verificationCode }),
       text: "nada",
     });
 
