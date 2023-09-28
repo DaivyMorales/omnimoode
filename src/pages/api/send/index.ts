@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import VerifyEmail from "@/components/Verify-Email";
+import { VerifyEmail } from "@/components/Verify-Email";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);

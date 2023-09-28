@@ -35,6 +35,8 @@ export default function ConfirmPage() {
         text: "Haz dado click a el boton para confirmar tu email",
         number,
       });
+      console.log(respose.status)
+
     } catch (error) {
       console.log("Error al enviar email", error);
     }
