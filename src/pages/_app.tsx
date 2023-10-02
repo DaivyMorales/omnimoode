@@ -12,7 +12,13 @@ export default function App({
 }: AppProps) {
   const router = useRouter();
 
-  const excludedRoutes = ["/login", "/register", "/register/confirm"];
+  const excludedRoutes = [
+    "/login",
+    "/register",
+    "/register/confirm",
+    "/recovery",
+    "/recovery/changePassword",
+  ];
 
   const isNavbarVisible = !excludedRoutes.includes(router.pathname);
 

@@ -1,11 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-import NumberValidation from './features/NumberValidationSlice';
+import NumberValidation from "./features/NumberValidationSlice";
+import EmailRecoveryPassword from "./features/EmailRecoveryPasswordSlice";
 import { TypedUseSelectorHook, useSelector } from "react-redux";
-
 
 export const store = configureStore({
   reducer: {
-    NumberValidation
+    NumberValidation,
+    EmailRecoveryPassword,
   },
 });
 

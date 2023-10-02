@@ -121,6 +121,15 @@ export default function LoginPage() {
               Creala Aquí
             </span>
           </p>
+
+          <p className="font-semibold">
+            <span
+              onClick={() => router.push("/recovery")}
+              className="text-blue-600 underline cursor-pointer"
+            >
+              ¿Haz olvidado tu contraseña?
+            </span>
+          </p>
         </div>
       </form>
     </div>
