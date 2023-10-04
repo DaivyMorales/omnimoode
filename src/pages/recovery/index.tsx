@@ -5,33 +5,32 @@ import { motion } from "framer-motion";
 import { HiOutlineMail } from "react-icons/hi";
 import { AiOutlineReload } from "react-icons/ai";
 import axios from "axios";
-import { useSession } from "next-auth/react";
-import { useAppDispach } from "@/redux/hooks";
-import { setEmail } from "@/redux/features/EmailRecoveryPasswordSlice";
+import { loadLocalStorage } from '@/components/loadLocalStorage'
 
 export default function Recovery() {
   const router = useRouter();
 
-  const dispach = useAppDispach();
-
-  const { data: session } = useSession();
-
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [email, setEmail] = loadLocalStorage('email', '')
 
   const formik = useFormik({
     initialValues: {
       email: "",
     },
     onSubmit: async (values) => {
-      const response = await axios.post("/api/change_password_email", {
-        email: values.email,
-        subject: "Actualiza tu contraseña",
-      });
+      // const response = await axios.post("/api/change_password_email", {
+      //   email: values.email,
+      //   subject: "Actualiza tu contraseña",
+      // });
 
-      dispach(setEmail(values.email));
+      // dispach(setEmail(values.email));
 
-      console.log(response);
+      setEmail(values.email);
+
+      router.push("/recovery/changePassword")
+
+      // console.log(response);
     },
   });
 
@@ -77,9 +76,8 @@ export default function Recovery() {
 
             <button
               type="submit"
-              className={`text-white w-full py-3 h-12 rounded-lg text-sm ${
-                isLoading || error ? "bg-black cursor-not-allowed" : "bg-black"
-              } `}
+              className={`text-white w-full py-3 h-12 rounded-lg text-sm ${isLoading || error ? "bg-black cursor-not-allowed" : "bg-black"
+                } `}
             >
               {isLoading ? (
                 <motion.div

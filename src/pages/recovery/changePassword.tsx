@@ -2,19 +2,18 @@ import { ChangeEvent, useState } from "react";
 import { useFormik } from "formik";
 import { useRouter } from "next/router";
 import { motion } from "framer-motion";
-import { HiOutlineMail } from "react-icons/hi";
 import { AiOutlineReload } from "react-icons/ai";
 import axios from "axios";
-import { useSession } from "next-auth/react";
 import { useAppSelector } from "@/redux/store";
+import { loadLocalStorage } from '@/components/loadLocalStorage'
 
 export default function ChangePassword() {
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [email, setEmail] = loadLocalStorage('email', '')
 
-  const email = useAppSelector((state) => state.EmailRecoveryPassword.email);
 
   console.log(email);
 
@@ -85,9 +84,8 @@ export default function ChangePassword() {
 
             <button
               type="submit"
-              className={`text-white w-full py-3 h-12 rounded-lg text-sm ${
-                isLoading || error ? "bg-black cursor-not-allowed" : "bg-black"
-              } `}
+              className={`text-white w-full py-3 h-12 rounded-lg text-sm ${isLoading || error ? "bg-black cursor-not-allowed" : "bg-black"
+                } `}
             >
               {isLoading ? (
                 <motion.div
