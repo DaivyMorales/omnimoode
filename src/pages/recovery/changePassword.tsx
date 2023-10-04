@@ -5,14 +5,14 @@ import { motion } from "framer-motion";
 import { AiOutlineReload } from "react-icons/ai";
 import axios from "axios";
 import { useAppSelector } from "@/redux/store";
-import { loadLocalStorage } from '@/components/loadLocalStorage'
+import { LoadLocalStorage } from '@/components/loadLocalStorage'
 
 export default function ChangePassword() {
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [email, setEmail] = loadLocalStorage('email', '')
+  const [email, setEmail] = LoadLocalStorage('email', '')
 
 
   console.log(email);
