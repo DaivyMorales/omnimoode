@@ -20,6 +20,9 @@ interface EmailProps {
 }
 
 export default function RecoverPassword({ nameFound }: EmailProps) {
+
+  const linkChange = "http://localhost:3000/recovery/changePassword";
+
   return (
     <Html lang="es">
       <Preview>Confirm your email adress</Preview>
@@ -43,7 +46,7 @@ export default function RecoverPassword({ nameFound }: EmailProps) {
             la pagina oficial de omnimoode para restablecer tu contraseña
             exitosamente.{" "}
           </Heading>
-          <Button pX={10} pY={10} href={"localhost:3000/changePassword"} style={button}>
+          <Button pX={10} pY={10} href={linkChange} style={button}>
             Restablecer mi contraseña
           </Button>
 

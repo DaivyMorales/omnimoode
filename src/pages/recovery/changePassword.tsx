@@ -4,8 +4,8 @@ import { useRouter } from "next/router";
 import { motion } from "framer-motion";
 import { AiOutlineReload } from "react-icons/ai";
 import axios from "axios";
-import { useAppSelector } from "@/redux/store";
-import { LoadLocalStorage } from '@/components/loadLocalStorage'
+import * as Yup from "yup";
+import { LoadLocalStorage } from '@/components/LoadLocalStorage'
 
 export default function ChangePassword() {
   const router = useRouter();
@@ -22,7 +22,19 @@ export default function ChangePassword() {
       newPassword: "",
       confirmNewPassword: "",
     },
+    validationSchema: Yup.object({
+      newPassword: Yup.string()
+        .min(6, "Tu contraseña debe de ser minimo de 6 caracteres")
+        .required("Debes digitar una contraseña"),
+      confirmNewPassword: Yup.string()
+        .oneOf(
+          [Yup.ref("password")],
+          "Las contraseñas deben ser igual, corrigela!"
+        )
+        .required("Debes de nuevo digitar tu contraseña"),
+    }),
     onSubmit: async (values) => {
+      setIsLoading(true)
       const response = await axios.post("/api/change_password", {
         email,
         newPassword: values.newPassword,
@@ -30,6 +42,7 @@ export default function ChangePassword() {
 
       console.log(response);
       if (response.status === 200) return router.push("/login");
+      setIsLoading(false)
     },
   });
 
@@ -68,6 +81,10 @@ export default function ChangePassword() {
               />
             </div>
 
+            {formik.touched.newPassword && formik.errors.newPassword ? (
+              <p className="form-errors">{formik.errors.newPassword}</p>
+            ) : null}
+
             {/* Confirm new password */}
             <div className="inputLogin">
               <input
@@ -79,6 +96,10 @@ export default function ChangePassword() {
                 value={formik.values.confirmNewPassword}
               />
             </div>
+
+            {formik.touched.confirmNewPassword && formik.errors.confirmNewPassword ? (
+              <p className="form-errors">{formik.errors.confirmNewPassword}</p>
+            ) : null}
 
             {error && <p className="form-errors">{error}</p>}
 

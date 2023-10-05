@@ -1,36 +1,33 @@
 import { ChangeEvent, useState } from "react";
 import { useFormik } from "formik";
-import { useRouter } from "next/router";
 import { motion } from "framer-motion";
 import { HiOutlineMail } from "react-icons/hi";
 import { AiOutlineReload } from "react-icons/ai";
 import axios from "axios";
-import { LoadLocalStorage } from '@/components/loadLocalStorage'
+import { LoadLocalStorage } from '@/components/LoadLocalStorage'
 
 export default function Recovery() {
-  const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [email, setEmail] = LoadLocalStorage('email', '')
+  const [email, setEmail] = LoadLocalStorage('email', '');
+  const [statusSend, setStatusSend] = useState(0)
 
   const formik = useFormik({
     initialValues: {
       email: "",
     },
     onSubmit: async (values) => {
-      // const response = await axios.post("/api/change_password_email", {
-      //   email: values.email,
-      //   subject: "Actualiza tu contraseña",
-      // });
-
-      // dispach(setEmail(values.email));
-
+      setIsLoading(true);
+      const response = await axios.post("/api/change_password_email", {
+        email: values.email,
+        subject: "Actualiza tu contraseña",
+      });
       setEmail(values.email);
 
-      router.push("/recovery/changePassword")
+      if (response.status === 200) setStatusSend(200);
 
-      // console.log(response);
+      setIsLoading(false);
     },
   });
 
@@ -76,7 +73,7 @@ export default function Recovery() {
 
             <button
               type="submit"
-              className={`text-white w-full py-3 h-12 rounded-lg text-sm ${isLoading || error ? "bg-black cursor-not-allowed" : "bg-black"
+              className={`text-white w-full py-3 h-12 rounded-lg text-sm ${isLoading || error || statusSend === 200 ? "bg-gray-400 cursor-not-allowed" : "bg-black"
                 } `}
             >
               {isLoading ? (
@@ -94,7 +91,7 @@ export default function Recovery() {
                   <AiOutlineReload size={22} />
                 </motion.div>
               ) : (
-                <>Enviar</>
+                <>{statusSend === 200 ? "Tu correo se ha enviado!" : "Enviar"}</>
               )}
             </button>
           </div>
