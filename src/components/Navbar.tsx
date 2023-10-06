@@ -1,69 +1,90 @@
-import React, { useState, useEffect } from "react";
+import { useState, ReactNode } from "react";
 import { BsPerson } from "react-icons/bs";
-import { AiOutlineShoppingCart } from "react-icons/ai";
+import { AiOutlineShoppingCart, AiOutlineSearch } from "react-icons/ai";
 import ProfileDropDown from "./ProfileDropDown";
 import { useRouter } from "next/router";
+import SearchBar from "./SearchBar";
 
-interface MyProps {
-  children: React.ReactNode;
+interface NavbarProps {
+  children: ReactNode
 }
 
-export default function Navbar() {
+export default function Navbar({ children }: NavbarProps) {
   const [open, setOpen] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
-  const toggleMenu = () => {
-    setOpen(!open);
+  const [openSearch, setOpenSearch] = useState(false);
+  console.log(openSearch)
+
+
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleHover = () => {
+    setIsHovered(true);
   };
+
+  const handleUnhover = () => {
+    setIsHovered(false);
+  };
+
+  
 
   const router = useRouter();
 
-  // useEffect(() => {
-  //   const cambiarEstado = () => setopenProfile(!openProfile);
-  //   window.addEventListener('click', cambiarEstado);
-
-  //   // Limpiar el evento al desmontar el componente
-  //   return () => window.removeEventListener('click', cambiarEstado);
-  // }, [openProfile]);
+  const navbarClass = openSearch ? "blur-background" : "";
 
   return (
-    <div>
-      <nav className="flex items-center justify-center gap-20 py-2 px-6 md:justify-between">
-        <div
-          className="background-logo-navbar cursor-pointer"
-          onClick={() => router.push("/")}
-        ></div>
-        <ol
-          className={`text-black flex justify-center items-center gap-5 font-semibold ${
-            open ? "flex md:hidden" : "hidden md:flex"
-          }`}
-        >
-          <li className="cursor-pointer hover:text-gray-500">Nosotros</li>
-          <li className="cursor-pointer hover:text-gray-500">Lo nuevo</li>
-          <li className="cursor-pointer hover:text-gray-500">Colecciones</li>
-        </ol>
-        <div className="flex justify-between items-center gap-3">
+    <>
+      <div className="relative ">
+        {openSearch && <SearchBar openSearch={openSearch} setOpenSearch={setOpenSearch} />}
+        <nav className="flex justify-between items-center py-2 px-10">
           <div
-            className="relative cursor-pointer"
-            onClick={() => {
-              setOpenProfile(!openProfile);
-            }}
+            className="flex justify-center items-center cursor-pointer"
+            onClick={() => router.push("/")}
           >
-            <BsPerson size={20} />
+            <img src="images/logoGood.png" alt="Logo" className="w-39 h-16" />
           </div>
-          {openProfile && <ProfileDropDown />}
-          <AiOutlineShoppingCart size={20} />
-        </div>
-      </nav>
-      <ol
-        className={`text-white bg-black flex justify-center items-center py-5 gap-5 font-semibold ${
-          open ? "hidden md:flex" : "flex md:hidden"
-        }`}
+
+          <button
+            onClick={() => setOpenSearch(true)}
+            onMouseEnter={handleHover}
+            onMouseLeave={handleUnhover}
+            className="ring-1 ring-gray-200 w-64 rounded-md text-gray-400 px-3 py-2 flex justify-start items-center gap-3 cursor-pointer text-sm lg:w-64 xl:w-96 hover:ring-gray-300 hover:text-gray-500"
+          >
+            <div>
+              <AiOutlineSearch
+                size={20}
+                className={`${isHovered && "text-gray-500"}`}
+              />
+            </div>
+            Buscar...
+          </button>
+
+          <div className="flex items-center gap-3 w-16">
+            <div
+              className=" cursor-pointer"
+              onClick={() => {
+                setOpenProfile(!openProfile);
+              }}
+            >
+              <BsPerson size={20} />
+            </div>
+            {openProfile && <ProfileDropDown />}
+            <AiOutlineShoppingCart size={20} />
+          </div>
+        </nav>
+
+        {/* <ol
+        className={`text-white bg-black flex justify-center items-center py-5 gap-5 font-semibold ${open ? "hidden md:flex" : "flex md:hidden"
+      }`}
       >
-        <li className="cursor-pointer hover:text-gray-500">Nosotros</li>
-        <li className="cursor-pointer hover:text-gray-500">Lo nuevo</li>
-        <li className="cursor-pointer hover:text-gray-500">Colecciones</li>
-      </ol>
-      {/* {children} */}
-    </div>
+      <li className="cursor-pointer hover:text-gray-500">Nosotros</li>
+      <li className="cursor-pointer hover:text-gray-500">Lo nuevo</li>
+      <li className="cursor-pointer hover:text-gray-500">Colecciones</li>
+    </ol> */}
+
+
+        {children}
+      </div>
+    </>
   );
 }

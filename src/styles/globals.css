@@ -36,9 +36,9 @@
 }
 
 .background-logo-navbar {
-  width: 160px;
-  height: 80px;
-  background-image: url("/images/logoChrome2.png");
+  width: 150px;
+  height: 56px;
+  background-image: url("/images/logoGood.png");
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -55,9 +55,20 @@ h1 {
   @apply font-bold;
   font-size: 30px;
 }
+
 h2 {
   @apply font-medium;
   font-size: 28px;
+}
+
+h3 {
+  @apply font-semibold;
+  font-size: 16px;
+}
+
+h4 {
+  @apply font-medium;
+  font-size: 13px;
 }
 
 p {

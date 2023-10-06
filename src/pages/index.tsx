@@ -8,9 +8,9 @@ export default function Home() {
 
   return (
     <div>
-      <section className=" h-screen bg-red-500"></section>
-      <section className=" h-screen bg-purple-500"></section>
-      <section className=" h-screen bg-blue-500"></section>
+      <section className=" h-screen bg-black"></section>
+      <section className=" h-screen "></section>
+      <section className=" h-screen "></section>
 
       {status === "authenticated" && (
         <>
