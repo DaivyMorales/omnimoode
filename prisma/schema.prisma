@@ -18,26 +18,25 @@ model User {
   password           String
 }
 
-model Product {
-  id         Int      @id @default(autoincrement())
-  name       String
-  category   Category @relation(fields: [categoryId], references: [id])
-  categoryId Int
-  stock      Stock    @relation(fields: [stockId], references: [id])
-  stockId    Int
-}
-
 model Category {
-  id       Int       @id @default(autoincrement())
-  name     String    @unique
-  sizes    String[]
-  products Product[]
+  id      Int       @id @default(autoincrement())
+  name    String    @unique
+  product Product[]
 }
 
-model Stock {
-  id          Int       @id @default(autoincrement())
-  products    Product[]
-  price       Decimal
-  seasonStart DateTime
-  seasonEnd   DateTime
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  price       Float
+  category    Category @relation(fields: [categoryId], references: [id])
+  categoryId  Int
+  sizes       Size[]
+}
+
+model Size {
+  id        Int     @id @default(autoincrement())
+  name      String
+  quantity  Int
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
 }

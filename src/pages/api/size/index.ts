@@ -4,35 +4,26 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient();
 
 export default async function Product(req: NextApiRequest, res: NextApiResponse) {
-    const { body: { name, price, categoryId }, method } = req;
+    const { body: { name, quantity, productId }, method } = req;
 
     switch (method) {
-
-        case "GET":
-            try {
-                const products = await prisma.product.findMany()
-                res.status(200).json(products)
-            } catch (error) {
-                res.status(400).json(error)
-            }
-            break;
-
         case "POST":
             try {
-                const newProduct = await prisma.product.create({
+                const newProduct = await prisma.size.create({
                     data: {
                         name,
-                        price,
-                        categoryId
+                        quantity,
+                        productId
                     }
                 })
                 res.status(200).json(newProduct)
             } catch (error) {
-                res.status(400).json(error)
+                res.status(500).json(error)
             }
             break;
 
         default:
+            res.status(500).json("That method is invalid")
             break;
     }
 
