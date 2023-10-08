@@ -6,8 +6,11 @@ export default function Home() {
 
   const { status } = useSession();
 
+
+
   return (
     <div>
+
       <section className=" h-screen bg-black"></section>
       <section className=" h-screen "></section>
       <section className=" h-screen "></section>
@@ -28,3 +31,5 @@ export default function Home() {
     </div>
   );
 }
+
+

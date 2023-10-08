@@ -11,11 +11,12 @@ datasource db {
 }
 
 model User {
-  id                 Int     @id @default(autoincrement())
+  id                 Int      @id @default(autoincrement())
   name               String
-  email              String  @unique
-  email_verification Boolean @default(false)
+  email              String   @unique
+  email_verification Boolean  @default(false)
   password           String
+  createdAt          DateTime @default(now())
 }
 
 model Category {
@@ -25,12 +26,14 @@ model Category {
 }
 
 model Product {
-  id          Int      @id @default(autoincrement())
-  name        String
-  price       Float
-  category    Category @relation(fields: [categoryId], references: [id])
-  categoryId  Int
-  sizes       Size[]
+  id         Int      @id @default(autoincrement())
+  name       String
+  price      Float
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+  sizes      Size[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model Size {
@@ -39,4 +42,11 @@ model Size {
   quantity  Int
   product   Product @relation(fields: [productId], references: [id])
   productId Int
+}
+
+model Season {
+  id    Int      @id @default(autoincrement())
+  name  String
+  start DateTime
+  end   DateTime
 }

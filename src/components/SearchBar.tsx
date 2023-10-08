@@ -1,6 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { PiTShirtBold, PiPantsBold, PiCoatHangerBold } from 'react-icons/pi';
+import { useAppDispach, useAppSelector } from '@/redux/hooks'
+import { useGetCategoriesQuery } from '@/redux/api/cotegoryApi'
+import CategoryCard from './Category/CategoryCard';
+
 
 interface SearchBarProps {
   openSearch: boolean;
@@ -8,14 +12,16 @@ interface SearchBarProps {
 }
 
 export default function SearchBar({ openSearch, setOpenSearch }: SearchBarProps) {
-  const searchBarRef = useRef<HTMLDivElement>(null);
 
-  // Cierra el SearchBar cuando se hace clic fuera de él
+  const dispatch = useAppDispach();
 
+  const { isLoading, isFetching, data, error } = useGetCategoriesQuery(null);
+
+  // if (isLoading || isFetching) return <h4>Cargando...</h4>;
+  // if (error) return <h4>Hubo un error </h4>;
 
   return (
     <div
-      ref={searchBarRef}
       className="absolute w-full h-full flex justify-center items-start"
       style={{ backdropFilter: 'blur(5px) brightness(80%)' }}
     >
@@ -27,25 +33,15 @@ export default function SearchBar({ openSearch, setOpenSearch }: SearchBarProps)
           <input type="text" className="text-lg text-black" placeholder="¿Qué estas buscando?" />
         </div>
         <div className='bg-white ring-1 ring-gray-200 w-full rounded-b-md flex flex-col justify-start gap-y-1 p-3'>
+
           <h3 className='text-gray-600'>Categorias</h3>
-          <div className=' flex item-center justify-start gap-2 hover:bg-gray-200 cursor-pointer p-2 rounded-md'>
-            <div className='p-1 rounded-md bg-black'>
-              <PiTShirtBold size={13} color="white" />
-            </div>
-            <h4>Camisas</h4>
-          </div>
-          <div className='flex item-center justify-start gap-2 hover:bg-gray-200 cursor-pointer p-2 rounded-md'>
-            <div className='p-1 rounded-md bg-black'>
-              <PiPantsBold size={13} color="white" />
-            </div>
-            <h4>Pants</h4>
-          </div>
-          <div className='flex item-center justify-start gap-2 hover:bg-gray-200 cursor-pointer p-2 rounded-md'>
-            <div className='p-1 rounded-md bg-black'>
-              <PiCoatHangerBold size={13} color="white" />
-            </div>
-            <h4>Hoddies</h4>
-          </div>
+          {
+            error ? (<div>Hubo un error</div>) : (
+              data?.map((category) => (
+                <CategoryCard category={category} key={category.id} />
+              ))
+            )
+          }
         </div>
       </div>
     </div>
