@@ -13,7 +13,22 @@ datasource db {
 model User {
   id                 Int     @id @default(autoincrement())
   name               String
-  email              String  @unique 
+  email              String  @unique
   email_verification Boolean @default(false)
   password           String
+}
+
+model Product {
+  id         Int      @id @default(autoincrement())
+  name       String
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+  sizeId     Int
+}
+
+model Category {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  sizes    String[]
+  products Product[]
 }
