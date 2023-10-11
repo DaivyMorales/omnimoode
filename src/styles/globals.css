@@ -124,5 +124,10 @@ input:focus {
 
 .dropdown-profile {
   top: 60px;
-  right: 56px;
+  right: 82px;
+}
+
+.text-2xs {
+  font-size: 10px;
+  line-height: 14px;
 }

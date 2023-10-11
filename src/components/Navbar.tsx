@@ -13,6 +13,7 @@ export default function Navbar({ children }: NavbarProps) {
   const [open, setOpen] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
+  console.log(openProfile)
 
 
   const [isHovered, setIsHovered] = useState(false);
@@ -67,7 +68,7 @@ export default function Navbar({ children }: NavbarProps) {
             >
               <BsPerson size={20} />
             </div>
-            {openProfile && <ProfileDropDown />}
+            {openProfile && <ProfileDropDown openProfile={openProfile} setOpenProfile={setOpenProfile}/>}
             <AiOutlineShoppingCart size={20} />
           </div>
         </nav>
