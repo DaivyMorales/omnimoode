@@ -4,13 +4,13 @@ import { motion } from "framer-motion";
 import { HiOutlineMail } from "react-icons/hi";
 import { AiOutlineReload } from "react-icons/ai";
 import axios from "axios";
-import { LoadLocalStorage } from '@/components/LoadLocalStorage'
+import { EmailLocalStorage } from '@/components/EmailLocalStorage'
 
 export default function Recovery() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [email, setEmail] = LoadLocalStorage('email', '');
+  const [email, setEmail] = EmailLocalStorage('email', '');
   const [statusSend, setStatusSend] = useState(0)
 
   const formik = useFormik({

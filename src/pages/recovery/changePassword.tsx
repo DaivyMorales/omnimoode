@@ -5,14 +5,14 @@ import { motion } from "framer-motion";
 import { AiOutlineReload } from "react-icons/ai";
 import axios from "axios";
 import * as Yup from "yup";
-import { LoadLocalStorage } from '@/components/LoadLocalStorage'
+import { EmailLocalStorage } from '@/components/EmailLocalStorage'
 
 export default function ChangePassword() {
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [email, setEmail] = LoadLocalStorage('email', '')
+  const [email, setEmail] = EmailLocalStorage('email', '')
 
 
   console.log(email);
