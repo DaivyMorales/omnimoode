@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import { useSession, signOut } from "next-auth/react";
 import Link from 'next/link';
@@ -11,6 +11,22 @@ interface DropDownProps {
 }
 
 export default function ProfileDropDown({ openProfile, setOpenProfile }: DropDownProps) {
+
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setOpenProfile(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownRef]);
+
   const router = useRouter();
   const { data: session, status } = useSession();
   console.log(session);
@@ -37,7 +53,7 @@ export default function ProfileDropDown({ openProfile, setOpenProfile }: DropDow
           </p>
         </div>
       ) : (
-        <div className="absolute bg-white ring-1 ring-gray-200 dropdown-profile flex flex-col justify-start rounded-md shadow-lg w-52">
+        <div ref={dropdownRef} className="absolute bg-white ring-1 ring-gray-200 dropdown-profile flex flex-col justify-start rounded-md shadow-lg w-52">
           {/* USER INFORMATION */}
           <div className="flex  p-2 w-full justify-start items-center gap-3 ">
             <div className="p-1 bg-gray-200 ring-2 ring-blue-600 rounded-full">
@@ -64,7 +80,6 @@ export default function ProfileDropDown({ openProfile, setOpenProfile }: DropDow
               <PiShoppingCartBold size={18} />
             </div>
             Tus compras
-
           </Link>
 
           {/* LOGOUT */}
