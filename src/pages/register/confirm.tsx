@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { AiOutlineReload } from "react-icons/ai";
 import { useSession } from "next-auth/react";
 import axios from "axios";
-import { useAppSelector } from "@/redux/store";
+import { useAppSelector } from "@/redux/hooks";
 import { useAppDispach } from "@/redux/hooks";
 import { generateNumber } from "@/redux/features/NumberValidationSlice";
 
