@@ -12,7 +12,6 @@ export default function App({
 }: AppProps) {
   const router = useRouter();
 
-
   const excludedRoutes = [
     "/login",
     "/register",
@@ -26,12 +25,15 @@ export default function App({
   return (
     <SessionProvider session={session}>
       <Provider store={store}>
-        {isNavbarVisible && (
+        {isNavbarVisible ? (
           <Navbar>
             <Component {...pageProps} />
           </Navbar>
+        ) : (
+          <Component {...pageProps} />
         )}
       </Provider>
     </SessionProvider>
   );
 }
+
