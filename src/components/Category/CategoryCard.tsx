@@ -24,7 +24,7 @@ export default function CategoryCard({ category, setOpenSearch }: CardProps) {
     return (
         <div onClick={() => {
             setOpenSearch(false)
-            router.push(`/category/${category.name}`)
+            router.push(`/category/${category.id}`)
         }} className='flex item-center justify-start gap-2 hover:bg-gray-200 cursor-pointer p-2 rounded-md'>
             <div className='p-1 rounded-md bg-black'>
                 {icon}

@@ -13,6 +13,9 @@ export default async function ProductById(req: NextApiRequest, res: NextApiRespo
             try {
                 const category = await prisma.category.findUnique({
                     where: { id: idNumber },
+                    include: {
+                        product: true
+                    }
                 })
 
                 if (!category) return res.status(500).json("Category doesn't found")
