@@ -21,7 +21,7 @@ export default function CategoryPage() {
     return (
         <>
             <div>{data?.name} {data?.id}</div>
-            <div>{data?.product.map((product) => (<p>{product.name}</p>))}</div>
+            <div>{data?.product.map((product) => (<p key={product.id}>{product.name}</p>))}</div>
         </>
     )
 }

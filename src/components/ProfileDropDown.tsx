@@ -12,7 +12,7 @@ export default function ProfileDropDown() {
   return (
     <>
       {status === "unauthenticated" ? (
-        <div className="absolute dropdown-profile flex flex-col justify-center items-center gap-2 bg-white rounded-md p-2 shadow-lg w-32">
+        <div className="absolute dropdown-profile shadow-lg flex flex-col justify-center items-center gap-2 bg-white rounded-md p-2 shadow-lg w-32">
           <button
             onClick={() => router.push("/login")}
             className="bg-black text-white py-2 px-1 w-full  rounded-lg text-sm"
