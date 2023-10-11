@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-export function LoadLocalStorage<T>(key: string, fallbackValue: T) {
+export function EmailLocalStorage<T>(key: string, fallbackValue: T) {
     const [value, setValue] = useState(() => {
         if (typeof window !== 'undefined') {
             const storedValue = localStorage.getItem(key);

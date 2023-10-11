@@ -39,13 +39,13 @@ export default function SearchBar({ openSearch, setOpenSearch }: SearchBarProps)
             {
               error ? (<div>Hubo un error</div>) : (
                 data?.map((category) => (
-                  <CategoryCard category={category} key={category.id} />
+                  <CategoryCard category={category} key={category.id} setOpenSearch={setOpenSearch} />
                 ))
               )
             }
           </div>
         </div>
-        <div className='bg-white ring-1 ring-gray-200 cursor-pointer p-2 rounded-md hover:bg-gray-300' onClick={() => setOpenSearch(false)}><PiXBold /></div>
+        <div className='bg-white ring-1 ring-gray-200 cursor-pointer p-2 rounded-md hover:bg-gray-100' onClick={() => setOpenSearch(false)}><PiXBold /></div>
       </div>
     </div>
   );

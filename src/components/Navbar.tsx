@@ -13,7 +13,6 @@ export default function Navbar({ children }: NavbarProps) {
   const [open, setOpen] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
-  console.log(openSearch)
 
 
   const [isHovered, setIsHovered] = useState(false);
