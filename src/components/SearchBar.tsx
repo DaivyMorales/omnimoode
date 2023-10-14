@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { PiXBold } from 'react-icons/pi';
 import { useAppDispach, useAppSelector } from '@/redux/hooks'
@@ -17,11 +17,25 @@ export default function SearchBar({ openSearch, setOpenSearch }: SearchBarProps)
 
   const { isLoading, isFetching, data, error } = useGetCategoriesQuery(null);
 
-  // if (isLoading || isFetching) return <h4>Cargando...</h4>;
-  // if (error) return <h4>Hubo un error </h4>;
+
+  const searchBarRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (searchBarRef.current && !searchBarRef.current.contains(event.target as Node)) {
+        setOpenSearch(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [searchBarRef]);
 
   return (
     <div
+      ref={searchBarRef}
       className="absolute w-full h-full flex justify-center items-start"
       style={{ backdropFilter: 'blur(5px) brightness(80%)' }}
     >
@@ -45,7 +59,6 @@ export default function SearchBar({ openSearch, setOpenSearch }: SearchBarProps)
             }
           </div>
         </div>
-        <div className='bg-white ring-1 ring-gray-200 cursor-pointer p-2 rounded-md hover:bg-gray-100' onClick={() => setOpenSearch(false)}><PiXBold /></div>
       </div>
     </div>
   );
