@@ -14,7 +14,6 @@ export default function Navbar({ children }: NavbarProps) {
   const [open, setOpen] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
-  console.log(openProfile)
 
 
   const [isHovered, setIsHovered] = useState(false);
@@ -35,7 +34,7 @@ export default function Navbar({ children }: NavbarProps) {
 
   return (
     <>
-      <div className="relative ">
+      <div className="relative w-full h-full">
         {openSearch && <SearchBar openSearch={openSearch} setOpenSearch={setOpenSearch} />}
         <nav className="flex justify-between items-center py-2 px-10">
           <div
