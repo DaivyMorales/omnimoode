@@ -85,8 +85,20 @@ input:focus {
   outline: none;
 }
 
+label{
+  @apply text-xs font-semibold
+}
+
 .inputLogin {
-  @apply bg-[#F2F2F2] w-full p-2 flex justify-start items-center gap-2 rounded-lg;
+  @apply  border-1 border-gray-300 w-full px-2 py-1 flex justify-start items-center gap-2 rounded-lg;
+}
+
+.inputSize {
+  @apply   p-1 flex justify-center items-center gap-2 rounded-lg border-1;
+}
+
+.inputSizeNumber {
+  @apply  text-sm font-normal;
 }
 
 .inputNumber::-webkit-inner-spin-button,
