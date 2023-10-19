@@ -1,20 +1,22 @@
 import { useState, ReactNode } from "react";
-import { BsPerson } from "react-icons/bs";
+import { PiUserBold } from "react-icons/pi";
 import { AiOutlineShoppingCart, AiOutlineSearch } from "react-icons/ai";
+import { PiMoonBold, PiSunDimBold } from "react-icons/pi";
 import ProfileDropDown from "./ProfileDropDown";
 import { useRouter } from "next/router";
 import SearchBar from "./SearchBar";
+import useColorMode from "@/hooks/useColorMode";
 
 interface NavbarProps {
-  children: ReactNode
+  children: ReactNode;
 }
 
 export default function Navbar({ children }: NavbarProps) {
+  const [colorMode, setColorMode] = useColorMode();
 
   const [open, setOpen] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
-
 
   const [isHovered, setIsHovered] = useState(false);
 
@@ -26,16 +28,16 @@ export default function Navbar({ children }: NavbarProps) {
     setIsHovered(false);
   };
 
-  
-
   const router = useRouter();
 
   const navbarClass = openSearch ? "blur-background" : "";
 
   return (
     <>
-      <div className="relative w-full h-full">
-        {openSearch && <SearchBar openSearch={openSearch} setOpenSearch={setOpenSearch} />}
+      <div className="relative w-full h-full h-screen ">
+        {openSearch && (
+          <SearchBar openSearch={openSearch} setOpenSearch={setOpenSearch} />
+        )}
         <nav className="flex justify-between items-center py-2 px-10">
           <div
             className="flex justify-center items-center cursor-pointer"
@@ -59,29 +61,36 @@ export default function Navbar({ children }: NavbarProps) {
             Buscar...
           </button>
 
-          <div className="flex items-center gap-3 w-16">
+          <div className="flex items-center gap-3 ">
+            <div
+              className="p-1 cursor-pointer"
+              onClick={() => {
+                setColorMode(colorMode === "light" ? "dark" : "light");
+              }}
+            >
+              {colorMode !== "light" ? (
+                <PiSunDimBold size={20} />
+              ) : (
+                <PiMoonBold size={20} />
+              )}
+            </div>
             <div
               className=" cursor-pointer"
               onClick={() => {
                 setOpenProfile(!openProfile);
               }}
             >
-              <BsPerson size={20} />
+              <PiUserBold size={20} />
             </div>
-            {openProfile && <ProfileDropDown openProfile={openProfile} setOpenProfile={setOpenProfile}/>}
+            {openProfile && (
+              <ProfileDropDown
+                openProfile={openProfile}
+                setOpenProfile={setOpenProfile}
+              />
+            )}
             <AiOutlineShoppingCart size={20} />
           </div>
         </nav>
-
-        {/* <ol
-        className={`text-white bg-black flex justify-center items-center py-5 gap-5 font-semibold ${open ? "hidden md:flex" : "flex md:hidden"
-      }`}
-      >
-      <li className="cursor-pointer hover:text-gray-500">Nosotros</li>
-      <li className="cursor-pointer hover:text-gray-500">Lo nuevo</li>
-      <li className="cursor-pointer hover:text-gray-500">Colecciones</li>
-    </ol> */}
-
 
         {children}
       </div>
