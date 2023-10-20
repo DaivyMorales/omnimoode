@@ -77,7 +77,7 @@ export default function UploadProduct() {
         <div className="flex items-center justify-center  w-full">
           <label
             htmlFor="dropzone-file"
-            className="flex flex-col items-center justify-center w-full p-2 h-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 "
+            className="flex flex-col items-center justify-center w-full p-2 h-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:bg-black"
           >
             <div className="flex flex-col items-center justify-center pt-5 pb-6">
               <svg
@@ -122,7 +122,7 @@ export default function UploadProduct() {
             />
           </label>
         </div>
-        <div className="flex flex-col justify-center items-start bg-white w-96 p-5  gap-4">
+        <div className="flex flex-col justify-center items-start bg-white w-96 p-5 gap-4 dark:bg-black dark:text-white">
           <h1 className="text-2xl font-semibold">Crear prenda</h1>
 
           {/* CATEGORY */}
@@ -137,13 +137,15 @@ export default function UploadProduct() {
                 }}
                 className={`flex justify-center items-center flex-col gap-1 border-1 p-2 rounded-md w-32 cursor-pointer ${
                   onSelected === 4
-                    ? "border-black text-black"
-                    : "text-gray-400 border-gray-300"
+                    ? "border-black text-black dark:border-white dark:text-white"
+                    : "text-gray-400 border-gray-300 dark:text-gray-600 dark:border-gray-700"
                 }`}
               >
                 <PiCoatHangerBold
                   size={17}
-                  color={`${onSelected === 4 ? "black" : "#9ca3af"}`}
+                  className={`${
+                    onSelected === 5 ? "black dark:white" : "#9ca3af dark:black"
+                  }`}
                 />
                 <span className="font-bold text-xs">Hoddies</span>
               </div>
@@ -154,13 +156,15 @@ export default function UploadProduct() {
                 }}
                 className={`flex justify-center items-center flex-col gap-1 border-1 p-2 rounded-md w-32 cursor-pointer ${
                   onSelected === 6
-                    ? "border-black text-black"
-                    : "text-gray-400 border-gray-300"
+                    ? "border-black text-black dark:border-white dark:text-white"
+                    : "text-gray-400 border-gray-300 dark:text-gray-600 dark:border-gray-700"
                 }`}
               >
                 <PiPantsBold
                   size={17}
-                  color={`${onSelected === 6 ? "black" : "#9ca3af"}`}
+                  className={`${
+                    onSelected === 5 ? "black dark:white" : "#9ca3af dark:black"
+                  }`}
                 />
                 <span className="font-normal text-xs">Pants</span>
               </div>
@@ -171,13 +175,15 @@ export default function UploadProduct() {
                 }}
                 className={`flex justify-center items-center flex-col gap-1 border-1 p-2 rounded-md w-32 cursor-pointer ${
                   onSelected === 5
-                    ? "border-black text-black"
-                    : "text-gray-400 border-gray-300"
+                    ? "border-black text-black dark:border-white dark:text-white"
+                    : "text-gray-400 border-gray-300 dark:text-gray-600 dark:border-gray-700"
                 }`}
               >
                 <PiTShirtBold
                   size={17}
-                  color={`${onSelected === 5 ? "black" : "#9ca3af"}`}
+                  className={`${
+                    onSelected === 5 ? "black dark:white" : "#9ca3af dark:black"
+                  }`}
                 />
                 <span className="font-bold text-xs">Shirts</span>
               </div>
@@ -198,7 +204,7 @@ export default function UploadProduct() {
                   onClick={() => {
                     setShowDescription(true);
                   }}
-                  className={`bg-white text-2xs flex gap-1 p-1 border-1 rounded-md font-semibold ${
+                  className={`bg-white text-2xs flex gap-1 p-1 border-1 rounded-md font-semibold dark:text-black ${
                     showDescription && "hidden"
                   }`}
                 >
@@ -212,7 +218,7 @@ export default function UploadProduct() {
                 <textarea
                   id="message"
                   rows={4}
-                  className="block p-2.5 w-full text-sm text-black  rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                  className="block p-2.5 w-full text-sm text-black  rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-black dark:text-white"
                   placeholder="Describe tu prenda aquí"
                 ></textarea>
               </div>
@@ -235,7 +241,7 @@ export default function UploadProduct() {
               <label htmlFor="">Tallas</label>
               <div className="grid grid-cols-3 gap-x-4 gap-y-2">
                 <div className="inputSize">
-                  <span className="text-xs font-semibold bg-white border-1 p-1 rounded-md">
+                  <span className="text-xs font-semibold bg-white border-1 p-1 rounded-md dark:text-black">
                     XS
                   </span>
                   <input
@@ -247,7 +253,7 @@ export default function UploadProduct() {
                 </div>
 
                 <div className="inputSize">
-                  <span className="text-xs font-semibold bg-white border-1 p-1 rounded-md">
+                  <span className="text-xs font-semibold bg-white border-1 p-1 rounded-md dark:text-black">
                     S
                   </span>
                   <input
@@ -259,7 +265,7 @@ export default function UploadProduct() {
                 </div>
 
                 <div className="inputSize">
-                  <span className="text-xs font-semibold bg-white border-1 p-1 rounded-md">
+                  <span className="text-xs font-semibold bg-white border-1 p-1 rounded-md dark:text-black">
                     M
                   </span>
                   <input
@@ -271,7 +277,7 @@ export default function UploadProduct() {
                 </div>
 
                 <div className="inputSize">
-                  <span className="text-xs font-semibold bg-white border-1 p-1 rounded-md">
+                  <span className="text-xs font-semibold bg-white border-1 p-1 rounded-md dark:text-black">
                     L
                   </span>
                   <input
@@ -283,7 +289,7 @@ export default function UploadProduct() {
                 </div>
 
                 <div className="inputSize">
-                  <span className="text-xs font-semibold bg-white border-1 p-1 rounded-md">
+                  <span className="text-xs font-semibold bg-white border-1 p-1 rounded-md dark:text-black">
                     XL
                   </span>
                   <input
@@ -295,7 +301,7 @@ export default function UploadProduct() {
                 </div>
 
                 <div className="inputSize">
-                  <span className="text-xs font-semibold bg-white border-1 p-1 rounded-md">
+                  <span className="text-xs font-semibold bg-white border-1 p-1 rounded-md dark:text-black">
                     XXL
                   </span>
                   <input
@@ -309,7 +315,7 @@ export default function UploadProduct() {
             </div>
           </div>
           <button
-            className="bg-black text-white w-full py-3 h-12 rounded-lg text-sm"
+            className="bg-black text-white w-full py-3 h-12 rounded-lg text-sm dark:bg-white dark:text-black"
             type="submit"
           >
             Subir

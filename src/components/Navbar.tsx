@@ -38,7 +38,7 @@ export default function Navbar({ children }: NavbarProps) {
         {openSearch && (
           <SearchBar openSearch={openSearch} setOpenSearch={setOpenSearch} />
         )}
-        <nav className="flex justify-between items-center py-2 px-10">
+        <nav className="flex justify-between items-center py-2 px-10 dark:bg-black dark:border-b-2 dark:border-gray-800">
           <div
             className="flex justify-center items-center cursor-pointer"
             onClick={() => router.push("/")}
@@ -68,10 +68,10 @@ export default function Navbar({ children }: NavbarProps) {
                 setColorMode(colorMode === "light" ? "dark" : "light");
               }}
             >
-              {colorMode !== "light" ? (
-                <PiSunDimBold size={20} />
+              {colorMode === "light" ? (
+                <PiMoonBold size={20} color="black" />
               ) : (
-                <PiMoonBold size={20} />
+                <PiSunDimBold size={20} color="white" />
               )}
             </div>
             <div
@@ -80,7 +80,11 @@ export default function Navbar({ children }: NavbarProps) {
                 setOpenProfile(!openProfile);
               }}
             >
-              <PiUserBold size={20} />
+              <PiUserBold
+                size={20}
+                color={`${colorMode === "dark" ? "white" : "black"}`}
+                className={`${colorMode === "dark" ? "text-white" : "text-black"}`}
+              />
             </div>
             {openProfile && (
               <ProfileDropDown
@@ -88,7 +92,10 @@ export default function Navbar({ children }: NavbarProps) {
                 setOpenProfile={setOpenProfile}
               />
             )}
-            <AiOutlineShoppingCart size={20} />
+            <AiOutlineShoppingCart
+              size={20}
+              color={`${colorMode === "dark" ? "white" : "black"}`}
+            />
           </div>
         </nav>
 

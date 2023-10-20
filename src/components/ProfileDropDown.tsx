@@ -53,29 +53,29 @@ export default function ProfileDropDown({ openProfile, setOpenProfile }: DropDow
           </p>
         </div>
       ) : (
-        <div ref={dropdownRef} className="absolute bg-white ring-1 ring-gray-200 dropdown-profile flex flex-col justify-start rounded-md shadow-lg w-52">
+        <div ref={dropdownRef} className="absolute bg-white ring-1 ring-gray-200 dropdown-profile flex flex-col justify-start rounded-md shadow-lg w-52 dark:bg-black">
           {/* USER INFORMATION */}
           <div className="flex  p-2 w-full justify-start items-center gap-3 ">
-            <div className="p-1 bg-gray-200 ring-2 ring-blue-600 rounded-full">
+            <div className="p-1 bg-gray-200 ring-2 ring-blue-600 rounded-full dark:bg-gray-700">
               <PiUserBold />
             </div>
             <div className="flex flex-col justify-center items-start gap-x-1 ">
-              <p className="text-xs font-semibold">{session?.user?.name}</p>
-              <p className="text-2xs text-gray-400 font-light">{session?.user?.email}</p>
+              <p className="text-xs font-semibold dark:text-white">{session?.user?.name}</p>
+              <p className="text-2xs text-gray-400 font-light dark:text-gray-300">{session?.user?.email}</p>
             </div>
           </div>
           <hr />
 
           {/* OPTIONS */}
 
-          <Link href="/profile" onClick={() => { setOpenProfile(false) }} className="flex text-xs gap-2 px-3 py-2 justify-start items-center w-full hover:bg-gray-200 cursor-pointer">
+          <Link href="/profile" onClick={() => { setOpenProfile(false) }} className="flex text-xs gap-2 px-3 py-2 justify-start items-center w-full hover:bg-gray-200 cursor-pointer dark:text-gray-400 dark:hover:text-white  dark:hover:bg-black">
             <div className="">
               <PiUserBold size={18} />
             </div>
             Tu cuenta
           </Link>
 
-          <Link href="/buys" onClick={() => { setOpenProfile(false) }} className="flex text-xs gap-2 px-3 py-2 justify-start items-center w-full hover:bg-gray-200 cursor-pointer">
+          <Link href="/buys" onClick={() => { setOpenProfile(false) }} className="flex text-xs gap-2 px-3 py-2 justify-start items-center w-full hover:bg-gray-200 cursor-pointer dark:text-gray-400 dark:hover:text-white dark:hover:bg-black">
             <div className="">
               <PiShoppingCartBold size={18} />
             </div>
@@ -89,7 +89,7 @@ export default function ProfileDropDown({ openProfile, setOpenProfile }: DropDow
               signOut({ callbackUrl: "/login" });
               setOpenProfile(false)
             }}
-            className="flex w-full px-3 py-2 gap-2 hover:bg-gray-200 cursor-pointer rounded-b-md">
+            className="flex w-full px-3 py-2 gap-2 hover:bg-gray-200 cursor-pointer rounded-b-md dark:text-gray-400 dark:hover:text-white dark:hover:bg-black">
             <TbLogout size={18} />
             <p
               className="text-xs cursor-pointer"

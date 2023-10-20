@@ -10,6 +10,7 @@ const useLocalStorage = (key: string, initialValue: string) => {
       return initialValue;
     }
   });
+  console.log(storedValue);
 
   useEffect(() => {
     try {

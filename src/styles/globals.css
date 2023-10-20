@@ -107,6 +107,18 @@ label{
   margin: 0;
 }
 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.inputSizeNumber::-webkit-inner-spin-button,
+.inputSizeNumber::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 .inputNumber {
   @apply bg-white w-full p-2 flex justify-center text-center items-center gap-2 rounded-lg text-2xl font-semibold;
   border-width: 1px;
