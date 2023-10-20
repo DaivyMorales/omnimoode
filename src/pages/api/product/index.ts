@@ -8,7 +8,7 @@ export default async function Product(
   res: NextApiResponse
 ) {
   const {
-    body: { name, price, categoryId, imageUrl },
+    body: { name, price, categoryId, imageLink },
     method,
   } = req;
 
@@ -29,7 +29,7 @@ export default async function Product(
             name,
             price,
             categoryId,
-            imageUrl,
+            imageUrl: imageLink,
           },
         });
         res.status(200).json(newProduct);

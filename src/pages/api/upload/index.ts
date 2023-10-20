@@ -40,11 +40,15 @@ export default async function handler(
 
         const result = await cloudinary.uploader.upload(file.path);
 
-        res.status(200).json({ message: "success" });
+        res
+          .status(200)
+          .json({ message: "success", imageUrl: result.secure_url });
         console.log(result);
       } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Upload to cloudinary failed" });
+        res
+          .status(500)
+          .json({ error: "Upload to cloudinary failed", message: error });
       }
     });
   } else {
