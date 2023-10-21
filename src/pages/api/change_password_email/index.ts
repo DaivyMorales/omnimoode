@@ -1,11 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import RecoverPassword from "@/emails/RecoverPassword";
 import { Resend } from "resend";
-import { PrismaClient } from "@prisma/client";
+import prisma from '../../../../lib/prisma';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-
-const prisma = new PrismaClient();
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const {

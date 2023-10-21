@@ -16,9 +16,11 @@ export type Size = {
 export type Product = {
     id: number,
     name: string,
+    description?: string,
     price: number,
     categoryId: number,
     sizes: Size[],
+    imageUrl: String
     createdAt?: Date | string,
     updatedAt?: Date | string
 }

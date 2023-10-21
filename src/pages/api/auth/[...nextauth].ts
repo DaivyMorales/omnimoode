@@ -1,24 +1,22 @@
-import NextAuth from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcryptjs";
-
-const prisma = new PrismaClient();
+import NextAuth from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import bcrypt from 'bcryptjs';
+import prisma from '../../../../lib/prisma';
 
 export const authOptions = {
   providers: [
     CredentialsProvider({
-      name: "Credentials",
+      name: 'Credentials',
       credentials: {
         email: {
-          label: "Email",
-          type: "text",
-          placeholder: "any@omnimoode.com",
+          label: 'Email',
+          type: 'text',
+          placeholder: 'any@omnimoode.com',
         },
         password: {
-          label: "Password",
-          type: "password",
-          placeholder: "*********",
+          label: 'Password',
+          type: 'password',
+          placeholder: '*********',
         },
       },
       async authorize(credentials, req) {
@@ -37,7 +35,7 @@ export const authOptions = {
         });
 
         if (!userFound)
-          throw new Error("Tu correo o contraseña son incorrectos!");
+          throw new Error('Tu correo o contraseña son incorrectos!');
 
         const passwordMatch = await bcrypt.compare(
           credentials!.password,
@@ -45,7 +43,7 @@ export const authOptions = {
         );
 
         if (!passwordMatch)
-          throw new Error("Tu correo o contraseña son incorrectos!");
+          throw new Error('Tu correo o contraseña son incorrectos!');
         +console.log(userFound);
 
         return {
