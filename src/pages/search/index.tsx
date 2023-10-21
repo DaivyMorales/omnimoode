@@ -38,7 +38,7 @@ export default function SearchPage() {
       <h3 className='underline'>Resultados: {data.products.length}</h3>
       {data.products.map((product: Product) => (
         <div
-          className='bg-black text-white pb-2 rounded-lg flex justify-center items-center flex-col cursor-pointer'
+          className='  pb-2 rounded-lg flex justify-center items-center flex-col cursor-pointer'
           key={product.id}
           onClick={() => router.push(`/product/${product.id}`)}
         >

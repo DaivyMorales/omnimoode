@@ -20,7 +20,7 @@ export type Product = {
     price: number,
     categoryId: number,
     sizes: Size[],
-    imageUrl: String
+    imageUrl: string
     createdAt?: Date | string,
     updatedAt?: Date | string
 }
