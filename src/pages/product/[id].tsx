@@ -6,6 +6,8 @@ import {
   PiShoppingBagOpenBold,
   PiHeartBold,
 } from 'react-icons/pi';
+import { useFormik } from 'formik';
+import { useEffect } from 'react';
 
 export default function ProductPage() {
   const router = useRouter();
@@ -17,7 +19,19 @@ export default function ProductPage() {
   const { isLoading, isFetching, data, error } =
     useGetProductByIdQuery(productId);
 
-  console.log(data?.sizes);
+  const formik = useFormik({
+    initialValues: {
+      productId: undefined,
+      sizeId: undefined,
+    },
+    onSubmit: async (values) => {
+      console.log(values);
+    },
+  });
+
+  useEffect(() => {
+    formik.setFieldValue('productId', data?.id);
+  }, [data]);
 
   return (
     <div className=' h-screen flex justify-center items-center'>
@@ -35,7 +49,10 @@ export default function ProductPage() {
           </div>
         </section>
         <section className='flex flex-col justify-center items-start p-3 gap-10 '>
-          <div className='flex flex-col justify-center items-start gap-10 '>
+          <form
+            onSubmit={formik.handleSubmit}
+            className='flex flex-col justify-center items-start gap-10 '
+          >
             <section className='flex gap-2 justify-center items-center '>
               <div className='p-2 rounded-full bg-black'>
                 <PiScribbleLoopBold color='white' />
@@ -49,7 +66,11 @@ export default function ProductPage() {
               <div className='grid grid-cols-6 gap-2'>
                 {data?.sizes.map((size) => (
                   <div
-                    key={data.id}
+                    key={size.id}
+                    onClick={() => {
+                      formik.setFieldValue('sizeId', size.id);
+                      // console.log(size)
+                    }}
                     className='border-1 py-1 px-2 flex justify-center items-center rounded-md border-gray-500 cursor-pointer'
                   >
                     <p className='text-sm font-semibold text-gray-500'>
@@ -71,7 +92,7 @@ export default function ProductPage() {
                 <PiHeartBold />
               </button>
             </section>
-          </div>
+          </form>
         </section>
       </main>
     </div>

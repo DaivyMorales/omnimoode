@@ -14,6 +14,7 @@ export default async function ProductById(req: NextApiRequest, res: NextApiRespo
                     include: {
                         sizes: {
                             select: {
+                                id: true,
                                 name: true,
                                 quantity: true
                             }
