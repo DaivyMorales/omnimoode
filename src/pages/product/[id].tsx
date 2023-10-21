@@ -48,7 +48,10 @@ export default function ProductPage() {
               <label htmlFor=''>Seleccion tu talla:</label>
               <div className='grid grid-cols-6 gap-2'>
                 {data?.sizes.map((size) => (
-                  <div className='border-1 py-1 px-2 flex justify-center items-center rounded-md border-gray-500 cursor-pointer'>
+                  <div
+                    key={data.id}
+                    className='border-1 py-1 px-2 flex justify-center items-center rounded-md border-gray-500 cursor-pointer'
+                  >
                     <p className='text-sm font-semibold text-gray-500'>
                       {size.name.toUpperCase()}
                     </p>
