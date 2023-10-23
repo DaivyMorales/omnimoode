@@ -17,6 +17,14 @@ model User {
   email_verification Boolean  @default(false)
   password           String
   createdAt          DateTime @default(now())
+  carts              Cart[]
+}
+
+model Season {
+  id    Int      @id @default(autoincrement())
+  name  String
+  start DateTime
+  end   DateTime
 }
 
 model Category {
@@ -26,29 +34,44 @@ model Category {
 }
 
 model Product {
-  id          Int      @id @default(autoincrement())
+  id          Int           @id @default(autoincrement())
   name        String
   description String?
   price       Float
-  category    Category @relation(fields: [categoryId], references: [id])
+  category    Category      @relation(fields: [categoryId], references: [id])
   categoryId  Int
   sizes       Size[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
   imageUrl    String?
+  carts CartProduct[]
 }
 
 model Size {
-  id        Int     @id @default(autoincrement())
-  name      String
-  quantity  Int
-  product   Product @relation(fields: [productId], references: [id])
-  productId Int
+  id          Int           @id @default(autoincrement())
+  name        String
+  quantity    Int
+  product     Product       @relation(fields: [productId], references: [id])
+  productId   Int
+  carts CartProduct[]
 }
 
-model Season {
-  id    Int      @id @default(autoincrement())
-  name  String
-  start DateTime
-  end   DateTime
+model Cart {
+  id       Int       @id @default(autoincrement())
+  User     User?     @relation(fields: [userId], references: [id])
+  userId   Int?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  products CartProduct[]
+}
+
+model CartProduct {
+  cartId    Int
+  productId Int
+  sizeId    Int
+  cart      Cart    @relation(fields: [cartId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+  size      Size    @relation(fields: [sizeId], references: [id])
+
+  @@id([cartId, productId, sizeId])
 }

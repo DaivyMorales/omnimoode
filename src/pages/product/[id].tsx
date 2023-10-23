@@ -69,7 +69,6 @@ export default function ProductPage() {
                     key={size.id}
                     onClick={() => {
                       formik.setFieldValue('sizeId', size.id);
-                      // console.log(size)
                     }}
                     className='border-1 py-1 px-2 flex justify-center items-center rounded-md border-gray-500 cursor-pointer'
                   >
