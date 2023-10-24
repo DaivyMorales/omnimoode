@@ -1,32 +1,48 @@
 export type User = {
-    id: number;
-    name: string;
-    email: string;
-    email_verification: boolean;
-    password: string;
-}
+  id: number;
+  name: string;
+  email: string;
+  email_verification: boolean;
+  password: string;
+};
 
 export type Size = {
-    id: number,
-    name: string,
-    quantity: number,
-    productId: number
-}
+  id: number;
+  name: string;
+  quantity: number;
+  productId: number;
+};
 
 export type Product = {
-    id: number,
-    name: string,
-    description?: string,
-    price: number,
-    categoryId: number,
-    sizes: Size[],
-    imageUrl: string
-    createdAt?: Date | string,
-    updatedAt?: Date | string
-}
+  id: number;
+  name: string;
+  description?: string;
+  price: number;
+  categoryId: number;
+  sizes: Size[];
+  imageUrl: string;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+};
 
 export type Category = {
-    id: number,
-    name: string,
-    product: Product[]
-}
+  id: number;
+  name: string;
+  product: Product[];
+};
+
+export type Cart = {
+  id: number;
+  userId: number;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  products: CartProduct[];
+};
+
+export type CartProduct = {
+  sizeId: number;
+  productId: number;
+  cardId: number;
+  product: Product;
+  size: Size
+};

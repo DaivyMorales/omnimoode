@@ -81,6 +81,10 @@ input {
   background-color: transparent;
 }
 
+.inputNumberQuantity {
+  @apply font-normal bg-red-500 text-sm placeholder:text-gray-400;
+}
+
 input:focus {
   outline: none;
 }
@@ -149,6 +153,10 @@ input[type=number]::-webkit-outer-spin-button {
 .dropdown-profile {
   top: 60px;
   right: 82px;
+}
+.dropdown-cart {
+  top: 60px;
+  right: 45px;
 }
 
 .text-2xs {

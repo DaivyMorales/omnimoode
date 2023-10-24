@@ -85,7 +85,7 @@ export default function ProductPage() {
                 type='submit'
               >
                 <PiShoppingBagOpenBold size={16} />
-                Agregar a el carrito
+                Agregar a carrito
               </button>
               <button className='bg-gray-200 py-3 h-12 rounded-lg px-4'>
                 <PiHeartBold />

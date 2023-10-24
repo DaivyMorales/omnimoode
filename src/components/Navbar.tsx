@@ -10,6 +10,7 @@ import ProfileDropDown from './ProfileDropDown';
 import { useRouter } from 'next/router';
 import SearchBar from './SearchBar';
 import useColorMode from '@/hooks/useColorMode';
+import CartDropDown from './Cart/CartDropDown';
 
 interface NavbarProps {
   children: ReactNode;
@@ -21,6 +22,7 @@ export default function Navbar({ children }: NavbarProps) {
   const [open, setOpen] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
+  const [openCart, setOpenCart] = useState(true);
 
   const [isHovered, setIsHovered] = useState(false);
 
@@ -99,9 +101,19 @@ export default function Navbar({ children }: NavbarProps) {
               />
             )}
             <PiShoppingBagOpenBold
+            onClick={() => {
+              setOpenCart(!openCart);
+            }}
               size={20}
               color={`${colorMode === 'dark' ? 'white' : 'black'}`}
             />
+
+            {openCart && (
+              <CartDropDown
+                openCart={openCart}
+                setOpenCart={setOpenCart}
+              />
+            )}
           </div>
         </nav>
 
