@@ -24,7 +24,7 @@ export default function CartDropDown({
       </h3>
       <div className='border-1 rounded-md p-2 flex flex-col justify-center items-center gap-3 w-full'>
         {data?.products.map((cartProduct) => (
-          <ProductCard cartProduct={cartProduct} />
+          <ProductCard cartProduct={cartProduct} key={cartProduct.product.id} />
         ))}
       
       </div>
