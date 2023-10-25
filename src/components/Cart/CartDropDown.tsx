@@ -19,14 +19,12 @@ export default function CartDropDown({
   return (
     <div className='absolute dropdown-cart shadow-lg flex flex-col justify-start items-start gap-2 bg-white rounded-md p-2 shadow-lg w-96 border-1'>
       <h3>
-        Mi carrito{' '}
-        <span className=' text-xs'>({data?.products.length})</span>
+        Mi carrito <span className=' text-xs'>({data?.products.length})</span>
       </h3>
       <div className='border-1 rounded-md p-2 flex flex-col justify-center items-center gap-3 w-full'>
         {data?.products.map((cartProduct) => (
           <ProductCard cartProduct={cartProduct} key={cartProduct.product.id} />
         ))}
-      
       </div>
     </div>
   );

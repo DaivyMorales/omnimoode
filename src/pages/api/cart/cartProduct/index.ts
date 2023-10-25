@@ -12,7 +12,7 @@ export default async function handler(
 ) {
   const {
     method,
-    body: { cartId, items },
+    body: { cartId, productId, sizeId, items },
   } = req;
 
   switch (method) {
@@ -37,6 +37,25 @@ export default async function handler(
         );
         res.status(200).json(newCartProduct);
       } catch (error) {
+        res.status(500).json({ message: error });
+      }
+      break;
+
+    case 'DELETE':
+      try {
+        const { cartId, productId, sizeId } = req.body;
+
+        await prisma.cartProduct.deleteMany({
+          where: {
+            cartId: cartId,
+            productId: productId,
+            sizeId: sizeId,
+          },
+        });
+
+        res.status(200).json({ message: 'The cartProduct has been removed' });
+      } catch (error) {
+        console.error(error);
         res.status(500).json({ message: error });
       }
       break;

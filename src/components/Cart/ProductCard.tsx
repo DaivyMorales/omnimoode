@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { CartProduct } from '@/types/index';
 import { PiTrashBold } from 'react-icons/pi';
+import axios from 'axios';
 
 interface MyProps {
   cartProduct: CartProduct;
@@ -9,6 +10,19 @@ interface MyProps {
 
 export default function ProductCard({ cartProduct }: MyProps) {
   const [quantity, setquantity] = useState(0);
+
+  const deleteCartProduct = async () => {
+    const response = await axios.delete('/api/cart/cartProduct', {
+      data: {
+        cartId: cartProduct.cartId,
+        productId: cartProduct.productId,
+        sizeId: cartProduct.sizeId,
+      },
+    });
+    console.log(response);
+  };
+
+
   return (
     <div className='flex flex-col justify-start items-start py-3 w-full gap-3 border-b-2 border-gray-100'>
       <div
@@ -61,8 +75,11 @@ export default function ProductCard({ cartProduct }: MyProps) {
           </div>
         </div>
       </div>
-      <div className='w-full flex justify-end'>
-        <PiTrashBold color="#9ca3af"/>
+      <div
+        onClick={() => deleteCartProduct()}
+        className='w-full flex justify-end cursor-pointer'
+      >
+        <PiTrashBold color='#9ca3af' />
       </div>
     </div>
   );

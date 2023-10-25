@@ -42,7 +42,7 @@ export type Cart = {
 export type CartProduct = {
   sizeId: number;
   productId: number;
-  cardId: number;
+  cartId: number;
   product: Product;
   size: Size
 };
