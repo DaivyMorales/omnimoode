@@ -12,29 +12,25 @@ export default async function handler(
 ) {
   const {
     method,
-    body: { cartId, productId, sizeId, items },
+    body: { cartId, productId, sizeId },
   } = req;
 
   switch (method) {
     case 'POST':
       try {
-        const newCartProduct = await prisma.$transaction(
-          items.map((item: ItemsRequest) =>
-            prisma.cartProduct.create({
-              data: {
-                cart: {
-                  connect: { id: cartId },
-                },
-                product: {
-                  connect: { id: item.productId },
-                },
-                size: {
-                  connect: { id: item.sizeId },
-                },
-              },
-            })
-          )
-        );
+        const newCartProduct = await prisma.cartProduct.create({
+          data: {
+            cartId,
+            productId,
+            sizeId,
+          },
+          include: {
+            cart: true,
+            product: true,
+            size: true,
+          },
+        });
+
         res.status(200).json(newCartProduct);
       } catch (error) {
         res.status(500).json({ message: error });

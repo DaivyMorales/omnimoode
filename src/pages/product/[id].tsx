@@ -8,9 +8,17 @@ import {
 } from 'react-icons/pi';
 import { useFormik } from 'formik';
 import { useEffect } from 'react';
+import axios from 'axios';
+import { createCartProduct, setCart } from '@/redux/features/cartSlice';
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from '@/redux/hooks';
 
 export default function ProductPage() {
   const router = useRouter();
+
+  const cart = useAppSelector((state) => state.cartSlice.cart);
+
+  const dispatch = useDispatch();
 
   const productId = {
     id: parseInt(router.query.id as string),
@@ -25,7 +33,16 @@ export default function ProductPage() {
       sizeId: undefined,
     },
     onSubmit: async (values) => {
-      console.log(values);
+      const response = await dispatch(
+        createCartProduct({
+          cartId: 1,
+          productId: values.productId,
+          sizeId: values.sizeId,
+        }) as any
+      );
+
+      dispatch(setCart([...cart, response.payload]));
+      console.log('newCartProduct', response.payload);
     },
   });
 

@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import NumberValidation from './features/NumberValidationSlice';
 import EmailRecoveryPassword from './features/EmailRecoveryPasswordSlice';
+import cartSlice from './features/cartSlice'
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 
 import { categoryApi } from './api/cotegoryApi';
@@ -11,6 +12,7 @@ export const store = configureStore({
   reducer: {
     NumberValidation,
     EmailRecoveryPassword,
+    cartSlice,
     [categoryApi.reducerPath]: categoryApi.reducer,
     [productApi.reducerPath]: productApi.reducer,
     [cartApi.reducerPath]: cartApi.reducer,
