@@ -22,7 +22,7 @@ export default function Navbar({ children }: NavbarProps) {
   const [open, setOpen] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
-  const [openCart, setOpenCart] = useState(true);
+  const [openCart, setOpenCart] = useState(false);
 
   const [isHovered, setIsHovered] = useState(false);
 

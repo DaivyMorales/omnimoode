@@ -2,7 +2,7 @@ import { useGetCartByIdQuery } from '@/redux/api/cartApi';
 import ProductCard from './ProductCard';
 import { useAppSelector } from '@/redux/hooks';
 import { useDispatch } from 'react-redux';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { setCart } from '@/redux/features/cartSlice';
 import { motion } from 'framer-motion';
 import { AiOutlineReload } from 'react-icons/ai';
@@ -17,6 +17,7 @@ export default function CartDropDown({
   openCart,
   setOpenCart,
 }: CartDropDownProps) {
+  // const [data, setData] = useState([])
   const dispatch = useDispatch();
   const cart = useAppSelector((state) => state.cartSlice.cart);
 
@@ -24,14 +25,13 @@ export default function CartDropDown({
     id: 1,
   });
 
+  console.log(data?.products.length ?? 0); // 1 or 0
+
   useEffect(() => {
-    if (data?.products) {
+    if ((data?.products.length ?? 0) > 0) {
       dispatch(setCart(data?.products));
     }
   }, [data?.products]);
-
-  // console.log('data.products:', data?.products);
-  console.log('cart', cart);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -68,7 +68,7 @@ export default function CartDropDown({
         </Link>
       </div>
       <div
-        style={{ maxHeight: '430px', overflowY: 'auto'}}
+        style={{ maxHeight: '430px', overflowY: 'auto' }}
         className='border-1 border-gray-100 rounded-md py-2 px-4 flex flex-wrap justify-center items-center gap-3 w-full'
       >
         {!data ? (
