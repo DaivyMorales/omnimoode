@@ -21,14 +21,7 @@ export default function ProductCard({ cartProduct }: MyProps) {
   const remove = async () => {
     await dispatch(deleteCartProduct(cartProduct.id) as any);
 
-    dispatch(
-      setCart(
-        cart.filter(
-          (c) =>
-            c.id !== cartProduct.id
-        )
-      )
-    );
+    dispatch(setCart(cart.filter((c) => c.id !== cartProduct.id)));
   };
 
   const handleQuantityChange = (e: any) => {
@@ -38,7 +31,6 @@ export default function ProductCard({ cartProduct }: MyProps) {
 
   return (
     <div className='flex flex-col justify-start items-start py-3 w-full gap-3 border-b-2 border-gray-100'>
-      <p>{cartProduct.id}</p>
       <div
         key={cartProduct.product.id}
         className='flex justify-start items-start py-3 w-full gap-5'

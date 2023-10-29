@@ -35,21 +35,21 @@ export default function CartDropDown({
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // useEffect(() => {
-  //   function handleClickOutside(event: MouseEvent) {
-  //     if (
-  //       dropdownRef.current &&
-  //       !dropdownRef.current.contains(event.target as Node)
-  //     ) {
-  //       setOpenCart(false);
-  //     }
-  //   }
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setOpenCart(false);
+      }
+    }
 
-  //   document.addEventListener('mousedown', handleClickOutside);
-  //   return () => {
-  //     document.removeEventListener('mousedown', handleClickOutside);
-  //   };
-  // }, [dropdownRef]);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [dropdownRef]);
 
   return (
     <div
@@ -67,7 +67,10 @@ export default function CartDropDown({
           Ver todo
         </Link>
       </div>
-      <div className='border-1 border-gray-100 rounded-md p-2 flex flex-col justify-center items-center gap-3 w-full'>
+      <div
+        style={{ maxHeight: '430px', overflowY: 'auto'}}
+        className='border-1 border-gray-100 rounded-md py-2 px-4 flex flex-wrap justify-center items-center gap-3 w-full'
+      >
         {!data ? (
           <motion.div
             style={{
