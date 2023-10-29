@@ -2,7 +2,7 @@ import { useGetCartByIdQuery } from '@/redux/api/cartApi';
 import ProductCard from './ProductCard';
 import { useAppSelector } from '@/redux/hooks';
 import { useDispatch } from 'react-redux';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { setCart } from '@/redux/features/cartSlice';
 import { motion } from 'framer-motion';
 import { AiOutlineReload } from 'react-icons/ai';
@@ -17,7 +17,6 @@ export default function CartDropDown({
   openCart,
   setOpenCart,
 }: CartDropDownProps) {
-  // const [data, setData] = useState([])
   const dispatch = useDispatch();
   const cart = useAppSelector((state) => state.cartSlice.cart);
 
@@ -25,7 +24,7 @@ export default function CartDropDown({
     id: 1,
   });
 
-  console.log(data?.products.length ?? 0); // 1 or 0
+  // console.log(data?.products.length ?? 0); // 1 or 0
 
   useEffect(() => {
     if ((data?.products.length ?? 0) > 0) {
@@ -54,23 +53,16 @@ export default function CartDropDown({
   return (
     <div
       ref={dropdownRef}
-      className='absolute dropdown-cart shadow-lg flex flex-col justify-start items-start gap-2 bg-white rounded-md p-2 shadow-lg w-96 border-1'
+      style={{ width: '500px' }}
+      className='absolute dropdown-cart shadow-lg flex flex-col justify-start items-start gap-2 bg-white rounded-md p-2 shadow-md  border-1'
     >
-      <div className='w-full flex justify-between items-center'>
+      <div className='w-full flex justify-between items-center border-b-1 py-3'>
         <h3>
-          Mi carrito <span className=' text-xs'>({cart.length})</span>
+          Carrito <span className=' text-xs'>({cart.length})</span>
         </h3>
-        <Link
-          className='underline text-sky-400 text-sm font-semibold'
-          href='/cartShop'
-        >
-          Ver todo
-        </Link>
       </div>
-      <div
-        style={{ maxHeight: '430px', overflowY: 'auto' }}
-        className='border-1 border-gray-100 rounded-md py-2 px-4 flex flex-wrap justify-center items-center gap-3 w-full'
-      >
+
+      <div className=' rounded-md py-1 px-1 flex flex-wrap justify-center items-center gap-3 w-full'>
         {!data ? (
           <motion.div
             style={{
@@ -92,9 +84,64 @@ export default function CartDropDown({
           </div>
         ) : (
           <>
-            {cart.map((cartProduct) => (
-              <ProductCard cartProduct={cartProduct} key={cartProduct.id} />
-            ))}
+            <div className='relative overflow-x-auto w-full flex flex-col gap-3 '>
+              <table className='w-full text-sm flex flex-wrap '>
+                <thead className='hidden  text-xs uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
+                  <tr>
+                    <th scope='col' className=' py-3'>
+                      image
+                    </th>
+                    <th scope='col' className='px-6 py-3'>
+                      description
+                    </th>
+                    <th scope='col' className='px-6 py-3'>
+                      number
+                    </th>
+                    <th scope='col' className='px-6 py-3'>
+                      Price
+                    </th>
+                    <th scope='col' className='px-6 py-3'>
+                      delete
+                    </th>
+                  </tr>
+                </thead>
+
+                <tbody
+                  className='border-b-1 w-full p-2 '
+                  style={{ maxHeight: '300px', overflowY: 'auto' }}
+                >
+                  {cart.map((cartProduct) => (
+                    <ProductCard
+                      cartProduct={cartProduct}
+                      key={cartProduct.id}
+                    />
+                  ))}
+                </tbody>
+              </table>
+              <div className='flex flex-col gap-2'>
+                <div className='w-full flex justify-between '>
+                  <p className='text-black text-sm'>Subtotal</p>
+                  <p className='text-gray-600 text-sm'>$110.000</p>
+                </div>
+                <div className='w-full flex justify-between '>
+                  <p className='text-sm'>Total</p>
+                  <p className='text-sm'>$110.000</p>
+                </div>
+                <Link
+                  onClick={() => setOpenCart(false)}
+                  href='/checkout'
+                  className='w-full bg-black text-white text-semibold flex justify-center items-center  py-2 rounded-lg text-xs dark:bg-white dark:text-black'
+                >
+                  Proceder a checkout
+                </Link>
+                <button
+                  onClick={() => setOpenCart(false)}
+                  className='w-full bg-white border-1 text-semibold py-2 rounded-lg text-xs shadow-md dark:bg-white'
+                >
+                  Continuar comprando
+                </button>
+              </div>
+            </div>
           </>
         )}
       </div>

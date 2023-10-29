@@ -12,7 +12,7 @@ interface MyProps {
 }
 
 export default function ProductCard({ cartProduct }: MyProps) {
-  const [quantity, setquantity] = useState(0);
+  const [quantity, setquantity] = useState(1);
   const [hoverDelete, setHoverDelete] = useState(false);
 
   const dispatch = useDispatch();
@@ -30,70 +30,64 @@ export default function ProductCard({ cartProduct }: MyProps) {
   };
 
   return (
-    <div className='flex flex-col justify-start items-start py-3 w-full gap-3 border-b-2 border-gray-100'>
-      <div
-        key={cartProduct.product.id}
-        className='flex justify-start items-start py-3 w-full gap-5'
-      >
+    <tr className=' w-full'>
+      <td className='w-1/5 '>
         <Image
           src={cartProduct.product.imageUrl}
-          width={75}
-          height={75}
+          width={50}
+          height={50}
           alt='Product Image'
           style={{ width: 'auto', height: 'auto' }}
+          className='border-1 rounded-md'
         />
-        <div className='flex flex-col gap-y-2 justify-start items-start w-full'>
-          <p className='text-gray-600'>Hoddie</p>
-          <p className='text-sm font-medium'>{cartProduct.product.name}</p>
-          <div className='flex gap-2 '>
-            <p className='text-gray-600 text-xs'>
-              Talla:{' '}
-              <span className='text-xs font-medium text-black'>
-                {' '}
-                {cartProduct.size.name.toUpperCase()}
-              </span>
-            </p>
-            <p className='text-gray-600 text-xs'>
-              Color:{' '}
-              <span className='text-xs font-medium text-black'>Blanco</span>
-            </p>
-          </div>
-          <div className='flex w-full items-end justify-between pt-2'>
-            <div className=' flex gap-1 justify-center items-center '>
-              <button
-                className='px-2 text-sm border-1 rounded-md font-medium'
-                onClick={() => setquantity(quantity - 1)}
-              >
-                -
-              </button>
-              <input
-                type='number'
-                className='border-1 rounded-md w-8 text-center inputSizeCart'
-                value={quantity}
-                onChange={handleQuantityChange}
-              />
-              <button
-                className='px-2 text-sm border-1 rounded-md font-medium'
-                onClick={() => setquantity(quantity + 1)}
-              >
-                +
-              </button>
-            </div>
-            <p className='text-sm font-bold'>$ {cartProduct.product.price}</p>
-          </div>
+      </td>
+      <td className='w-2/5 '>
+        <p className='text-sm font-medium'>{cartProduct.product.name}</p>
+        <p className='text-gray-600'>
+          Hoddie <span className='text-gray-300'>|</span> Blanco{' '}
+          <span className='text-gray-300'>| </span>
+          {cartProduct.size.name.toUpperCase()}{' '}
+        </p>
+      </td>
+
+      <td className='w-1/5 '>
+        <div className='border-1 rounded-md flex justify-between items-center px-1 -py-1'>
+          <button
+            className='text-lg font-normal text-gray-500'
+            onClick={() => setquantity(quantity - 1)}
+          >
+            -
+          </button>
+          <input
+            type='number'
+            className='w-6 text-center font-semibold text-xs text-gray-800 inputSizeCart'
+            value={quantity}
+            onChange={handleQuantityChange}
+          />
+          <button
+            className='text-lg font-normal text-gray-500'
+            onClick={() => setquantity(quantity + 1)}
+          >
+            +
+          </button>
         </div>
-      </div>
-      <div
-        onMouseEnter={() => setHoverDelete(true)}
-        onMouseLeave={() => setHoverDelete(false)}
-        onClick={async () => remove()}
-        className='w-full flex justify-end cursor-pointer'
-      >
-        <PiTrashBold
-          size={17}
-          color={`${hoverDelete ? '#ef4444' : '#9ca3af'}`}
-        />
-      </div>
-    </div>
+      </td>
+      <td className='px-2 w-full '>
+        <p className='text-sm font-medium'>${cartProduct.product.price}</p>
+      </td>
+      <td className='w-full '>
+        <div
+          onMouseEnter={() => setHoverDelete(true)}
+          onMouseLeave={() => setHoverDelete(false)}
+          onClick={async () => remove()}
+          className='flex justify-end cursor-pointer'
+        >
+          <PiTrashBold
+            size={17}
+            color={`${hoverDelete ? '#ef4444' : '#9ca3af'}`}
+          />
+        </div>
+      </td>
+    </tr>
   );
 }
