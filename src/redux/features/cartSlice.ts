@@ -4,10 +4,24 @@ import { CartProduct } from '@/types';
 
 export const createCartProduct = createAsyncThunk(
   'cart/createCartProduct',
-  async (body: any, { dispatch }) => {
+  async (body: object) => {
     try {
       const response = await axios.post('/api/cart/cartProduct', body);
-      return response.data
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+export const deleteCartProduct = createAsyncThunk(
+  'cart/deleteCartProduct',
+  async (id: number, { dispatch }) => {
+    try {
+      const response = await axios.delete('/api/cart/cartProduct', {
+        data: { id },
+      });
+      return response.data;
     } catch (error) {
       throw error;
     }

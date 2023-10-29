@@ -17,7 +17,8 @@ export default async function handler(
           where: { id: Number(id) },
           include: {
             products: {
-              include: {
+              select: {
+                id: true,
                 product: true,
                 size: true,
               },

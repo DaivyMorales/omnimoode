@@ -39,13 +39,11 @@ export default async function handler(
 
     case 'DELETE':
       try {
-        const { cartId, productId, sizeId } = req.body;
+        const { id } = req.body;
 
         await prisma.cartProduct.deleteMany({
           where: {
-            cartId: cartId,
-            productId: productId,
-            sizeId: sizeId,
+            id,
           },
         });
 

@@ -44,28 +44,29 @@ model Product {
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
   imageUrl    String?
-  carts CartProduct[]
+  carts       CartProduct[]
 }
 
 model Size {
-  id          Int           @id @default(autoincrement())
-  name        String
-  quantity    Int
-  product     Product       @relation(fields: [productId], references: [id])
-  productId   Int
-  carts CartProduct[]
+  id        Int           @id @default(autoincrement())
+  name      String
+  quantity  Int
+  product   Product       @relation(fields: [productId], references: [id])
+  productId Int
+  carts     CartProduct[]
 }
 
 model Cart {
-  id       Int       @id @default(autoincrement())
-  User     User?     @relation(fields: [userId], references: [id])
-  userId   Int?
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  products CartProduct[]
+  id        Int           @id @default(autoincrement())
+  User      User?         @relation(fields: [userId], references: [id])
+  userId    Int?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  products  CartProduct[]
 }
 
 model CartProduct {
+  id        Int     @id @default(autoincrement())
   cartId    Int
   productId Int
   sizeId    Int
@@ -73,5 +74,5 @@ model CartProduct {
   product   Product @relation(fields: [productId], references: [id])
   size      Size    @relation(fields: [sizeId], references: [id])
 
-  @@id([cartId, productId, sizeId])
+  // @@id([cartId, productId, sizeId])
 }

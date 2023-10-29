@@ -49,7 +49,7 @@ export default function Navbar({ children }: NavbarProps) {
             className='flex justify-center items-center cursor-pointer'
             onClick={() => router.push('/')}
           >
-            <img src='images/logoGood.png' alt='Logo' className='w-39 h-16' />
+            {/* <img src='images/logoGood.png' alt='Logo' className='w-39 h-16' /> */}
           </div>
 
           <button
@@ -84,6 +84,7 @@ export default function Navbar({ children }: NavbarProps) {
               className=' cursor-pointer'
               onClick={() => {
                 setOpenProfile(!openProfile);
+                setOpenCart(!openCart);
               }}
             >
               <PiUserBold
@@ -101,18 +102,17 @@ export default function Navbar({ children }: NavbarProps) {
               />
             )}
             <PiShoppingBagOpenBold
-            onClick={() => {
-              setOpenCart(!openCart);
-            }}
+              onClick={() => {
+                setOpenCart(!openCart);
+                setOpenProfile(!setOpenProfile)
+              }}
+              className='cursor-pointer'
               size={20}
               color={`${colorMode === 'dark' ? 'white' : 'black'}`}
             />
 
             {openCart && (
-              <CartDropDown
-                openCart={openCart}
-                setOpenCart={setOpenCart}
-              />
+              <CartDropDown openCart={openCart} setOpenCart={setOpenCart} />
             )}
           </div>
         </nav>

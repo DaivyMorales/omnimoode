@@ -3,19 +3,19 @@
 @tailwind utilities;
 
 :root {
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .background {
   @apply h-full;
-  background-image: url("/images/photo2.jpg");
+  background-image: url('/images/photo2.jpg');
   background-size: cover;
   background-repeat: no-repeat;
 }
 
 .background_login {
   @apply h-full;
-  background-image: url("/images/photo3.jpg");
+  background-image: url('/images/photo3.jpg');
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -23,14 +23,14 @@
 .background-logo {
   width: 400px;
   height: 160px;
-  background-image: url("/images/logoGood.png");
+  background-image: url('/images/logoGood.png');
   background-size: cover;
   background-repeat: no-repeat;
 }
 
 .background_confirm_email {
   @apply h-full;
-  background-image: url("/images/photo1.jpg");
+  background-image: url('/images/photo1.jpg');
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -38,7 +38,7 @@
 .background-logo-navbar {
   width: 150px;
   height: 56px;
-  background-image: url("/images/logoGood.png");
+  background-image: url('/images/logoGood.png');
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -46,7 +46,7 @@
 .background-logo-email {
   width: 140px;
   height: 60px;
-  background-image: url("/images/logoGood.png");
+  background-image: url('/images/logoGood.png');
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -89,20 +89,31 @@ input:focus {
   outline: none;
 }
 
-label{
-  @apply text-xs font-semibold
+label {
+  @apply text-xs font-semibold;
 }
 
 .inputLogin {
-  @apply  border-1 border-gray-300 w-full px-2 py-1 flex justify-start items-center gap-2 rounded-lg;
+  @apply border-1 border-gray-300 w-full px-2 py-1 flex justify-start items-center gap-2 rounded-lg;
 }
 
 .inputSize {
-  @apply   p-1 flex justify-center items-center gap-2 rounded-lg border-1;
+  @apply p-1 flex justify-center items-center gap-2 rounded-lg border-1;
+  -moz-appearance: textfield;
 }
 
 .inputSizeNumber {
-  @apply  text-sm font-normal;
+  @apply text-sm font-normal;
+  -moz-appearance: textfield;
+}
+.inputSizeCart {
+  -moz-appearance: textfield;
+}
+
+.inputSizeCart::-webkit-inner-spin-button,
+.inputSizeCart::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .inputNumber::-webkit-inner-spin-button,
@@ -111,8 +122,8 @@ label{
   margin: 0;
 }
 
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
