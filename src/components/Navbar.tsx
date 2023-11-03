@@ -1,16 +1,13 @@
 import { useState, ReactNode } from 'react';
 import { PiUserBold } from 'react-icons/pi';
 import { AiOutlineSearch } from 'react-icons/ai';
-import {
-  PiMoonBold,
-  PiSunDimBold,
-  PiShoppingBagOpenBold,
-} from 'react-icons/pi';
+import { PiMoonBold, PiSunDimBold } from 'react-icons/pi';
 import ProfileDropDown from './ProfileDropDown';
 import { useRouter } from 'next/router';
 import SearchBar from './SearchBar';
 import useColorMode from '@/hooks/useColorMode';
 import CartDropDown from './Cart/CartDropDown';
+import CartIcon from '@/components/Icons/CartIcon';
 
 interface NavbarProps {
   children: ReactNode;
@@ -22,7 +19,8 @@ export default function Navbar({ children }: NavbarProps) {
   const [open, setOpen] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
-  const [openCart, setOpenCart] = useState(false);
+  const [openCart, setOpenCart] = useState(true);
+  const [itemsQuantity, setItemsQuantity] = useState(0);
 
   const [isHovered, setIsHovered] = useState(false);
 
@@ -101,18 +99,22 @@ export default function Navbar({ children }: NavbarProps) {
                 setOpenProfile={setOpenProfile}
               />
             )}
-            <PiShoppingBagOpenBold
-              onClick={() => {
-                setOpenCart(!openCart);
-                setOpenProfile(!setOpenProfile)
-              }}
-              className='cursor-pointer'
-              size={20}
-              color={`${colorMode === 'dark' ? 'white' : 'black'}`}
+            <CartIcon
+              setOpenCart={setOpenCart}
+              setOpenProfile={setOpenProfile}
+              colorMode={colorMode}
+              openCart={openCart}
+              itemsQuantity={itemsQuantity}
+              setItemsQuantity={setItemsQuantity}
             />
 
             {openCart && (
-              <CartDropDown openCart={openCart} setOpenCart={setOpenCart} />
+              <CartDropDown
+                itemsQuantity={itemsQuantity}
+                setItemsQuantity={setItemsQuantity}
+                openCart={openCart}
+                setOpenCart={setOpenCart}
+              />
             )}
           </div>
         </nav>

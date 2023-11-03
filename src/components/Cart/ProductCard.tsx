@@ -1,11 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import { CartProduct } from '@/types/index';
 import { PiTrashBold } from 'react-icons/pi';
-import axios from 'axios';
+import {
+  sumToPay,
+  subtractToPay,
+  markProductAsSummed,
+} from '@/redux/features/toPaySlice';
 import { setCart, deleteCartProduct } from '@/redux/features/cartSlice';
 import { useAppSelector } from '@/redux/hooks';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 interface MyProps {
   cartProduct: CartProduct;
@@ -14,6 +18,28 @@ interface MyProps {
 export default function ProductCard({ cartProduct }: MyProps) {
   const [quantity, setquantity] = useState(1);
   const [hoverDelete, setHoverDelete] = useState(false);
+  const price = cartProduct.product.price;
+  const [finalValue, setFinalValue] = useState(price);
+  const [priceLoad, setPriceLoad] = useState(false);
+
+  const toPay = useAppSelector((state) => state.toPaySlice.toPay);
+  const didRun = useRef(false);
+
+  // const selector = useSelector()
+
+  const summedProducts = useAppSelector(
+    (state) => state.toPaySlice.summedProducts
+  );
+
+  useEffect(() => {
+    // Convertimos el id a una cadena
+    const productId = String(cartProduct.id);
+
+    if (!summedProducts[productId]) {
+      dispatch(sumToPay(price));
+      dispatch(markProductAsSummed(productId));
+    }
+  }, []);
 
   const dispatch = useDispatch();
   const cart = useAppSelector((state) => state.cartSlice.cart);
@@ -22,11 +48,13 @@ export default function ProductCard({ cartProduct }: MyProps) {
     await dispatch(deleteCartProduct(cartProduct.id) as any);
 
     dispatch(setCart(cart.filter((c) => c.id !== cartProduct.id)));
+    dispatch(subtractToPay(finalValue));
   };
 
   const handleQuantityChange = (e: any) => {
     e.preventDefault();
     setquantity(e.target.value);
+    setFinalValue(Number(cartProduct.product.price) * e.target.value);
   };
 
   return (
@@ -50,11 +78,15 @@ export default function ProductCard({ cartProduct }: MyProps) {
         </p>
       </td>
 
-      <td className='w-1/5 '>
+      <td className='w-1/5'>
         <div className='border-1 rounded-md flex justify-between items-center px-1 -py-1'>
           <button
             className='text-lg font-normal text-gray-500'
-            onClick={() => setquantity(quantity - 1)}
+            onClick={() => {
+              setquantity(quantity - 1);
+              dispatch(subtractToPay(price));
+              setFinalValue(finalValue - price);
+            }}
           >
             -
           </button>
@@ -66,14 +98,18 @@ export default function ProductCard({ cartProduct }: MyProps) {
           />
           <button
             className='text-lg font-normal text-gray-500'
-            onClick={() => setquantity(quantity + 1)}
+            onClick={() => {
+              setquantity(quantity + 1);
+              dispatch(sumToPay(price));
+              setFinalValue(finalValue + price);
+            }}
           >
             +
           </button>
         </div>
       </td>
       <td className='px-2 w-full '>
-        <p className='text-sm font-medium'>${cartProduct.product.price}</p>
+        <p className='text-sm font-medium'>${finalValue.toLocaleString()}</p>
       </td>
       <td className='w-full '>
         <div

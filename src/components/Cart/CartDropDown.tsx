@@ -11,26 +11,34 @@ import Link from 'next/link';
 interface CartDropDownProps {
   openCart: boolean;
   setOpenCart: React.Dispatch<React.SetStateAction<boolean>>;
+  itemsQuantity: number;
+  setItemsQuantity: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function CartDropDown({
   openCart,
   setOpenCart,
+  itemsQuantity,
+  setItemsQuantity,
 }: CartDropDownProps) {
   const dispatch = useDispatch();
   const cart = useAppSelector((state) => state.cartSlice.cart);
+  const toPay = useAppSelector((state) => state.toPaySlice.toPay);
 
   const { isLoading, data, error } = useGetCartByIdQuery({
     id: 1,
   });
+
+  console.log(cart);
 
   // console.log(data?.products.length ?? 0); // 1 or 0
 
   useEffect(() => {
     if ((data?.products.length ?? 0) > 0) {
       dispatch(setCart(data?.products));
+      setItemsQuantity(cart.length);
     }
-  }, [data?.products]);
+  }, [data?.products, openCart]);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -121,11 +129,13 @@ export default function CartDropDown({
               <div className='flex flex-col gap-2'>
                 <div className='w-full flex justify-between '>
                   <p className='text-black text-sm'>Subtotal</p>
-                  <p className='text-gray-600 text-sm'>$110.000</p>
+                  <p className='text-gray-600 text-sm'>
+                    ${toPay.toLocaleString()}
+                  </p>
                 </div>
                 <div className='w-full flex justify-between '>
                   <p className='text-sm'>Total</p>
-                  <p className='text-sm'>$110.000</p>
+                  <p className='text-sm'>${toPay.toLocaleString()}</p>
                 </div>
                 <Link
                   onClick={() => setOpenCart(false)}
