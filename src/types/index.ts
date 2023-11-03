@@ -44,6 +44,7 @@ export type CartProduct = {
   sizeId: number;
   productId: number;
   cartId: number;
+  quantity: number;
   product: Product;
   size: Size;
 };

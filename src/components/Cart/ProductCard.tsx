@@ -2,60 +2,61 @@ import { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import { CartProduct } from '@/types/index';
 import { PiTrashBold } from 'react-icons/pi';
-import {
-  sumToPay,
-  subtractToPay,
-  markProductAsSummed,
-} from '@/redux/features/toPaySlice';
+import { setToPay } from '@/redux/features/toPaySlice';
 import { setCart, deleteCartProduct } from '@/redux/features/cartSlice';
 import { useAppSelector } from '@/redux/hooks';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 
 interface MyProps {
   cartProduct: CartProduct;
 }
 
 export default function ProductCard({ cartProduct }: MyProps) {
-  const [quantity, setquantity] = useState(1);
-  const [hoverDelete, setHoverDelete] = useState(false);
   const price = cartProduct.product.price;
+
+  const [quantity, setquantity] = useState(cartProduct.quantity);
+  console.log(quantity);
+  const [hoverDelete, setHoverDelete] = useState(false);
   const [finalValue, setFinalValue] = useState(price);
-  const [priceLoad, setPriceLoad] = useState(false);
-
-  const toPay = useAppSelector((state) => state.toPaySlice.toPay);
-  const didRun = useRef(false);
-
-  // const selector = useSelector()
-
-  const summedProducts = useAppSelector(
-    (state) => state.toPaySlice.summedProducts
-  );
-
-  useEffect(() => {
-    // Convertimos el id a una cadena
-    const productId = String(cartProduct.id);
-
-    if (!summedProducts[productId]) {
-      dispatch(sumToPay(price));
-      dispatch(markProductAsSummed(productId));
-    }
-  }, []);
 
   const dispatch = useDispatch();
   const cart = useAppSelector((state) => state.cartSlice.cart);
+  const toPay = useAppSelector((state) => state.toPaySlice.toPay);
+
+  const didRun = useRef(false);
+
+  useEffect(() => {
+    dispatch(setToPay([...toPay, finalValue]));
+  }, []);
 
   const remove = async () => {
     await dispatch(deleteCartProduct(cartProduct.id) as any);
 
     dispatch(setCart(cart.filter((c) => c.id !== cartProduct.id)));
-    dispatch(subtractToPay(finalValue));
+    // dispatch(subtractToPay(finalValue));
   };
 
-  const handleQuantityChange = (e: any) => {
-    e.preventDefault();
-    setquantity(e.target.value);
-    setFinalValue(Number(cartProduct.product.price) * e.target.value);
+  const updateCartProductQuantity = async () => {
+    const response = await axios.put(
+      `/api/cart/cartProduct/${cartProduct.id}`,
+      {
+        quantity: quantity + 1,
+      }
+    );
+    console.log(response);
   };
+
+  const handleQuantityChange = async(e: any) => {
+    e.preventDefault();
+    
+    setquantity(Number(e.target.value));
+    // setFinalValue(Number(cartProduct.product.price) * e.target.value);
+    
+    setTimeout( updateCartProductQuantity, 2000);
+  };
+  
+  const calculateFinalPrice = price * quantity
 
   return (
     <tr className=' w-full'>
@@ -82,9 +83,10 @@ export default function ProductCard({ cartProduct }: MyProps) {
         <div className='border-1 rounded-md flex justify-between items-center px-1 -py-1'>
           <button
             className='text-lg font-normal text-gray-500'
-            onClick={() => {
+            onClick={async () => {
               setquantity(quantity - 1);
-              dispatch(subtractToPay(price));
+              await updateCartProductQuantity();
+              // dispatch(setToPay(price));
               setFinalValue(finalValue - price);
             }}
           >
@@ -98,9 +100,10 @@ export default function ProductCard({ cartProduct }: MyProps) {
           />
           <button
             className='text-lg font-normal text-gray-500'
-            onClick={() => {
+            onClick={async () => {
               setquantity(quantity + 1);
-              dispatch(sumToPay(price));
+              await updateCartProductQuantity();
+              dispatch(setToPay([...toPay, price]));
               setFinalValue(finalValue + price);
             }}
           >
@@ -109,7 +112,7 @@ export default function ProductCard({ cartProduct }: MyProps) {
         </div>
       </td>
       <td className='px-2 w-full '>
-        <p className='text-sm font-medium'>${finalValue.toLocaleString()}</p>
+        <p className='text-sm font-medium'>${calculateFinalPrice.toLocaleString()}</p>
       </td>
       <td className='w-full '>
         <div

@@ -44,6 +44,7 @@ export default function ProductPage() {
         cartId: 1,
         productId: values.productId,
         sizeId: values.sizeId,
+        quantity: 1,
       };
 
       setSubmited(true);

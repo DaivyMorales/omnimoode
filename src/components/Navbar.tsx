@@ -27,8 +27,6 @@ export default function Navbar({ children }: NavbarProps) {
 
   const sendProduct = useAppSelector((state) => state.toPaySlice.sendProduct);
   const cart = useAppSelector((state) => state.cartSlice.cart);
-  console.log(sendProduct);
-  console.log(cart);
 
   const { refetch } = useGetCartByIdQuery({
     id: 1,
@@ -51,6 +49,8 @@ export default function Navbar({ children }: NavbarProps) {
   const router = useRouter();
 
   const navbarClass = openSearch ? 'blur-background' : '';
+
+  
 
   return (
     <>

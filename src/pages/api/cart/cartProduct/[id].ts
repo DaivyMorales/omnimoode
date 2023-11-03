@@ -7,6 +7,7 @@ export default async function handler(
 ) {
   const {
     method,
+    body,
     query: { id },
   } = req;
 
@@ -21,11 +22,23 @@ export default async function handler(
                 id: true,
                 product: true,
                 size: true,
+                quantity: true,
               },
             },
           },
         });
         res.status(200).json(cartWithProductsAndSizes);
+      } catch (error) {
+        res.status(500).json({ message: error });
+      }
+      break;
+    case 'PUT':
+      try {
+        const updatedCartProduct = await prisma.cartProduct.update({
+          where: { id: Number(id) },
+          data: body,
+        });
+        res.status(200).json(updatedCartProduct);
       } catch (error) {
         res.status(500).json({ message: error });
       }

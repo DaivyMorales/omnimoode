@@ -22,6 +22,10 @@ export default function CartDropDown({
   const toPay = useAppSelector((state) => state.toPaySlice.toPay);
   const sendProduct = useAppSelector((state) => state.toPaySlice.sendProduct);
 
+  const totalToPay = toPay.reduce((acc, currentValue) => acc + currentValue, 0);
+
+  console.log(toPay);
+
   const { isLoading, data, refetch } = useGetCartByIdQuery({
     id: 1,
   });
@@ -126,12 +130,12 @@ export default function CartDropDown({
                 <div className='w-full flex justify-between '>
                   <p className='text-black text-sm'>Subtotal</p>
                   <p className='text-gray-600 text-sm'>
-                    ${toPay.toLocaleString()}
+                    ${totalToPay.toLocaleString()}
                   </p>
                 </div>
                 <div className='w-full flex justify-between '>
                   <p className='text-sm'>Total</p>
-                  <p className='text-sm'>${toPay.toLocaleString()}</p>
+                  <p className='text-sm'>${totalToPay.toLocaleString()}</p>
                 </div>
                 <Link
                   onClick={() => setOpenCart(false)}

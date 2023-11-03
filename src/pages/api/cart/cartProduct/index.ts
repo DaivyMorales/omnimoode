@@ -12,7 +12,7 @@ export default async function handler(
 ) {
   const {
     method,
-    body: { cartId, productId, sizeId },
+    body: { cartId, productId, sizeId, quantity },
   } = req;
 
   switch (method) {
@@ -23,6 +23,7 @@ export default async function handler(
             cartId,
             productId,
             sizeId,
+            quantity,
           },
           include: {
             cart: true,
