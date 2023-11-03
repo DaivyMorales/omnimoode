@@ -11,34 +11,30 @@ import Link from 'next/link';
 interface CartDropDownProps {
   openCart: boolean;
   setOpenCart: React.Dispatch<React.SetStateAction<boolean>>;
-  itemsQuantity: number;
-  setItemsQuantity: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function CartDropDown({
   openCart,
   setOpenCart,
-  itemsQuantity,
-  setItemsQuantity,
 }: CartDropDownProps) {
   const dispatch = useDispatch();
   const cart = useAppSelector((state) => state.cartSlice.cart);
   const toPay = useAppSelector((state) => state.toPaySlice.toPay);
+  const sendProduct = useAppSelector((state) => state.toPaySlice.sendProduct);
 
-  const { isLoading, data, error } = useGetCartByIdQuery({
+  const { isLoading, data, refetch } = useGetCartByIdQuery({
     id: 1,
   });
-
-  console.log(cart);
-
-  // console.log(data?.products.length ?? 0); // 1 or 0
 
   useEffect(() => {
     if ((data?.products.length ?? 0) > 0) {
       dispatch(setCart(data?.products));
-      setItemsQuantity(cart.length);
     }
-  }, [data?.products, openCart]);
+  }, [data?.products]);
+
+  useEffect(() => {
+    refetch();
+  }, [openCart]);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 

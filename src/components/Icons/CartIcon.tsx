@@ -1,12 +1,11 @@
 import { PiShoppingBagOpenBold } from 'react-icons/pi';
+import { useAppSelector } from '@/redux/hooks';
 
 interface CartIconProps {
   setOpenCart: React.Dispatch<React.SetStateAction<boolean>>;
   setOpenProfile: React.Dispatch<React.SetStateAction<boolean>>;
   colorMode: any;
   openCart: boolean;
-  itemsQuantity: number;
-  setItemsQuantity: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function CartIcon({
@@ -14,9 +13,9 @@ export default function CartIcon({
   setOpenProfile,
   colorMode,
   openCart,
-  itemsQuantity,
-  setItemsQuantity,
 }: CartIconProps) {
+  const cart = useAppSelector((state) => state.cartSlice.cart);
+
   return (
     <div
       className='relative inline-block cursor-pointer'
@@ -29,9 +28,7 @@ export default function CartIcon({
         size={20}
         color={`${colorMode === 'dark' ? 'white' : 'black'}`}
       />
-      {itemsQuantity > 0 && (
-        <span className='cart-number'>{itemsQuantity}</span>
-      )}
+      {cart.length > 0 && <span className='cart-number'>{cart.length}</span>}
     </div>
   );
 }

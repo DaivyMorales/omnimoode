@@ -178,3 +178,15 @@ input[type='number']::-webkit-outer-spin-button {
   font-size: 10px;
   line-height: 14px;
 }
+
+.cart-number {
+  @apply font-bold;
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background-color: red;
+  color: white;
+  border-radius: 100%;
+  padding: 2px 6px;
+  font-size: 8px;
+}

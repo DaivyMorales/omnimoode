@@ -1,4 +1,4 @@
-import { useState, ReactNode } from 'react';
+import { useState, useEffect, ReactNode } from 'react';
 import { PiUserBold } from 'react-icons/pi';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { PiMoonBold, PiSunDimBold } from 'react-icons/pi';
@@ -8,6 +8,8 @@ import SearchBar from './SearchBar';
 import useColorMode from '@/hooks/useColorMode';
 import CartDropDown from './Cart/CartDropDown';
 import CartIcon from '@/components/Icons/CartIcon';
+import { useGetCartByIdQuery } from '@/redux/api/cartApi';
+import { useAppSelector } from '@/redux/hooks';
 
 interface NavbarProps {
   children: ReactNode;
@@ -20,9 +22,23 @@ export default function Navbar({ children }: NavbarProps) {
   const [openProfile, setOpenProfile] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
   const [openCart, setOpenCart] = useState(true);
-  const [itemsQuantity, setItemsQuantity] = useState(0);
 
   const [isHovered, setIsHovered] = useState(false);
+
+  const sendProduct = useAppSelector((state) => state.toPaySlice.sendProduct);
+  const cart = useAppSelector((state) => state.cartSlice.cart);
+  console.log(sendProduct);
+  console.log(cart);
+
+  const { refetch } = useGetCartByIdQuery({
+    id: 1,
+  });
+
+  useEffect(() => {
+    if (sendProduct) {
+      refetch();
+    }
+  }, [sendProduct]);
 
   const handleHover = () => {
     setIsHovered(true);
@@ -104,17 +120,10 @@ export default function Navbar({ children }: NavbarProps) {
               setOpenProfile={setOpenProfile}
               colorMode={colorMode}
               openCart={openCart}
-              itemsQuantity={itemsQuantity}
-              setItemsQuantity={setItemsQuantity}
             />
 
             {openCart && (
-              <CartDropDown
-                itemsQuantity={itemsQuantity}
-                setItemsQuantity={setItemsQuantity}
-                openCart={openCart}
-                setOpenCart={setOpenCart}
-              />
+              <CartDropDown openCart={openCart} setOpenCart={setOpenCart} />
             )}
           </div>
         </nav>
