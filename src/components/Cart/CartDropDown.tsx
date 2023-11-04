@@ -24,11 +24,16 @@ export default function CartDropDown({
 
   const totalToPay = toPay.reduce((acc, currentValue) => acc + currentValue, 0);
 
-  console.log(toPay);
+  // console.log(toPay);
 
   const { isLoading, data, refetch } = useGetCartByIdQuery({
     id: 1,
   });
+
+  // useEffect(() => {
+  //   console.log('refetch');
+  //   refetch();
+  // }, []);
 
   useEffect(() => {
     if ((data?.products.length ?? 0) > 0) {
@@ -120,6 +125,7 @@ export default function CartDropDown({
                 >
                   {cart.map((cartProduct) => (
                     <ProductCard
+                      refetch={refetch}
                       cartProduct={cartProduct}
                       key={cartProduct.id}
                     />

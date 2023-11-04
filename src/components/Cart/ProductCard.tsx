@@ -1,22 +1,23 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, ChangeEvent } from 'react';
 import Image from 'next/image';
 import { CartProduct } from '@/types/index';
 import { PiTrashBold } from 'react-icons/pi';
 import { setToPay } from '@/redux/features/toPaySlice';
 import { setCart, deleteCartProduct } from '@/redux/features/cartSlice';
 import { useAppSelector } from '@/redux/hooks';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
 
 interface MyProps {
   cartProduct: CartProduct;
+  refetch: any;
 }
 
-export default function ProductCard({ cartProduct }: MyProps) {
+export default function ProductCard({ cartProduct, refetch }: MyProps) {
   const price = cartProduct.product.price;
 
   const [quantity, setquantity] = useState(cartProduct.quantity);
-  console.log(quantity);
+  // console.log('quantity ->', quantity);
   const [hoverDelete, setHoverDelete] = useState(false);
   const [finalValue, setFinalValue] = useState(price);
 
@@ -28,6 +29,10 @@ export default function ProductCard({ cartProduct }: MyProps) {
 
   useEffect(() => {
     dispatch(setToPay([...toPay, finalValue]));
+    return () => {
+      setquantity(cartProduct.quantity);
+      // console.log('Quantity finished with ->', quantity);
+    };
   }, []);
 
   const remove = async () => {
@@ -37,26 +42,38 @@ export default function ProductCard({ cartProduct }: MyProps) {
     // dispatch(subtractToPay(finalValue));
   };
 
-  const updateCartProductQuantity = async () => {
+  const updateCartProductQuantity = async (number: number) => {
     const response = await axios.put(
       `/api/cart/cartProduct/${cartProduct.id}`,
       {
-        quantity: quantity + 1,
+        quantity: number,
       }
     );
-    console.log(response);
+
+    if (response.status === 200) {
+      refetch();
+    }
+    // console.log('Back-end', response.data.quantity);
   };
 
-  const handleQuantityChange = async(e: any) => {
+  const handleQuantityChange = async (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    
-    setquantity(Number(e.target.value));
-    // setFinalValue(Number(cartProduct.product.price) * e.target.value);
-    
-    setTimeout( updateCartProductQuantity, 2000);
+
+    const inputText = e.target.value;
+
+    if (inputText === '') {
+      setquantity(0);
+    } else {
+      const numberSelected = Number(inputText);
+      setquantity(numberSelected);
+
+      setTimeout(() => {
+        updateCartProductQuantity(numberSelected);
+      }, 700);
+    }
   };
-  
-  const calculateFinalPrice = price * quantity
+
+  const calculateFinalPrice = price * quantity;
 
   return (
     <tr className=' w-full'>
@@ -84,8 +101,9 @@ export default function ProductCard({ cartProduct }: MyProps) {
           <button
             className='text-lg font-normal text-gray-500'
             onClick={async () => {
-              setquantity(quantity - 1);
-              await updateCartProductQuantity();
+              const subQuantity = quantity - 1;
+              setquantity(subQuantity);
+              updateCartProductQuantity(subQuantity);
               // dispatch(setToPay(price));
               setFinalValue(finalValue - price);
             }}
@@ -95,14 +113,16 @@ export default function ProductCard({ cartProduct }: MyProps) {
           <input
             type='number'
             className='w-6 text-center font-semibold text-xs text-gray-800 inputSizeCart'
-            value={quantity}
+            value={quantity === 0 ? '' : quantity}
             onChange={handleQuantityChange}
           />
+
           <button
             className='text-lg font-normal text-gray-500'
             onClick={async () => {
-              setquantity(quantity + 1);
-              await updateCartProductQuantity();
+              const sumQuantity = quantity + 1;
+              setquantity(sumQuantity);
+              updateCartProductQuantity(sumQuantity);
               dispatch(setToPay([...toPay, price]));
               setFinalValue(finalValue + price);
             }}
@@ -112,7 +132,9 @@ export default function ProductCard({ cartProduct }: MyProps) {
         </div>
       </td>
       <td className='px-2 w-full '>
-        <p className='text-sm font-medium'>${calculateFinalPrice.toLocaleString()}</p>
+        <p className='text-sm font-medium'>
+          ${calculateFinalPrice.toLocaleString()}
+        </p>
       </td>
       <td className='w-full '>
         <div
