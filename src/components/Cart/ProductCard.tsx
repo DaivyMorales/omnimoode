@@ -2,7 +2,6 @@ import { useEffect, useState, ChangeEvent } from 'react';
 import Image from 'next/image';
 import { CartProduct, ProductCalculated } from '@/types/index';
 import { PiTrashBold } from 'react-icons/pi';
-import { setToPay, addProductToPay } from '@/redux/features/toPaySlice';
 import { setCart, deleteCartProduct } from '@/redux/features/cartSlice';
 import { useAppSelector } from '@/redux/hooks';
 import { useDispatch } from 'react-redux';
@@ -11,14 +10,12 @@ import axios from 'axios';
 interface MyProps {
   cartProduct: CartProduct;
   refetch: any;
-  prices: ProductCalculated[];
   setPrices: React.Dispatch<React.SetStateAction<ProductCalculated[]>>;
 }
 
 export default function ProductCard({
   cartProduct,
   refetch,
-  prices,
   setPrices,
 }: MyProps) {
   const price = cartProduct.product.price;
@@ -35,21 +32,6 @@ export default function ProductCard({
 
   const dispatch = useDispatch();
   const cart = useAppSelector((state) => state.cartSlice.cart);
-  const toPay = useAppSelector((state) => state.toPaySlice.toPay);
-
-  const updateIsLoaded = async (value: boolean) => {
-    await axios.put(`/api/cart/cartProduct/${cartProduct.id}`, {
-      isLoaded: value,
-    });
-  };
-
-  // useEffect(() => {
-  //   setPrices((prevPrices) => [...prevPrices, objectInfoProduct]);
-
-  //   return () => {
-  //     setquantity(cartProduct.quantity);
-  //   };
-  // }, []);
 
   const remove = async () => {
     await dispatch(deleteCartProduct(cartProduct.id) as any);

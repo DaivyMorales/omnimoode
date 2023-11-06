@@ -1,7 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import NumberValidation from './features/NumberValidationSlice';
 import EmailRecoveryPassword from './features/EmailRecoveryPasswordSlice';
-import toPaySlice from './features/toPaySlice';
 import cartSlice from './features/cartSlice';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 
@@ -14,7 +13,6 @@ export const store = configureStore({
     NumberValidation,
     EmailRecoveryPassword,
     cartSlice,
-    toPaySlice,
     [categoryApi.reducerPath]: categoryApi.reducer,
     [productApi.reducerPath]: productApi.reducer,
     [cartApi.reducerPath]: cartApi.reducer,

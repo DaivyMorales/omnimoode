@@ -1,4 +1,4 @@
-import { useState, useEffect, ReactNode } from 'react';
+import { useState, ReactNode } from 'react';
 import { PiUserBold } from 'react-icons/pi';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { PiMoonBold, PiSunDimBold } from 'react-icons/pi';
@@ -18,27 +18,24 @@ interface NavbarProps {
 export default function Navbar({ children }: NavbarProps) {
   const [colorMode, setColorMode] = useColorMode();
 
-  const [open, setOpen] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
   const [openCart, setOpenCart] = useState(false);
 
   const [isHovered, setIsHovered] = useState(false);
 
-  const sendProduct = useAppSelector((state) => state.toPaySlice.sendProduct);
   const cart = useAppSelector((state) => state.cartSlice.cart);
-  // const toPay = useAppSelector((state) => state.toPaySlice.toPay);
-  // console.log(toPay);
 
-  const { refetch } = useGetCartByIdQuery({
-    id: 1,
-  });
 
-  useEffect(() => {
-    if (sendProduct) {
-      refetch();
-    }
-  }, [sendProduct]);
+  // const { refetch } = useGetCartByIdQuery({
+  //   id: 1,
+  // });
+
+  // useEffect(() => {
+  //   if (sendProduct) {
+  //     refetch();
+  //   }
+  // }, [sendProduct]);
 
   const handleHover = () => {
     setIsHovered(true);
@@ -50,7 +47,6 @@ export default function Navbar({ children }: NavbarProps) {
 
   const router = useRouter();
 
-  const navbarClass = openSearch ? 'blur-background' : '';
 
   return (
     <>

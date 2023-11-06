@@ -10,7 +10,6 @@ import { useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { createCartProduct, setCart } from '@/redux/features/cartSlice';
-import { setSendProduct } from '@/redux/features/toPaySlice';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '@/redux/hooks';
 import { motion } from 'framer-motion';
@@ -39,7 +38,6 @@ export default function ProductPage() {
       sizeId: undefined,
     },
     onSubmit: async (values) => {
-      dispatch(setSendProduct(true));
       const newCartProduct = {
         cartId: 1,
         productId: values.productId,
@@ -57,7 +55,6 @@ export default function ProductPage() {
 
       if (response.payload) {
         formik.setFieldValue('sizeId', undefined);
-        dispatch(setSendProduct(false));
       }
       setSubmited(false);
     },
