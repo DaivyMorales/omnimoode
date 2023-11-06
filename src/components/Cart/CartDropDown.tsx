@@ -2,11 +2,12 @@ import { useGetCartByIdQuery } from '@/redux/api/cartApi';
 import ProductCard from './ProductCard';
 import { useAppSelector } from '@/redux/hooks';
 import { useDispatch } from 'react-redux';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { setCart } from '@/redux/features/cartSlice';
 import { motion } from 'framer-motion';
 import { AiOutlineReload } from 'react-icons/ai';
 import Link from 'next/link';
+import { CartProduct, ProductCalculated } from '@/types';
 
 interface CartDropDownProps {
   openCart: boolean;
@@ -17,29 +18,39 @@ export default function CartDropDown({
   openCart,
   setOpenCart,
 }: CartDropDownProps) {
+  const [prices, setPrices] = useState<ProductCalculated[]>([]);
+  console.log('prices', prices);
+
   const dispatch = useDispatch();
-  const cart = useAppSelector((state) => state.cartSlice.cart);
-  const toPay = useAppSelector((state) => state.toPaySlice.toPay);
-  const sendProduct = useAppSelector((state) => state.toPaySlice.sendProduct);
+  const cart = useAppSelector((state: any) => state.cartSlice.cart);
 
-  const totalToPay = toPay.reduce((acc, currentValue) => acc + currentValue, 0);
-
-  // console.log(toPay);
+  const totalValue = prices.reduce(
+    (total, product) => total + product.value,
+    0
+  );
 
   const { isLoading, data, refetch } = useGetCartByIdQuery({
     id: 1,
   });
-
-  // useEffect(() => {
-  //   console.log('refetch');
-  //   refetch();
-  // }, []);
 
   useEffect(() => {
     if ((data?.products.length ?? 0) > 0) {
       dispatch(setCart(data?.products));
     }
   }, [data?.products]);
+
+  useEffect(() => {
+    const newPrices = cart.map((cartProduct: CartProduct) => {
+      for (let i = 0; i < cartProduct.quantity; i++) {
+        const product = {
+          id: cartProduct.id,
+          value: cartProduct.product.price * cartProduct.quantity,
+        };
+        return product;
+      }
+    });
+    setPrices(newPrices);
+  }, [cart]);
 
   useEffect(() => {
     refetch();
@@ -64,7 +75,14 @@ export default function CartDropDown({
   }, [dropdownRef]);
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, scale: 0.5 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{
+        duration: 0.1,
+        delay: 0.1,
+        ease: [0, 0.71, 0.2, 1.01],
+      }}
       ref={dropdownRef}
       style={{ width: '500px' }}
       className='absolute dropdown-cart shadow-lg flex flex-col justify-start items-start gap-2 bg-white rounded-md p-2 shadow-md  border-1'
@@ -123,11 +141,13 @@ export default function CartDropDown({
                   className='border-b-1 w-full p-2 '
                   style={{ maxHeight: '300px', overflowY: 'auto' }}
                 >
-                  {cart.map((cartProduct) => (
+                  {cart.map((cartProduct: CartProduct) => (
                     <ProductCard
                       refetch={refetch}
                       cartProduct={cartProduct}
                       key={cartProduct.id}
+                      prices={[...prices]}
+                      setPrices={setPrices}
                     />
                   ))}
                 </tbody>
@@ -135,13 +155,21 @@ export default function CartDropDown({
               <div className='flex flex-col gap-2'>
                 <div className='w-full flex justify-between '>
                   <p className='text-black text-sm'>Subtotal</p>
-                  <p className='text-gray-600 text-sm'>
-                    ${totalToPay.toLocaleString()}
+                  <p className='text-gray-600 text-xs'>
+                    $
+                    {isNaN(totalValue) || totalValue === 0
+                      ? ''
+                      : totalValue.toLocaleString()}
                   </p>
                 </div>
                 <div className='w-full flex justify-between '>
                   <p className='text-sm'>Total</p>
-                  <p className='text-sm'>${totalToPay.toLocaleString()}</p>
+                  <p className='text-sm font-semibold'>
+                    $
+                    {isNaN(totalValue) || totalValue === 0
+                      ? ''
+                      : totalValue.toLocaleString()}
+                  </p>
                 </div>
                 <Link
                   onClick={() => setOpenCart(false)}
@@ -161,6 +189,6 @@ export default function CartDropDown({
           </>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }

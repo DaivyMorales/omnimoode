@@ -23,10 +23,15 @@ export default async function handler(
                 product: true,
                 size: true,
                 quantity: true,
+                isLoaded: true,
+              },
+              orderBy: {
+                createdAt: 'asc',
               },
             },
           },
         });
+
         res.status(200).json(cartWithProductsAndSizes);
       } catch (error) {
         res.status(500).json({ message: error });

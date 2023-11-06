@@ -1,8 +1,8 @@
-import { useEffect, useState, useRef, ChangeEvent } from 'react';
+import { useEffect, useState, ChangeEvent } from 'react';
 import Image from 'next/image';
-import { CartProduct } from '@/types/index';
+import { CartProduct, ProductCalculated } from '@/types/index';
 import { PiTrashBold } from 'react-icons/pi';
-import { setToPay } from '@/redux/features/toPaySlice';
+import { setToPay, addProductToPay } from '@/redux/features/toPaySlice';
 import { setCart, deleteCartProduct } from '@/redux/features/cartSlice';
 import { useAppSelector } from '@/redux/hooks';
 import { useDispatch } from 'react-redux';
@@ -11,35 +11,50 @@ import axios from 'axios';
 interface MyProps {
   cartProduct: CartProduct;
   refetch: any;
+  prices: ProductCalculated[];
+  setPrices: React.Dispatch<React.SetStateAction<ProductCalculated[]>>;
 }
 
-export default function ProductCard({ cartProduct, refetch }: MyProps) {
+export default function ProductCard({
+  cartProduct,
+  refetch,
+  prices,
+  setPrices,
+}: MyProps) {
   const price = cartProduct.product.price;
 
   const [quantity, setquantity] = useState(cartProduct.quantity);
-  // console.log('quantity ->', quantity);
   const [hoverDelete, setHoverDelete] = useState(false);
   const [finalValue, setFinalValue] = useState(price);
+  const [allInputsEmpty, setAllInputsEmpty] = useState(false);
+
+  const objectInfoProduct = {
+    id: cartProduct.id,
+    value: price,
+  };
 
   const dispatch = useDispatch();
   const cart = useAppSelector((state) => state.cartSlice.cart);
   const toPay = useAppSelector((state) => state.toPaySlice.toPay);
 
-  const didRun = useRef(false);
+  const updateIsLoaded = async (value: boolean) => {
+    await axios.put(`/api/cart/cartProduct/${cartProduct.id}`, {
+      isLoaded: value,
+    });
+  };
 
-  useEffect(() => {
-    dispatch(setToPay([...toPay, finalValue]));
-    return () => {
-      setquantity(cartProduct.quantity);
-      // console.log('Quantity finished with ->', quantity);
-    };
-  }, []);
+  // useEffect(() => {
+  //   setPrices((prevPrices) => [...prevPrices, objectInfoProduct]);
+
+  //   return () => {
+  //     setquantity(cartProduct.quantity);
+  //   };
+  // }, []);
 
   const remove = async () => {
     await dispatch(deleteCartProduct(cartProduct.id) as any);
 
     dispatch(setCart(cart.filter((c) => c.id !== cartProduct.id)));
-    // dispatch(subtractToPay(finalValue));
   };
 
   const updateCartProductQuantity = async (number: number) => {
@@ -53,23 +68,26 @@ export default function ProductCard({ cartProduct, refetch }: MyProps) {
     if (response.status === 200) {
       refetch();
     }
-    // console.log('Back-end', response.data.quantity);
   };
 
-  const handleQuantityChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-
+  const handleQuantityChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputText = e.target.value;
 
     if (inputText === '') {
-      setquantity(0);
+      setAllInputsEmpty(true);
     } else {
       const numberSelected = Number(inputText);
       setquantity(numberSelected);
 
+      const pricesToAdd = Array(numberSelected).fill(price);
+
+      setPrices((prevPrices) => [...prevPrices, ...pricesToAdd]);
+
       setTimeout(() => {
         updateCartProductQuantity(numberSelected);
       }, 700);
+
+      setAllInputsEmpty(false);
     }
   };
 
@@ -99,13 +117,22 @@ export default function ProductCard({ cartProduct, refetch }: MyProps) {
       <td className='w-1/5'>
         <div className='border-1 rounded-md flex justify-between items-center px-1 -py-1'>
           <button
-            className='text-lg font-normal text-gray-500'
+            disabled={quantity < 1}
+            className={`text-lg font-normal ${
+              quantity === 1
+                ? 'text-gray-200 cursor-not-allowed'
+                : 'text-gray-500'
+            }`}
             onClick={async () => {
-              const subQuantity = quantity - 1;
-              setquantity(subQuantity);
-              updateCartProductQuantity(subQuantity);
-              // dispatch(setToPay(price));
-              setFinalValue(finalValue - price);
+              if (quantity > 1) {
+                const subQuantity = quantity - 1;
+                setquantity(subQuantity);
+                updateCartProductQuantity(subQuantity);
+                setFinalValue(finalValue - price);
+                setPrices((prevPrices) =>
+                  prevPrices.slice(0, prevPrices.length - 1)
+                );
+              }
             }}
           >
             -
@@ -123,8 +150,8 @@ export default function ProductCard({ cartProduct, refetch }: MyProps) {
               const sumQuantity = quantity + 1;
               setquantity(sumQuantity);
               updateCartProductQuantity(sumQuantity);
-              dispatch(setToPay([...toPay, price]));
               setFinalValue(finalValue + price);
+              setPrices((prevPrices) => [...prevPrices, objectInfoProduct]);
             }}
           >
             +

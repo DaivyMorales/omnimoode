@@ -19,9 +19,10 @@ export default function CartIcon({
   return (
     <div
       className='relative inline-block cursor-pointer'
-      onClick={() => {
+      onClick={(event) => {
+        event.stopPropagation();
         setOpenCart(!openCart);
-        setOpenProfile(!setOpenProfile);
+        setOpenProfile(false);
       }}
     >
       <PiShoppingBagOpenBold

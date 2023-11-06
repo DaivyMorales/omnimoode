@@ -21,12 +21,14 @@ export default function Navbar({ children }: NavbarProps) {
   const [open, setOpen] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
-  const [openCart, setOpenCart] = useState(true);
+  const [openCart, setOpenCart] = useState(false);
 
   const [isHovered, setIsHovered] = useState(false);
 
   const sendProduct = useAppSelector((state) => state.toPaySlice.sendProduct);
   const cart = useAppSelector((state) => state.cartSlice.cart);
+  // const toPay = useAppSelector((state) => state.toPaySlice.toPay);
+  // console.log(toPay);
 
   const { refetch } = useGetCartByIdQuery({
     id: 1,
@@ -49,8 +51,6 @@ export default function Navbar({ children }: NavbarProps) {
   const router = useRouter();
 
   const navbarClass = openSearch ? 'blur-background' : '';
-
-  
 
   return (
     <>
@@ -97,8 +97,8 @@ export default function Navbar({ children }: NavbarProps) {
             <div
               className=' cursor-pointer'
               onClick={() => {
-                setOpenProfile(!openProfile);
-                setOpenCart(!openCart);
+                !openProfile ? setOpenProfile(true) : setOpenProfile(false);
+                openCart && setOpenCart(false);
               }}
             >
               <PiUserBold

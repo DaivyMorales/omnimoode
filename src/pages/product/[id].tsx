@@ -45,6 +45,7 @@ export default function ProductPage() {
         productId: values.productId,
         sizeId: values.sizeId,
         quantity: 1,
+        isLoaded: false,
       };
 
       setSubmited(true);

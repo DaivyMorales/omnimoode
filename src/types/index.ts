@@ -45,6 +45,14 @@ export type CartProduct = {
   productId: number;
   cartId: number;
   quantity: number;
+  isLoaded: boolean;
   product: Product;
   size: Size;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
 };
+
+export type ProductCalculated = {
+  id: number;
+  value: number;
+}
