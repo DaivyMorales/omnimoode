@@ -1,4 +1,3 @@
-import ProductFinalCard from '@/components/Cart/ProductFinalCard';
 import { useGetCartByIdQuery } from '@/redux/api/cartApi';
 
 export default function Checkout() {
