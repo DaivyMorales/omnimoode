@@ -16,8 +16,9 @@ model User {
   email              String   @unique
   email_verification Boolean  @default(false)
   password           String
+  Cart               Cart?    @relation
+  cartId             Int      @unique
   createdAt          DateTime @default(now())
-  carts              Cart[]
 }
 
 model Season {
@@ -58,8 +59,8 @@ model Size {
 
 model Cart {
   id        Int           @id @default(autoincrement())
-  User      User?         @relation(fields: [userId], references: [id])
-  userId    Int?
+  User      User          @relation(fields: [userId], references: [id])
+  userId    Int           @unique
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
   products  CartProduct[]
