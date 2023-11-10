@@ -1,26 +1,26 @@
-import NextAuth from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
-import bcrypt from 'bcryptjs';
-import prisma from '../../../../lib/prisma';
+import NextAuth from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from "bcryptjs";
+import prisma from "../../../../lib/prisma";
 
 export const authOptions = {
   providers: [
     CredentialsProvider({
-      name: 'Credentials',
+      name: "Credentials",
       credentials: {
         email: {
-          label: 'Email',
-          type: 'text',
-          placeholder: 'any@omnimoode.com',
+          label: "Email",
+          type: "text",
+          placeholder: "any@omnimoode.com",
         },
         password: {
-          label: 'Password',
-          type: 'password',
-          placeholder: '*********',
+          label: "Password",
+          type: "password",
+          placeholder: "*********",
         },
       },
       async authorize(credentials, req) {
-        //Search User
+        // Search User
         const userFound = await prisma.user.findFirst({
           where: {
             email: credentials?.email,
@@ -31,11 +31,12 @@ export const authOptions = {
             email: true,
             email_verification: true,
             password: true,
+            cartId: true,
           },
         });
 
         if (!userFound)
-          throw new Error('Tu correo o contraseña son incorrectos!');
+          throw new Error("Tu correo o contraseña son incorrectos!");
 
         const passwordMatch = await bcrypt.compare(
           credentials!.password,
@@ -43,20 +44,21 @@ export const authOptions = {
         );
 
         if (!passwordMatch)
-          throw new Error('Tu correo o contraseña son incorrectos!');
-        +console.log(userFound);
+          throw new Error("Tu correo o contraseña son incorrectos!");
+        console.log(userFound);
 
         return {
           id: userFound.id.toString(),
           name: userFound.name,
           email: userFound.email,
           email_verification: userFound.email_verification,
+          cartId: userFound.cartId,
         };
       },
     }),
   ],
   callbacks: {
-    jwt({ account, token, user, profile, session }: any) {
+    jwt({ token, user }: any) {
       if (user) token.user = user;
       return token;
     },

@@ -9,6 +9,7 @@ import { AiOutlineReload } from "react-icons/ai";
 import Link from "next/link";
 import { CartProduct, ProductCalculated } from "@/types";
 import { setPriceFinal } from "@/redux/features/priceFinalSlice";
+import { useSession } from "next-auth/react";
 
 interface CartDropDownProps {
   openCart: boolean;
@@ -19,8 +20,10 @@ export default function CartDropDown({
   openCart,
   setOpenCart,
 }: CartDropDownProps) {
+  const { data: session } = useSession();
+  console.log(session?.user);
+
   const [prices, setPrices] = useState<ProductCalculated[]>([]);
-  console.log("prices", prices);
 
   const dispatch = useDispatch();
   const cart = useAppSelector((state: any) => state.cartSlice.cart);
@@ -30,9 +33,12 @@ export default function CartDropDown({
     0
   );
 
-  const { isLoading, data, refetch } = useGetCartByIdQuery({
-    id: 1,
+  const cartId = (session?.user as { cartId?: number })?.cartId ?? 0;
+
+  const { data, refetch } = useGetCartByIdQuery({
+    id: cartId,
   });
+  
 
   useEffect(() => {
     if ((data?.products.length ?? 0) > 0) {

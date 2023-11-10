@@ -1,9 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import prisma from '../../../../../lib/prisma';
+import prisma from "../../../../../lib/prisma";
 import bcrypt from "bcryptjs";
 import validator from "validator";
-
 
 export default async function handler(
   req: NextApiRequest,
@@ -64,7 +63,20 @@ export default async function handler(
           },
         });
 
-        return res.status(200).json(newUser);
+        const userId = newUser.id;
+
+        const newCart = await prisma.cart.create({
+          data: { userId },
+        });
+
+        const cartId = newCart.id;
+
+        const addCartToUser = await prisma.user.update({
+          where: { id: userId },
+          data: { cartId },
+        });
+
+        return res.status(200).json(addCartToUser);
       } catch (error) {
         if (error instanceof Error) {
           return res.status(500).json({ message: error.message });

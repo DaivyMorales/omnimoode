@@ -17,7 +17,7 @@ model User {
   email_verification Boolean  @default(false)
   password           String
   Cart               Cart?    @relation
-  cartId             Int      @unique
+  cartId             Int?     @unique
   createdAt          DateTime @default(now())
 }
 

@@ -1,23 +1,28 @@
-import { useRouter } from 'next/router';
-import Image from 'next/image';
-import { useGetProductByIdQuery } from '@/redux/api/productApi';
+import { useRouter } from "next/router";
+import Image from "next/image";
+import { useGetProductByIdQuery } from "@/redux/api/productApi";
 import {
   PiScribbleLoopBold,
   PiShoppingBagOpenBold,
   PiHeartBold,
-} from 'react-icons/pi';
-import { useFormik } from 'formik';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { createCartProduct, setCart } from '@/redux/features/cartSlice';
-import { useDispatch } from 'react-redux';
-import { useAppSelector } from '@/redux/hooks';
-import { motion } from 'framer-motion';
-import { AiOutlineReload } from 'react-icons/ai';
+} from "react-icons/pi";
+import { useFormik } from "formik";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { createCartProduct, setCart } from "@/redux/features/cartSlice";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "@/redux/hooks";
+import { motion } from "framer-motion";
+import { AiOutlineReload } from "react-icons/ai";
+import { useSession } from "next-auth/react";
 
 export default function ProductPage() {
   const [sizeSelected, setSizeSelected] = useState(0);
   const [submited, setSubmited] = useState(false);
+
+  const { data: session } = useSession();
+
+  const cartId = (session?.user as { cartId?: number })?.cartId;
 
   const router = useRouter();
 
@@ -39,7 +44,7 @@ export default function ProductPage() {
     },
     onSubmit: async (values) => {
       const newCartProduct = {
-        cartId: 1,
+        cartId,
         productId: values.productId,
         sizeId: values.sizeId,
         quantity: 1,
@@ -49,105 +54,101 @@ export default function ProductPage() {
       setSubmited(true);
       const response = await dispatch(createCartProduct(newCartProduct) as any);
 
-      // console.log('response.payload', response.payload);
-
       dispatch(setCart([...cart, response.payload]));
 
       if (response.payload) {
-        formik.setFieldValue('sizeId', undefined);
+        formik.setFieldValue("sizeId", undefined);
       }
       setSubmited(false);
     },
   });
 
-  // console.log(formik.values);
-
   useEffect(() => {
-    formik.setFieldValue('productId', data?.id);
+    formik.setFieldValue("productId", data?.id);
   }, [data]);
 
   return (
-    <div className=' h-screen flex justify-center items-center'>
+    <div className=" h-screen flex justify-center items-center">
       {!data ? (
         <motion.div
           style={{
-            display: 'inline-block',
+            display: "inline-block",
           }}
-          animate={{ rotate: '360deg' }}
+          animate={{ rotate: "360deg" }}
           transition={{
             duration: 0.7,
-            ease: 'linear',
+            ease: "linear",
             repeat: Infinity,
           }}
         >
-          <AiOutlineReload size={20} color='black' />
+          <AiOutlineReload size={20} color="black" />
         </motion.div>
       ) : (
-        <main className='grid grid-cols-1 gap-10 w-full h-full sm:grid-cols-2'>
+        <main className="grid grid-cols-1 gap-10 w-full h-full sm:grid-cols-2">
           <section>
-            <div className=' rounded-md '>
+            <div className=" rounded-md ">
               {data?.imageUrl && (
                 <Image
                   src={data.imageUrl}
                   width={500}
                   height={500}
                   priority
-                  alt='Product Image'
+                  alt="Product Image"
                 />
               )}
             </div>
           </section>
-          <section className='flex flex-col justify-center items-center p-3 gap-10 sm:items-start'>
+          <section className="flex flex-col justify-center items-center p-3 gap-10 sm:items-start">
             <form
               onSubmit={formik.handleSubmit}
-              className='flex flex-col justify-center items-start gap-10 '
+              className="flex flex-col justify-center items-start gap-10 "
             >
-              <section className='flex gap-2 justify-center items-center '>
-                <div className='p-2 rounded-full bg-black'>
-                  <PiScribbleLoopBold color='white' />
+              <section className="flex gap-2 justify-center items-center ">
+                <div className="p-2 rounded-full bg-black">
+                  <PiScribbleLoopBold color="white" />
                 </div>
-                <p className='font-bold'>Omnimoode</p>
+                <p className="font-bold">Omnimoode</p>
               </section>
-              <h2 className='font-bold text-2xl'>{data?.name}</h2>
-              <h1 className='font-black'>${data?.price} COP</h1>
-              <section className='w-full'>
-                <label htmlFor=''>Seleccion tu talla:</label>
-                <div className='grid grid-cols-6 gap-2'>
+              <h2 className="font-bold text-2xl">{data?.name}</h2>
+              <h1 className="font-black">${data?.price} COP</h1>
+              <section className="w-full">
+                <label htmlFor="">Seleccion tu talla:</label>
+                <div className="grid grid-cols-6 gap-2">
                   {data?.sizes.map((size) => (
                     <div
                       key={size.id}
                       onClick={() => {
-                        formik.setFieldValue('sizeId', size.id);
+                        formik.setFieldValue("sizeId", size.id);
                         setSizeSelected(size.id);
                       }}
                       className={`${
                         sizeSelected === size.id
-                          ? 'border-black text-black font-bold'
-                          : 'border-gray-400 text-gray-400'
+                          ? "border-black text-black font-bold"
+                          : "border-gray-400 text-gray-400"
                       } border-1 py-1 px-2 flex justify-center items-center rounded-md  cursor-pointer`}
                     >
-                      <p className='text-sm font-semibold '>
+                      <p className="text-sm font-semibold ">
                         {size.name.toUpperCase()}
                       </p>
                     </div>
                   ))}
                 </div>
               </section>
-              <section className='flex gap-3 justify-center items-center'>
+              <section className="flex gap-3 justify-center items-center">
                 <button
-                  className='bg-black text-white text-semibold w-64 py-3 h-12 rounded-lg text-sm flex justify-center items-center gap-2 dark:bg-white dark:text-black'
-                  type='submit'
+                  className="bg-black text-white text-semibold w-64 py-3 h-12 rounded-lg text-sm flex justify-center items-center gap-2 dark:bg-white dark:text-black"
+                  type="submit"
                 >
                   {submited ? (
                     <>
                       <motion.div
                         style={{
-                          display: 'inline-block',
+                          display: "inline-block",
                         }}
-                        animate={{ rotate: '360deg' }}
+                        animate={{ rotate: "360deg" }}
                         transition={{
                           duration: 0.7,
-                          ease: 'linear',
+                          ease: "linear",
                           repeat: Infinity,
                         }}
                       >
@@ -161,7 +162,7 @@ export default function ProductPage() {
                     </>
                   )}
                 </button>
-                <button className='bg-gray-200 py-3 h-12 rounded-lg px-4 '>
+                <button className="bg-gray-200 py-3 h-12 rounded-lg px-4 ">
                   <PiHeartBold />
                 </button>
               </section>
