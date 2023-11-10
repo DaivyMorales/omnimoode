@@ -24,19 +24,6 @@ export default function Navbar({ children }: NavbarProps) {
 
   const [isHovered, setIsHovered] = useState(false);
 
-  const cart = useAppSelector((state) => state.cartSlice.cart);
-
-
-  // const { refetch } = useGetCartByIdQuery({
-  //   id: 1,
-  // });
-
-  // useEffect(() => {
-  //   if (sendProduct) {
-  //     refetch();
-  //   }
-  // }, [sendProduct]);
-
   const handleHover = () => {
     setIsHovered(true);
   };
@@ -46,7 +33,6 @@ export default function Navbar({ children }: NavbarProps) {
   };
 
   const router = useRouter();
-
 
   return (
     <>
