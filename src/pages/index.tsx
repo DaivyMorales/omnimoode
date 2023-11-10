@@ -3,14 +3,23 @@ import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 
 export default function Home() {
-
   const { status } = useSession();
 
-
-
   return (
-    <div>
-
+    <main>
+      <section className="h-32 flex justify-center items-center flex-col bg-gray-300 gap-2">
+        <div className="flex flex-col justify-center items-center">
+          <h2 className="font-bold">SUSCRIBETE A NUESTRO NEWSLETTER</h2>
+          <p>
+            ¡Suscríbete a nuestro boletín de moda! Recibe actualizaciones
+            exclusivas, promociones y consejos de estilo.
+          </p>
+        </div>
+        <div className="bg-red-500 flex gap-2">
+          <input type="text" />
+          <button>Notificarme</button>
+        </div>
+      </section>
       <section className=" h-screen bg-black"></section>
       <section className=" h-screen "></section>
       <section className=" h-screen "></section>
@@ -28,8 +37,6 @@ export default function Home() {
           </button>
         </>
       )}
-    </div>
+    </main>
   );
 }
-
-

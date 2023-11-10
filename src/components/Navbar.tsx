@@ -38,11 +38,11 @@ export default function Navbar({ children }: NavbarProps) {
 
   return (
     <>
-      <div className="relative w-full h-full h-screen ">
+      <header className="">
         {openSearch && (
           <SearchBar openSearch={openSearch} setOpenSearch={setOpenSearch} />
         )}
-        <nav className="flex justify-between items-center py-2 px-10 dark:bg-black dark:border-b-2 dark:border-gray-800">
+        <nav className="sticky top-0 bg-white w-full flex justify-between items-center py-2 px-10 dark:bg-black dark:border-b-2 dark:border-gray-800">
           <div
             className="flex justify-center items-center cursor-pointer"
             onClick={() => router.push("/")}
@@ -62,7 +62,7 @@ export default function Navbar({ children }: NavbarProps) {
                 className={`${isHovered && "text-gray-500"}`}
               />
             </div>
-            Buscar...
+            ¿Buscas algo?
           </button>
 
           <div className="flex items-center gap-3 ">
@@ -111,9 +111,10 @@ export default function Navbar({ children }: NavbarProps) {
             )}
           </div>
         </nav>
-
+        <div className="bg-red-500">
         {children}
-      </div>
+        </div>
+      </header>
     </>
   );
 }

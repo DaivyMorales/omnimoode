@@ -21,7 +21,6 @@ export default function CartDropDown({
   setOpenCart,
 }: CartDropDownProps) {
   const { data: session } = useSession();
-  console.log(session?.user);
 
   const [prices, setPrices] = useState<ProductCalculated[]>([]);
 
