@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
-import { HiOutlineMail } from "react-icons/hi";
+import { HiOutlineMail, HiCheck } from "react-icons/hi";
 import axios from "axios";
 
 export default function Home() {
   const { status } = useSession();
 
   const [emailValue, setEmailValue] = useState("");
+  const [statusResponse, setStatusResponse] = useState(0);
 
   const handleNewsletter = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputText = event.target.value;
@@ -25,7 +26,11 @@ export default function Home() {
           </p>
         </div>
         <div className=" flex gap-2">
-          <div className="inputLogin">
+          <div
+            className={`${
+              statusResponse === 200 && "border-green-500 text-green-400"
+            } border-1 border-gray-300 w-full px-2 py-1 flex justify-start items-center gap-2 rounded-lg`}
+          >
             <div className="bg-black p-2 rounded-md">
               <HiOutlineMail />
             </div>
@@ -42,11 +47,21 @@ export default function Home() {
                 const response = await axios.post("/api/newsletter", {
                   email: emailValue,
                 });
+
+                if (response.status === 200) {
+                  setStatusResponse(200);
+                }
                 console.log(response.data, response.status);
               }}
-              className="text-xs bg-black p-1 rounded-md bg-white text-black font-semibold"
+              className="text-xs bg-black p-1 rounded-md bg-white text-black font-semibold w-24 flex justify-center items-center"
             >
-              Notificarme
+              {statusResponse === 200 ? (
+                <>
+                  <HiCheck />
+                </>
+              ) : (
+                "Notificarme"
+              )}
             </button>
           </div>
         </div>
