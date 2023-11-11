@@ -79,3 +79,8 @@ model CartProduct {
   product   Product  @relation(fields: [productId], references: [id])
   size      Size     @relation(fields: [sizeId], references: [id])
 }
+
+model Newsletter {
+  id    Int    @id @default(autoincrement())
+  email String @unique
+}

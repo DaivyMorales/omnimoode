@@ -9,6 +9,7 @@ export default function Home() {
   return (
     <main className="bg-red-500">
       <section className="py-6 flex justify-center items-center flex-col bg-black text-white gap-2">
+        
         <div className="flex flex-col justify-center items-center">
           <h2 className="font-bold">SUSCRIBETE A NUESTRO NEWSLETTER</h2>
           <p>
