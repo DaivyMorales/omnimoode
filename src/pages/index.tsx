@@ -1,15 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { HiOutlineMail } from "react-icons/hi";
+import axios from "axios";
 
 export default function Home() {
   const { status } = useSession();
 
+  const [emailValue, setEmailValue] = useState("");
+
+  const handleNewsletter = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const inputText = event.target.value;
+    setEmailValue(inputText);
+  };
+
   return (
     <main className="bg-red-500">
       <section className="py-6 flex justify-center items-center flex-col bg-black text-white gap-2">
-        
         <div className="flex flex-col justify-center items-center">
           <h2 className="font-bold">SUSCRIBETE A NUESTRO NEWSLETTER</h2>
           <p>
@@ -26,11 +33,21 @@ export default function Home() {
               id="email"
               name="email"
               type="email"
-              //onChange={handleInputChange}
+              onChange={handleNewsletter}
               placeholder="Digita tu email"
               //value={formik.values.email}
             />
-            <button className="text-xs bg-black p-1 rounded-md bg-white text-black font-semibold">Notificarme</button>
+            <button
+              onClick={async () => {
+                const response = await axios.post("/api/newsletter", {
+                  email: emailValue,
+                });
+                console.log(response.data, response.status);
+              }}
+              className="text-xs bg-black p-1 rounded-md bg-white text-black font-semibold"
+            >
+              Notificarme
+            </button>
           </div>
         </div>
       </section>
