@@ -1,13 +1,14 @@
 import React from "react";
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
+import { HiOutlineMail } from "react-icons/hi";
 
 export default function Home() {
   const { status } = useSession();
 
   return (
-    <main>
-      <section className="h-32 flex justify-center items-center flex-col bg-gray-300 gap-2">
+    <main className="bg-red-500">
+      <section className="py-6 flex justify-center items-center flex-col bg-black text-white gap-2">
         <div className="flex flex-col justify-center items-center">
           <h2 className="font-bold">SUSCRIBETE A NUESTRO NEWSLETTER</h2>
           <p>
@@ -15,12 +16,24 @@ export default function Home() {
             exclusivas, promociones y consejos de estilo.
           </p>
         </div>
-        <div className="bg-red-500 flex gap-2">
-          <input type="text" />
-          <button>Notificarme</button>
+        <div className=" flex gap-2">
+          <div className="inputLogin">
+            <div className="bg-black p-2 rounded-md">
+              <HiOutlineMail />
+            </div>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              //onChange={handleInputChange}
+              placeholder="Digita tu email"
+              //value={formik.values.email}
+            />
+            <button className="text-xs bg-black p-1 rounded-md bg-white text-black font-semibold">Notificarme</button>
+          </div>
         </div>
       </section>
-      <section className=" h-screen bg-black"></section>
+      <section className=" h-screen bg-white"></section>
       <section className=" h-screen "></section>
       <section className=" h-screen "></section>
 
