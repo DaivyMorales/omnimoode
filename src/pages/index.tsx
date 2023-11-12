@@ -31,7 +31,7 @@ export default function Home() {
   };
 
   return (
-    <main className="bg-red-500">
+    <main className="">
       {status === "unauthenticated" && (
         <section className="py-6 p-3 flex justify-center items-center flex-col bg-black text-white gap-2">
           <div className="flex flex-col justify-center items-center  text-center ">
@@ -84,8 +84,14 @@ export default function Home() {
         </section>
       )}
 
-      <section className=" h-screen bg-white flex flex-col gap-5 justify-start items-start">
-        <h3 className="text-2xl font-bold">Lo mas nuevo</h3>
+      <section className=" bg-white flex flex-col gap-3 justify-center items-center">
+        <Image
+          src="https://res.cloudinary.com/dayloxa2a/image/upload/v1699804304/umsawepuoiinvzgiztr1.png"
+          width={500}
+          height={200}
+          alt="Omnimoode logo"
+        />
+        <h3 className="text-2xl font-bold">Nuevo drop!</h3>
         <Swiper
           scrollbar={{
             hide: true,
@@ -114,7 +120,7 @@ export default function Home() {
             >
               <div className="relative">
                 <button className="absolute top-3 left-3 border-black border-1 text-white p-2 rounded-lg">
-                <PiHeartBold color="black"/>
+                  <PiHeartBold color="black" />
                 </button>
                 <Image
                   src={product.imageUrl}
@@ -129,14 +135,62 @@ export default function Home() {
           ))}
         </Swiper>
       </section>
-      <section className=" h-screen "></section>
+      <section className=" flex justify-center items-center flex-col">
+        <div className="grid grid-cols-1 gap-1 bg-black w-full py-3 md:grid-cols-3 sm:grid-cols-2">
+          <div
+            className="relative cursor-pointer"
+            onClick={() => router.push(`/category/6`)}
+          >
+            <p className="absolute top-2 left-2 font-bold text-2xl text-gray-800">
+              Pants
+            </p>
+            <Image
+              src="https://trueshop.co/cdn/shop/files/sudadera_community_gris_jaspe_2_pantalones_sudaderas_1800x1800.jpg?v=1696514623"
+              alt=""
+              width={300}
+              height={300}
+              className="w-full"
+            />
+          </div>
+          <div
+            className="relative cursor-pointer"
+            onClick={() => router.push(`/category/4`)}
+          >
+            <p className="absolute top-2 left-2 font-bold text-2xl text-gray-800">
+              Hoddies
+            </p>
+            <Image
+              src="https://trueshop.co/cdn/shop/files/chaqueta_bomber_antifluido_sunday_arena_2_1800x1800.jpg?v=1688147398"
+              alt=""
+              width={300}
+              height={300}
+              className="w-full"
+            />
+          </div>
+          <div
+            className="relative cursor-pointer sm:col-span-2 md:col-span-1"
+            onClick={() => router.push(`/category/5`)}
+          >
+            <p className="absolute top-2 left-2 font-bold text-2xl text-gray-800">
+              Shirts
+            </p>
+            <Image
+              src="https://trueshop.co/cdn/shop/files/camisa_community_negra_2_1800x1800.jpg?v=1697552921"
+              alt=""
+              width={300}
+              height={300}
+              className="w-full"
+            />
+          </div>
+        </div>
+      </section>
       <section className=" h-screen "></section>
 
       {status === "authenticated" && (
         <>
           <h1>You are Welcome! </h1>
           <button
-            className="bg-red-500 p-2 text-white"
+            className=" p-2 text-white"
             onClick={() => {
               signOut({ callbackUrl: "/login" });
             }}
