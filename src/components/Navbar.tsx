@@ -42,7 +42,7 @@ export default function Navbar({ children }: NavbarProps) {
         {openSearch && (
           <SearchBar openSearch={openSearch} setOpenSearch={setOpenSearch} />
         )}
-        <nav className="sticky top-0 bg-white w-full flex justify-between items-center py-2 px-10 dark:bg-black dark:border-b-2 dark:border-gray-800">
+        <nav className="sticky z-10 top-0 bg-white w-full flex justify-between items-center py-2 px-10 dark:bg-black dark:border-b-2 dark:border-gray-800">
           <div
             className="flex justify-center items-center cursor-pointer"
             onClick={() => router.push("/")}

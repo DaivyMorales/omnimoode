@@ -1,15 +1,16 @@
-import { configureStore } from '@reduxjs/toolkit';
-import NumberValidation from './features/NumberValidationSlice';
-import EmailRecoveryPassword from './features/EmailRecoveryPasswordSlice';
-import cartSlice from './features/cartSlice';
-import priceFinalSlice from './features/priceFinalSlice';
-import { setupListeners } from '@reduxjs/toolkit/dist/query';
+import { configureStore } from "@reduxjs/toolkit";
+import NumberValidation from "./features/NumberValidationSlice";
+import EmailRecoveryPassword from "./features/EmailRecoveryPasswordSlice";
+import cartSlice from "./features/cartSlice";
+import priceFinalSlice from "./features/priceFinalSlice";
+import { setupListeners } from "@reduxjs/toolkit/dist/query";
 
-import { categoryApi } from './api/cotegoryApi';
-import { productApi } from './api/productApi';
-import { cartApi } from './api/cartApi';
+import { categoryApi } from "./api/cotegoryApi";
+import { productApi } from "./api/productApi";
+import { cartApi } from "./api/cartApi";
+import { newestProductApi } from "./api/newestProductApi";
 
-export const store = configureStore({
+export const store: any = configureStore({
   reducer: {
     NumberValidation,
     EmailRecoveryPassword,
@@ -18,13 +19,15 @@ export const store = configureStore({
     [categoryApi.reducerPath]: categoryApi.reducer,
     [productApi.reducerPath]: productApi.reducer,
     [cartApi.reducerPath]: cartApi.reducer,
+    [newestProductApi.reducerPath]: newestProductApi.reducer,
   },
-  devTools: process.env.NODE_ENV !== 'production',
+  devTools: process.env.NODE_ENV !== "production",
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat([
       categoryApi.middleware,
       productApi.middleware,
       cartApi.middleware,
+      newestProductApi.middleware,
     ]),
 });
 

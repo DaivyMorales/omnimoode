@@ -3,9 +3,24 @@ import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { HiOutlineMail, HiCheck } from "react-icons/hi";
 import axios from "axios";
+import Image from "next/image";
+import { useGetNewestProductsQuery } from "@/redux/api/newestProductApi";
+import { useRouter } from "next/router";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/free-mode";
+import "swiper/css/scrollbar";
+import { PiHeartBold } from "react-icons/pi";
+
+import { FreeMode, Pagination, Mousewheel, Scrollbar } from "swiper/modules";
 
 export default function Home() {
   const { status } = useSession();
+
+  const router = useRouter();
+
+  const { data } = useGetNewestProductsQuery(null);
 
   const [emailValue, setEmailValue] = useState("");
   const [statusResponse, setStatusResponse] = useState(0);
@@ -69,9 +84,50 @@ export default function Home() {
         </section>
       )}
 
-      <section className=" h-screen bg-white flex justify-center items-center">
-        <h3>Lo mas nuevo</h3>
-
+      <section className=" h-screen bg-white flex flex-col gap-5 justify-start items-start">
+        <h3 className="text-2xl font-bold">Lo mas nuevo</h3>
+        <Swiper
+          scrollbar={{
+            hide: true,
+          }}
+          breakpoints={{
+            340: {
+              slidesPerView: 2,
+              spaceBetween: 5,
+            },
+            700: {
+              slidesPerView: 4,
+              spaceBetween: 5,
+            },
+          }}
+          freeMode={true}
+          pagination={false}
+          mousewheel={true}
+          modules={[Mousewheel, FreeMode, Pagination, Scrollbar]}
+          className="max-w-[95%]"
+        >
+          {data?.map((product) => (
+            <SwiperSlide
+              key={product.id}
+              className="cursor-pointer py-6"
+              onClick={() => router.push(`/product/${product.id}`)}
+            >
+              <div className="relative">
+                <button className="absolute top-3 left-3 border-black border-1 text-white p-2 rounded-lg">
+                <PiHeartBold color="black"/>
+                </button>
+                <Image
+                  src={product.imageUrl}
+                  alt="product image"
+                  width={400}
+                  height={50}
+                />
+              </div>
+              {product.name}
+              <p className="font-bold">${product.price}</p>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </section>
       <section className=" h-screen "></section>
       <section className=" h-screen "></section>
