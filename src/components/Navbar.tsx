@@ -111,7 +111,7 @@ export default function Navbar({ children }: NavbarProps) {
             )}
           </div>
         </nav>
-        <div className="bg-red-500">
+        <div className="">
         {children}
         </div>
       </header>

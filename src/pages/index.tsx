@@ -17,56 +17,62 @@ export default function Home() {
 
   return (
     <main className="bg-red-500">
-      <section className="py-6 flex justify-center items-center flex-col bg-black text-white gap-2">
-        <div className="flex flex-col justify-center items-center">
-          <h2 className="font-bold">SUSCRIBETE A NUESTRO NEWSLETTER</h2>
-          <p>
-            ¡Suscríbete a nuestro boletín de moda! Recibe actualizaciones
-            exclusivas, promociones y consejos de estilo.
-          </p>
-        </div>
-        <div className=" flex gap-2">
-          <div
-            className={`${
-              statusResponse === 200 && "border-green-500 text-green-400"
-            } border-1 border-gray-300 w-full px-2 py-1 flex justify-start items-center gap-2 rounded-lg`}
-          >
-            <div className="bg-black p-2 rounded-md">
-              <HiOutlineMail />
-            </div>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              onChange={handleNewsletter}
-              placeholder="Digita tu email"
-              //value={formik.values.email}
-            />
-            <button
-              onClick={async () => {
-                const response = await axios.post("/api/newsletter", {
-                  email: emailValue,
-                });
-
-                if (response.status === 200) {
-                  setStatusResponse(200);
-                }
-                console.log(response.data, response.status);
-              }}
-              className="text-xs bg-black p-1 rounded-md bg-white text-black font-semibold w-24 flex justify-center items-center"
-            >
-              {statusResponse === 200 ? (
-                <>
-                  <HiCheck />
-                </>
-              ) : (
-                "Notificarme"
-              )}
-            </button>
+      {status === "unauthenticated" && (
+        <section className="py-6 p-3 flex justify-center items-center flex-col bg-black text-white gap-2">
+          <div className="flex flex-col justify-center items-center  text-center ">
+            <h2 className="font-bold">SUSCRIBETE A NUESTRO NEWSLETTER</h2>
+            <p>
+              ¡Suscríbete a nuestro boletín de moda! Recibe actualizaciones
+              exclusivas, promociones y consejos de estilo.
+            </p>
           </div>
-        </div>
+          <div className=" flex gap-2">
+            <div
+              className={`${
+                statusResponse === 200 && "border-green-500 text-green-400"
+              } border-1 border-gray-300 w-full px-2 py-1 flex justify-start items-center gap-2 rounded-lg`}
+            >
+              <div className="bg-black p-2 rounded-md">
+                <HiOutlineMail />
+              </div>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                onChange={handleNewsletter}
+                placeholder="Digita tu email"
+                //value={formik.values.email}
+              />
+              <button
+                onClick={async () => {
+                  const response = await axios.post("/api/newsletter", {
+                    email: emailValue,
+                  });
+
+                  if (response.status === 200) {
+                    setStatusResponse(200);
+                  }
+                  console.log(response.data, response.status);
+                }}
+                className="text-xs bg-black p-1 rounded-md bg-white text-black font-semibold w-24 flex justify-center items-center"
+              >
+                {statusResponse === 200 ? (
+                  <>
+                    <HiCheck />
+                  </>
+                ) : (
+                  "Notificarme"
+                )}
+              </button>
+            </div>
+          </div>
+        </section>
+      )}
+
+      <section className=" h-screen bg-white flex justify-center items-center">
+        <h3>Lo mas nuevo</h3>
+
       </section>
-      <section className=" h-screen bg-white"></section>
       <section className=" h-screen "></section>
       <section className=" h-screen "></section>
 
