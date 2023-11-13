@@ -19,6 +19,7 @@ export default async function handler(
             createdAt: {
               gte: firstDayOfMonth,
             },
+            categoryId: 5,
           },
         });
         res.status(200).json(newestProducts);

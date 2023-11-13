@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import Head from "next/head";
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
-import { HiOutlineMail, HiCheck } from "react-icons/hi";
+import { HiOutlineMail, HiCheck, HiUsers } from "react-icons/hi";
 import axios from "axios";
 import Image from "next/image";
 import { useGetNewestProductsQuery } from "@/redux/api/newestProductApi";
+import { useGetProductsQuery } from "@/redux/api/productApi";
 import { useRouter } from "next/router";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -21,6 +23,7 @@ export default function Home() {
   const router = useRouter();
 
   const { data } = useGetNewestProductsQuery(null);
+  const { data: products } = useGetProductsQuery(null);
 
   const [emailValue, setEmailValue] = useState("");
   const [statusResponse, setStatusResponse] = useState(0);
@@ -32,6 +35,9 @@ export default function Home() {
 
   return (
     <main className="">
+      <Head>
+        <title>Omnimoode | Tienda Oficial</title>
+      </Head>
       {status === "unauthenticated" && (
         <section className="py-6 p-3 flex justify-center items-center flex-col bg-black text-white gap-2">
           <div className="flex flex-col justify-center items-center  text-center ">
@@ -184,7 +190,37 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className=" h-screen "></section>
+      <section className="flex justify-center items-center flex-col gap-4 mt-10">
+        <h3 className="text-2xl font-bold">Te puede interesar!</h3>
+        <div className=" grid grid-cols-2 gap-x-2 md:grid-cols-4   ">
+          {products?.map((product) => (
+            <div
+              key={product.id}
+              className="cursor-pointer py-6"
+              onClick={() => router.push(`/product/${product.id}`)}
+            >
+              <div className="relative">
+                <button className="absolute top-3 left-3 border-black border-1 text-white p-2 rounded-lg">
+                  <PiHeartBold color="black" />
+                </button>
+                <Image
+                  src={product.imageUrl}
+                  alt="product image"
+                  width={400}
+                  height={50}
+                />
+              </div>
+              {product.name}
+              <p className="font-bold">${product.price}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="h-screen grid grid-cols-2 bg-black">
+        <div></div>
+        <div></div>
+      </section>
 
       {status === "authenticated" && (
         <>
