@@ -3,19 +3,19 @@
 @tailwind utilities;
 
 :root {
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .background {
   @apply h-full;
-  background-image: url("/images/photo2.jpg");
+  background-image: url('/images/photo2.jpg');
   background-size: cover;
   background-repeat: no-repeat;
 }
 
 .background_login {
   @apply h-full;
-  background-image: url("/images/photo3.jpg");
+  background-image: url('/images/photo3.jpg');
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -23,14 +23,14 @@
 .background-logo {
   width: 400px;
   height: 160px;
-  background-image: url("/images/logoGood.png");
+  background-image: url('/images/logoGood.png');
   background-size: cover;
   background-repeat: no-repeat;
 }
 
 .background_confirm_email {
   @apply h-full;
-  background-image: url("/images/photo1.jpg");
+  background-image: url('/images/photo1.jpg');
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -38,7 +38,7 @@
 .background-logo-navbar {
   width: 150px;
   height: 56px;
-  background-image: url("/images/logoGood.png");
+  background-image: url('/images/logoGood.png');
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -46,7 +46,7 @@
 .background-logo-email {
   width: 140px;
   height: 60px;
-  background-image: url("/images/logoGood.png");
+  background-image: url('/images/logoGood.png');
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -68,7 +68,8 @@ h3 {
 
 h4 {
   @apply font-medium;
-  font-size: 13px;
+  font-size: 14px;
+  color: #171717;
 }
 
 p {
@@ -122,8 +123,8 @@ label {
   margin: 0;
 }
 
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
@@ -161,8 +162,6 @@ input[type="number"]::-webkit-outer-spin-button {
   font-size: 10px;
 }
 
-
-
 .border-1 {
   border-width: 1px;
 }
@@ -191,4 +190,10 @@ input[type="number"]::-webkit-outer-spin-button {
   border-radius: 100%;
   padding: 2px 6px;
   font-size: 8px;
+}
+
+.link-footer {
+  @apply font-normal;
+  font-size: 14px;
+  color: #666666;
 }

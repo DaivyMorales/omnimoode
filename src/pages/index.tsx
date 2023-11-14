@@ -34,7 +34,7 @@ export default function Home() {
   };
 
   return (
-    <main className="">
+    <main>
       <Head>
         <title>Omnimoode | Tienda Oficial</title>
       </Head>
@@ -130,9 +130,10 @@ export default function Home() {
                 </button>
                 <Image
                   src={product.imageUrl}
-                  alt="product image"
+                  alt="Product Image"
                   width={400}
                   height={50}
+                  priority={true}
                 />
               </div>
               {product.name}
@@ -208,6 +209,7 @@ export default function Home() {
                   alt="product image"
                   width={400}
                   height={50}
+                  priority={true}
                 />
               </div>
               {product.name}

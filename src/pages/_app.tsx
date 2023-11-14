@@ -10,8 +10,6 @@ export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }: AppProps) {
-  
-
   const router = useRouter();
 
   const excludedRoutes = [
