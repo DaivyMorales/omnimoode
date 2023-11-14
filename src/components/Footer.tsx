@@ -1,8 +1,21 @@
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { BsGithub, BsInstagram } from 'react-icons/bs';
+import axios from 'axios';
+import { HiCheckCircle } from 'react-icons/hi';
 
 export default function Footer() {
+  const [emailValue, setEmailValue] = useState('');
+  const [statusResponse, setStatusResponse] = useState(0);
+
+  const handleNewsletter = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const inputText = event.target.value;
+    setEmailValue(inputText);
+  };
+
   return (
     <footer className=' border-1 border-t-gray-200 dark:bg-gray-900'>
       <div className='w-full max-w-screen-xl mx-auto p-4 md:py-8 '>
@@ -56,16 +69,40 @@ export default function Footer() {
               Únete a nuestro boletín de noticias para recibir actualizaciones
               exclusivas.
             </p>
-            <div className='bg-[#f2f2f2] rounded  pl-3  py-[2px] pr-[2px] flex justify-between items-center '>
-              <input
-                type='email'
-                placeholder='tu@correo.com'
-                className='text-[14px]'
-              />
-              <button className='text-[12px] bg-white border-1 text-[#666666] px-[6px] py-[2px] rounded'>
-                Suscribirme
-              </button>
-            </div>
+            {statusResponse === 200 ? (
+              <div className='flex gap-1 items-center '>
+                <HiCheckCircle color='blue' />
+                <span className='text-[14px] text-[#666666]'>
+                  Gracias por suscribirte!
+                </span>
+              </div>
+            ) : (
+              <div className='flex items-center gap-2 '>
+                <input
+                  type='email'
+                  placeholder='tu@correo.com'
+                  className='text-[14px] bg-[#f2f2f2] rounded-md pl-3 py-[5px] pr-[2px]  focus:ring-offset-2 focus:ring-2 focus:ring-blue-500'
+                  onChange={handleNewsletter}
+                />
+                <button
+                  onClick={async () => {
+                    const response = await axios.post('/api/newsletter', {
+                      email: emailValue,
+                    });
+
+                    if (response.status === 200) {
+                      setStatusResponse(200);
+                    }
+                  }}
+                  disabled={emailValue === ''}
+                  className={`${
+                    emailValue === '' && 'cursor-not-allowed'
+                  } text-[12px] bg-white border-1 text-[#666666] px-[6px] py-[5px] rounded-md `}
+                >
+                  Suscribirme
+                </button>
+              </div>
+            )}
             <Link className='link-footer' href={''}></Link>
           </div>
         </div>
@@ -79,12 +116,15 @@ export default function Footer() {
             . Todos los derechos reservados.
           </span>
           <div className='flex gap-3 justify-center items-center'>
-            <Link href='https://github.com/DaivyMorales/omnimoode'>
-              <BsGithub size={20}/>
+            <Link
+              href='https://github.com/DaivyMorales/omnimoode'
+              target='_blank'
+            >
+              <BsGithub size={20} />
             </Link>
             <span className='text-gray-200'>|</span>
-            <Link href=''>
-              <BsInstagram size={20}/>
+            <Link href='https://www.instagram.com/omnimoode/' target='_blank'>
+              <BsInstagram size={20} />
             </Link>
           </div>
         </div>

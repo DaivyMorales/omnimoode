@@ -75,7 +75,7 @@ export default function Home() {
                   }
                   console.log(response.data, response.status);
                 }}
-                className="text-xs bg-black p-1 rounded-md bg-white text-black font-semibold w-24 flex justify-center items-center"
+                className="text-xs bg-black p-1 rounded-md bg-white text-black font-semibold w-24 flex justify-center items-center "
               >
                 {statusResponse === 200 ? (
                   <>
