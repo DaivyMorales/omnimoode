@@ -193,7 +193,7 @@ export default function Home() {
       </section>
       <section className="flex justify-center items-center flex-col gap-4 mt-10">
         <h3 className="text-2xl font-bold">Te puede interesar!</h3>
-        <div className=" grid grid-cols-2 gap-x-2 md:grid-cols-4   ">
+        <div className=" grid grid-cols-2 gap-x-2 md:grid-cols-4">
           {products?.map((product) => (
             <div
               key={product.id}

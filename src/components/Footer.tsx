@@ -41,13 +41,14 @@ export default function Footer() {
           </div>
           <div className='grid grid-rows-4 '>
             <h4>Categorias</h4>
-            <Link className='link-footer' href={''}>
+            <Link className='link-footer' href='/category/5'>
               Shirts
             </Link>
-            <Link className='link-footer' href={''}>
+            <Link className='link-footer' href='/category/6'>
+              
               Pants
             </Link>
-            <Link className='link-footer' href={''}>
+            <Link className='link-footer' href='/category/4'>
               Hoddies
             </Link>
           </div>

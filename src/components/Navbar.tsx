@@ -37,7 +37,7 @@ export default function Navbar({ children }: NavbarProps) {
   const router = useRouter();
 
   return (
-    <>
+    <div className='relative'>
       <header>
         {openSearch && (
           <SearchBar openSearch={openSearch} setOpenSearch={setOpenSearch} />
@@ -114,6 +114,6 @@ export default function Navbar({ children }: NavbarProps) {
       </header>
       <main>{children}</main>
       <Footer />
-    </>
+    </div>
   );
 }

@@ -51,7 +51,7 @@ export default function SearchBar({
   return (
     <div
       ref={searchBarRef}
-      className="absolute w-full h-full flex justify-center items-start"
+      className="absolute z-50 w-full h-full flex justify-center items-start"
       style={{ backdropFilter: "blur(5px) brightness(80%)" }}
     >
       <div className="container sm:px-10 lg:px-30 xl:px-52 p-2 flex gap-2 justify-center items-start md:mt-20 mt-5">
