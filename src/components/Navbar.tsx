@@ -13,13 +13,14 @@ import Footer from '@/components/Footer';
 
 interface NavbarProps {
   children: ReactNode;
+  searchBarRef: React.RefObject<HTMLDivElement>;
 }
 
 export default function Navbar({ children }: NavbarProps) {
   const [colorMode, setColorMode] = useColorMode();
 
   const [openProfile, setOpenProfile] = useState(false);
-  const [openSearch, setOpenSearch] = useState(false);
+  const [openSearch, setOpenSearch] = useState(true);
   const [openCart, setOpenCart] = useState(false);
 
   const [isHovered, setIsHovered] = useState(false);
@@ -36,12 +37,14 @@ export default function Navbar({ children }: NavbarProps) {
 
   const router = useRouter();
 
+  
+
   return (
     <div className='relative'>
-      <header>
         {openSearch && (
           <SearchBar openSearch={openSearch} setOpenSearch={setOpenSearch} />
-        )}
+        )}  
+      <header>
         <nav className='sticky z-10 top-0 bg-white w-full flex justify-between items-center py-2 px-10 dark:bg-black dark:border-b-2 dark:border-gray-800'>
           <div
             className='flex justify-center items-center cursor-pointer'

@@ -1,24 +1,24 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../../lib/prisma';
 
-export default async function handler(
+export default async function Product(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   const {
     method,
-    body: { query },
+    body: { name },
   } = req;
 
   switch (method) {
-    case 'GET':
+    case 'POST':
       try {
         const products = await prisma.product.findMany({
           where: {
             OR: [
               {
                 name: {
-                  contains: query,
+                  contains: name,
                   mode: 'insensitive',
                 },
               },
@@ -28,7 +28,7 @@ export default async function handler(
 
         res.json({ products });
       } catch (error) {
-        res.status(500).json({ message: error });
+        res.status(400).json(error);
       }
       break;
 
