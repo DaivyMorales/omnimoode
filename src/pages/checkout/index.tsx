@@ -15,7 +15,7 @@ interface ILocation {
 
 export default function Checkout() {
   const [info, setInfo] = useState<ILocation[]>([]);
-  const [ciudades, setCiudades] = useState([]);
+  const [ciudades, setCiudades] = useState<string[]>([]);
   const [idDeparmentSelected, setIdDeparmentSelected] = useState<number>();
   const { isLoading, data, error } = useGetCartByIdQuery({
     id: 1,
@@ -44,7 +44,7 @@ export default function Checkout() {
         (location) => location.id === idDeparmentSelected
       );
       if (departamentoSeleccionado) {
-        setCiudades(departamentoSeleccionado.ciudades || []);
+        setCiudades(departamentoSeleccionado.ciudades.map(String) || []);
       }
     }
   }, [idDeparmentSelected, info]);
