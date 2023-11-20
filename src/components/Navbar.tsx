@@ -13,14 +13,13 @@ import Footer from '@/components/Footer';
 
 interface NavbarProps {
   children: ReactNode;
-  searchBarRef: React.RefObject<HTMLDivElement>;
 }
 
 export default function Navbar({ children }: NavbarProps) {
   const [colorMode, setColorMode] = useColorMode();
 
   const [openProfile, setOpenProfile] = useState(false);
-  const [openSearch, setOpenSearch] = useState(true);
+  const [openSearch, setOpenSearch] = useState(false);
   const [openCart, setOpenCart] = useState(false);
 
   const [isHovered, setIsHovered] = useState(false);

@@ -4,7 +4,6 @@ import { useGetCategoriesQuery } from '@/redux/api/cotegoryApi';
 import CategoryCard from './Category/CategoryCard';
 import { useRouter } from 'next/navigation';
 import { Product } from '@/types';
-import { PiHeartBold } from 'react-icons/pi';
 import Image from 'next/image';
 import axios from 'axios';
 import Link from 'next/link';

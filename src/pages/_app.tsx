@@ -18,6 +18,7 @@ export default function App({
     '/register/confirm',
     '/recovery',
     '/recovery/changePassword',
+    '/checkout'
   ];
 
   const isNavbarVisible = !excludedRoutes.includes(router.pathname);

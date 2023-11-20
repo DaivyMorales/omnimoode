@@ -200,5 +200,22 @@ input[type='number']::-webkit-outer-spin-button {
 
 .search-bar-container {
   position: relative;
-  z-index: 1; /* Add this line to set a higher z-index value */
+  z-index: 1; 
+}
+
+::-webkit-scrollbar {
+  width: 5px; 
+  border-radius: 100%;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
 }
