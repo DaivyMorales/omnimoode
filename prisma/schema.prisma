@@ -91,6 +91,7 @@ model Address {
   country        String   @db.VarChar(25)
   names          String   @db.VarChar(50)
   surnames       String   @db.VarChar(50)
+  identity_card  Int
   birthday       DateTime
   address        String
   specifications String
