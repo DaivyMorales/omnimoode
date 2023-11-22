@@ -103,13 +103,13 @@ model Address {
 }
 
 model Card {
-  id                    Int      @id @default(autoincrement())
+  id                    Int    @id @default(autoincrement())
   card_number           Int
-  names                 String   @db.VarChar(50)
-  surnames              String   @db.VarChar(50)
-  due_date              DateTime @map("due_date") @db.Timestamptz
+  names                 String @db.VarChar(50)
+  surnames              String @db.VarChar(50)
+  due_date              String @db.VarChar(4)
   security_code         Int
   number_identification Int
-  User   User? @relation(fields: [userId], references: [id])
-  userId Int?
+  User                  User?  @relation(fields: [userId], references: [id])
+  userId                Int?
 }
