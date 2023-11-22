@@ -79,7 +79,7 @@ export default function Checkout() {
             </select>
           </div>
         </div>
-        <div className='grid grid-cols-2 gap-3'>
+        <div className='grid grid-cols-2 gap-3 w-full'>
           {/* NAME */}
           <div>
             <label htmlFor=''>Nombres</label>
@@ -170,7 +170,7 @@ export default function Checkout() {
           </div>
         </div>
 
-        <div className='grid grid-cols-2 gap-3'>
+        <div className='grid grid-cols-2 gap-3 w-full'>
           {/* DEPARTAMENT */}
           <div>
             <label htmlFor=''>Departamento</label>
