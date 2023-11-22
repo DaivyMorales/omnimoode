@@ -100,6 +100,7 @@ export default function SearchBar({
                 >
                   {dataFiltered.products.map((product: Product) => (
                     <Link
+                      key={product.id}
                       href={`/product/${product.id}`}
                       onClick={() => setOpenSearch(false)}
                       className='flex  w-full rounded-md items-center justify-between  hover:bg-gray-100 cursor-pointer'
