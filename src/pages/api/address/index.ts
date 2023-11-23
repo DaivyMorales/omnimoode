@@ -8,12 +8,10 @@ export default async function Product(
   const {
     method,
     body: {
-      country,
       names,
       surnames,
-      identity_card,
-      birthday,
       address,
+      neighborhood,
       specifications,
       state,
       city,
@@ -39,8 +37,7 @@ export default async function Product(
             country: 'Colombia',
             names,
             surnames,
-            identity_card,
-            birthday,
+            neighborhood,
             address,
             specifications,
             state,
