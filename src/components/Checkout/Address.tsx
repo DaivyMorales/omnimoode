@@ -36,12 +36,14 @@ export default function Address() {
 
   const formik = useFormik({
     initialValues: {
-      card_number: 0,
       names: '',
       surnames: '',
-      due_date: '',
-      security_code: 0,
-      number_identification: 0,
+      address: '',
+      neighborhood: 0,
+      specifications: 0,
+      state: '',
+      city: '',
+      phone: '',
       userId: 0,
     },
     onSubmit: async (values, { resetForm }) => {

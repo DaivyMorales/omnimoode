@@ -1,4 +1,5 @@
 import Payment from '@/components/Checkout/Payment';
+import Address from '@/components/Checkout/Address';
 import Head from 'next/head';
 
 export default function Checkout() {
@@ -9,8 +10,8 @@ export default function Checkout() {
       </Head>
 
       <div className='grid grid-cols-2 gap-6'>
-        <Payment />
         {/* <Payment /> */}
+        <Address />
       </div>
     </main>
   );
