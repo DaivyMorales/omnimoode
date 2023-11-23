@@ -78,7 +78,7 @@ p {
 }
 
 input {
-  @apply w-full font-normal text-sm placeholder:text-gray-400;
+  @apply w-full font-medium text-sm placeholder:text-gray-400;
   background-color: transparent;
 }
 
@@ -91,11 +91,23 @@ input:focus {
 }
 
 label {
-  @apply text-xs font-semibold;
+  @apply text-xs font-medium text-gray-900;
+}
+
+select {
+  @apply bg-white w-full font-medium;
+}
+
+select:focus {
+  outline: none;
 }
 
 .inputLogin {
   @apply border-1 border-gray-300 w-full px-2 py-1 flex justify-start items-center gap-2 rounded-lg;
+}
+
+.inputLogin:focus-within {
+  @apply border-blue-400  shadow-sm shadow-blue-200;
 }
 
 .inputSize {
@@ -200,16 +212,16 @@ input[type='number']::-webkit-outer-spin-button {
 
 .search-bar-container {
   position: relative;
-  z-index: 1; 
+  z-index: 1;
 }
 
 ::-webkit-scrollbar {
-  width: 5px; 
+  width: 5px;
   border-radius: 100%;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1; 
+  background: #f1f1f1;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -217,5 +229,5 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555; 
+  background: #555;
 }

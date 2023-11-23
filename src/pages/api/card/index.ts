@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../../lib/prisma';
 
 export default async function Card(req: NextApiRequest, res: NextApiResponse) {
@@ -20,7 +20,7 @@ export default async function Card(req: NextApiRequest, res: NextApiResponse) {
       try {
         const newCard = await prisma.card.create({
           data: {
-            card_number: card_number.toString(),
+            card_number,
             names,
             surnames,
             due_date,
@@ -30,11 +30,7 @@ export default async function Card(req: NextApiRequest, res: NextApiResponse) {
           },
         });
 
-        const newCardData = {
-          ...newCard,
-          card_number: newCard.card_number.toString(),
-        };
-        res.status(200).json(newCardData);
+        res.status(200).json(newCard);
       } catch (error) {
         console.log(error);
         res.status(500).json({ message: error });

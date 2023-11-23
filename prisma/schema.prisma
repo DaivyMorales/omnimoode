@@ -104,7 +104,7 @@ model Address {
 
 model Card {
   id                    Int    @id @default(autoincrement())
-  card_number           BigInt
+  card_number           String
   names                 String @db.VarChar(50)
   surnames              String @db.VarChar(50)
   due_date              String @db.VarChar(5)
