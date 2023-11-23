@@ -104,10 +104,10 @@ model Address {
 
 model Card {
   id                    Int    @id @default(autoincrement())
-  card_number           Int
+  card_number           BigInt
   names                 String @db.VarChar(50)
   surnames              String @db.VarChar(50)
-  due_date              String @db.VarChar(4)
+  due_date              String @db.VarChar(5)
   security_code         Int
   number_identification Int
   User                  User?  @relation(fields: [userId], references: [id])

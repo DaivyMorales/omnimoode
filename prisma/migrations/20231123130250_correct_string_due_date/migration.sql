@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Card" ALTER COLUMN "due_date" SET DATA TYPE VARCHAR(5);
