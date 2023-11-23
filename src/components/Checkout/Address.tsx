@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { HiSearch, HiGift } from 'react-icons/hi';
 import { useFormik } from 'formik';
 import { useSession } from 'next-auth/react';
+import * as Yup from 'yup';
 
 interface ILocation {
   id: number;
@@ -26,10 +27,6 @@ export default function Address() {
     }
   };
 
-  // const { isLoading, data, error } = useGetCartByIdQuery({
-  //   id: 1,
-  // });
-
   const priceFinal = useAppSelector(
     (state) => state.priceFinalSlice.priceFinal
   );
@@ -39,13 +36,33 @@ export default function Address() {
       names: '',
       surnames: '',
       address: '',
-      neighborhood: 0,
-      specifications: 0,
+      specifications: '',
+      neighborhood: '',
       state: '',
       city: '',
       phone: '',
       userId: 0,
     },
+    validationSchema: Yup.object({
+      names: Yup.string()
+        .max(50, 'No puedes sobrepasar los 50 caracteres!')
+        .required('Haz olvidado escribir el nombre'),
+      surnames: Yup.string()
+        .max(50, 'No puedes sobrepasar los 50 caracteres!')
+        .required('Haz olvidado escribir los apellidos'),
+      address: Yup.string().required('Haz olvidado escribir la dirección'),
+      specifications: Yup.string().required(
+        'Haz olvidado escribir alguna especificación'
+      ),
+      neighborhood: Yup.string()
+        .max(30, 'No puedes sobrepasar los 30 caracteres!')
+        .required('Haz olvidado escribir el vecinadario'),
+      state: Yup.string().required('Haz olvidado elegir el departamento'),
+      city: Yup.string().required('Haz olvidado elegir el municipio/capital'),
+      phone: Yup.string()
+        .required('Haz olvidado escribir tu telefono')
+        .max(10, 'No puedes sobrepasar los 10 caracteres!'),
+    }),
     onSubmit: async (values, { resetForm }) => {
       const userId = (session?.user as { id?: number })?.id?.toString() ?? '0';
       const formData = {
@@ -97,11 +114,16 @@ export default function Address() {
       </div>
 
       <div className='grid grid-cols-2 gap-3 w-full'>
-        {/* NAME */}
+        {/* NAMES */}
         <div>
           <label htmlFor='names'>Nombres</label>
           <div className='inputLogin'>
             <input
+              className={`${
+                formik.touched.names &&
+                formik.errors.names &&
+                'placeholder-red-300'
+              }`}
               id='names'
               name='names'
               type='text'
@@ -110,12 +132,22 @@ export default function Address() {
               value={formik.values.names}
             />
           </div>
+          {/* ERROR NAMES */}
+          {formik.touched.names && formik.errors.names ? (
+            <p className='form-errors'>{formik.errors.names}</p>
+          ) : null}
         </div>
+
         {/* lASTNAME */}
         <div>
           <label htmlFor='surnames'>Apellidos</label>
           <div className='inputLogin'>
             <input
+              className={`${
+                formik.touched.surnames &&
+                formik.errors.surnames &&
+                'placeholder-red-300'
+              }`}
               id='surnames'
               name='surnames'
               type='text'
@@ -124,6 +156,10 @@ export default function Address() {
               value={formik.values.surnames}
             />
           </div>
+          {/* ERROR NAMES */}
+          {formik.touched.surnames && formik.errors.surnames ? (
+            <p className='form-errors'>{formik.errors.surnames}</p>
+          ) : null}
         </div>
       </div>
 
@@ -141,7 +177,7 @@ export default function Address() {
       </div>
 
       <div className='grid grid-cols-2 gap-3 w-full'>
-        {/* DEPARTAMENT */}
+        {/* STATE */}
         <div>
           <label htmlFor='state'>Departamento</label>
           <div className='inputLogin'>
@@ -170,6 +206,10 @@ export default function Address() {
               ))}
             </select>
           </div>
+          {/* ERROR STATE */}
+          {formik.touched.state && formik.errors.state ? (
+            <p className='form-errors'>{formik.errors.state}</p>
+          ) : null}
         </div>
 
         {/* CITY */}
@@ -190,6 +230,10 @@ export default function Address() {
               ))}
             </select>
           </div>
+          {/* ERROR STATE */}
+          {formik.touched.city && formik.errors.city ? (
+            <p className='form-errors'>{formik.errors.city}</p>
+          ) : null}
         </div>
       </div>
 
@@ -199,6 +243,11 @@ export default function Address() {
           <label htmlFor='neighborhood'>Vecindario</label>
           <div className='inputLogin' onClick={handleClick}>
             <input
+              className={`${
+                formik.touched.neighborhood &&
+                formik.errors.neighborhood &&
+                'placeholder-red-300'
+              }`}
               id='neighborhood'
               name='neighborhood'
               type='text'
@@ -208,6 +257,10 @@ export default function Address() {
               ref={inputRef}
             />
           </div>
+          {/* ERROR NEIGHBORHOOD */}
+          {formik.touched.neighborhood && formik.errors.neighborhood ? (
+            <p className='form-errors'>{formik.errors.neighborhood}</p>
+          ) : null}
         </div>
       </div>
 
@@ -216,6 +269,11 @@ export default function Address() {
         <label htmlFor='address'>Dirección</label>
         <div className='inputLogin'>
           <input
+            className={`${
+              formik.touched.address &&
+              formik.errors.address &&
+              'placeholder-red-300'
+            }`}
             id='address'
             name='address'
             type='text'
@@ -224,6 +282,10 @@ export default function Address() {
             value={formik.values.address}
           />
         </div>
+        {/* ERROR ADDRESS */}
+        {formik.touched.address && formik.errors.address ? (
+          <p className='form-errors'>{formik.errors.address}</p>
+        ) : null}
       </div>
 
       {/* SPICIFICATIONS */}
@@ -233,6 +295,11 @@ export default function Address() {
         </label>
         <div className='inputLogin'>
           <input
+            className={`${
+              formik.touched.specifications &&
+              formik.errors.specifications &&
+              'placeholder-red-300'
+            }`}
             id='specifications'
             name='specifications'
             type='text'
@@ -241,6 +308,10 @@ export default function Address() {
             value={formik.values.specifications}
           />
         </div>
+        {/* ERROR SPICIFICATIONS */}
+        {formik.touched.specifications && formik.errors.specifications ? (
+          <p className='form-errors'>{formik.errors.specifications}</p>
+        ) : null}
       </div>
 
       <div className='grid grid-cols-2'>
@@ -249,6 +320,11 @@ export default function Address() {
           <label htmlFor='phone'>Telefono de contacto</label>
           <div className='inputLogin' onClick={handleClick}>
             <input
+              className={`${
+                formik.touched.phone &&
+                formik.errors.phone &&
+                'placeholder-red-300'
+              }`}
               id='phone'
               name='phone'
               type='text'
@@ -260,6 +336,10 @@ export default function Address() {
               ref={inputRef}
             />
           </div>
+          {/* ERROR PHONE */}
+          {formik.touched.phone && formik.errors.phone ? (
+            <p className='form-errors'>{formik.errors.phone}</p>
+          ) : null}
         </div>
       </div>
 

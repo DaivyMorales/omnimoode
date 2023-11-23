@@ -10,8 +10,8 @@ export default function Checkout() {
       </Head>
 
       <div className='grid grid-cols-2 gap-6'>
-        {/* <Payment /> */}
-        <Address />
+        <Payment />
+        {/* <Address /> */}
       </div>
     </main>
   );

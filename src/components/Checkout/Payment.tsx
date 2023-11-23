@@ -1,10 +1,9 @@
-import { useAppSelector } from '@/redux/hooks';
 import axios from 'axios';
-import Head from 'next/head';
-import { useState, useEffect, useRef } from 'react';
-import { HiSearch, HiCreditCard } from 'react-icons/hi';
+import { useRef } from 'react';
+import { HiCreditCard } from 'react-icons/hi';
 import { useFormik } from 'formik';
 import { useSession } from 'next-auth/react';
+import * as Yup from 'yup';
 
 export default function Payment() {
   const { data: session } = useSession();
@@ -17,20 +16,46 @@ export default function Payment() {
     }
   };
 
-  const priceFinal = useAppSelector(
-    (state) => state.priceFinalSlice.priceFinal
-  );
-
   const formik = useFormik({
     initialValues: {
       card_number: '',
-      names: '',
-      surnames: '',
       due_date: '',
       security_code: 0,
+      names: '',
+      surnames: '',
       number_identification: 0,
       userId: 0,
     },
+    validationSchema: Yup.object({
+      card_number: Yup.string()
+        .max(19, 'Haz sobrepasado el limite de caracteres')
+        .required('Haz olvidado escribir tu número de tarjeta'),
+      due_date: Yup.string()
+        .max(5)
+        .required('Haz olvidado escribir la fecha de vencimiento!'),
+      security_code: Yup.number()
+        .test('len', 'Deben ser 3 digitos', (val) => {
+          if (val) {
+            return val.toString().length === 3;
+          }
+          return false;
+        })
+        .required('Haz olvidado escribir el código de seguridad!'),
+      names: Yup.string()
+        .max(50, 'No puedes sobrepasar los 50 caracteres!')
+        .required('Haz olvidado escribir el nombre'),
+      surnames: Yup.string()
+        .max(50, 'No puedes sobrepasar los 50 caracteres!')
+        .required('Haz olvidado escribir los apellidos'),
+      number_identification: Yup.number()
+        .test('len', 'Deben ser maximo 10 digitos', (val) => {
+          if (val) {
+            return val.toString().length <= 10;
+          }
+          return false;
+        })
+        .required('Haz olvidado escribir tu número de cedula!'),
+    }),
     onSubmit: async (values, { resetForm }) => {
       const userId = Number((session?.user as { id?: number })?.id ?? 0);
 
@@ -38,9 +63,7 @@ export default function Payment() {
         ...values,
         userId,
       };
-      console.log(dataToSend);
       const response = await axios.post('/api/card', dataToSend);
-      console.log(response);
     },
   });
 
@@ -94,6 +117,11 @@ export default function Payment() {
         <label htmlFor='card_number'>Número de tarjeta</label>
         <div className='inputLogin'>
           <input
+            className={`${
+              formik.touched.card_number &&
+              formik.errors.card_number &&
+              'placeholder-red-300'
+            }`}
             id='card_number'
             name='card_number'
             type='text'
@@ -102,14 +130,23 @@ export default function Payment() {
             value={formik.values.card_number}
           />
         </div>
+        {/* ERROR CARD_NUMBER */}
+        {formik.touched.card_number && formik.errors.card_number ? (
+          <p className='form-errors'>{formik.errors.card_number}</p>
+        ) : null}
       </div>
 
       <div className='grid grid-cols-3 gap-3 w-full'>
-        {/* NAME */}
+        {/* DUE_DATE */}
         <div>
           <label htmlFor='due_date'>Fecha de vencimiento</label>
           <div className='inputLogin'>
             <input
+              className={`${
+                formik.touched.due_date &&
+                formik.errors.due_date &&
+                'placeholder-red-300'
+              }`}
               id='due_date'
               name='due_date'
               type='text'
@@ -118,12 +155,21 @@ export default function Payment() {
               value={formik.values.due_date}
             />
           </div>
+          {/* ERROR DUE_DATE */}
+          {formik.touched.due_date && formik.errors.due_date ? (
+            <p className='form-errors'>{formik.errors.due_date}</p>
+          ) : null}
         </div>
-        {/* lASTNAME */}
+        {/* SECURITY_CODE */}
         <div>
           <label htmlFor='security_code'>Código de seguridad</label>
           <div className='inputLogin'>
             <input
+              className={`${
+                formik.touched.security_code &&
+                formik.errors.security_code &&
+                'placeholder-red-300'
+              }`}
               id='security_code'
               name='security_code'
               type='text'
@@ -134,15 +180,24 @@ export default function Payment() {
               value={formik.values.security_code || ''}
             />
           </div>
+          {/* ERROR SECURITY_CODE */}
+          {formik.touched.security_code && formik.errors.security_code ? (
+            <p className='form-errors'>{formik.errors.security_code}</p>
+          ) : null}
         </div>
       </div>
 
       <div className='grid grid-cols-2 gap-3 w-full'>
-        {/* NAME */}
+        {/* NAMES */}
         <div>
           <label htmlFor='names'>Nombres del titular</label>
           <div className='inputLogin'>
             <input
+              className={`${
+                formik.touched.names &&
+                formik.errors.names &&
+                'placeholder-red-300'
+              }`}
               id='names'
               name='names'
               type='text'
@@ -151,12 +206,21 @@ export default function Payment() {
               value={formik.values.names}
             />
           </div>
+          {/* ERROR NAMES */}
+          {formik.touched.names && formik.errors.names ? (
+            <p className='form-errors'>{formik.errors.names}</p>
+          ) : null}
         </div>
-        {/* lASTNAME */}
+        {/* SURNAMES */}
         <div>
           <label htmlFor='surnames'>Apellidos del titular</label>
           <div className='inputLogin'>
             <input
+              className={`${
+                formik.touched.surnames &&
+                formik.errors.surnames &&
+                'placeholder-red-300'
+              }`}
               id='surnames'
               name='surnames'
               type='text'
@@ -165,6 +229,10 @@ export default function Payment() {
               value={formik.values.surnames}
             />
           </div>
+          {/* ERROR SURNAMES */}
+          {formik.touched.surnames && formik.errors.surnames ? (
+            <p className='form-errors'>{formik.errors.surnames}</p>
+          ) : null}
         </div>
       </div>
 
@@ -173,6 +241,11 @@ export default function Payment() {
         <label htmlFor='number_identification'>Cedula</label>
         <div className='inputLogin'>
           <input
+            className={`${
+              formik.touched.number_identification &&
+              formik.errors.number_identification &&
+              'placeholder-red-300'
+            }`}
             id='number_identification'
             name='number_identification'
             type='number'
@@ -181,6 +254,11 @@ export default function Payment() {
             value={formik.values.number_identification || ''}
           />
         </div>
+        {/* ERROR NUMBER_IDENTIFICATION */}
+        {formik.touched.number_identification &&
+        formik.errors.number_identification ? (
+          <p className='form-errors'>{formik.errors.number_identification}</p>
+        ) : null}
       </div>
 
       <div className='grid grid-cols-2 w-full'>
