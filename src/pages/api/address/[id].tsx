@@ -27,13 +27,14 @@ export default async function ProductById(
   switch (method) {
     case 'GET':
       try {
-        const addressFound = await prisma.address.findUnique({
-          where: { id: idNumber },
+        const addressesFound = await prisma.address.findMany({
+          where: { userId: idNumber },
         });
 
-        if (!addressFound) return res.status(500).json("Address doesn't found");
+        if (!addressesFound)
+          return res.status(404).json("Address doesn't found");
 
-        res.status(200).json(addressFound);
+        res.status(200).json(addressesFound);
       } catch (error) {
         res.status(500).json(error);
       }
