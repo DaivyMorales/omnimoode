@@ -15,15 +15,11 @@ export default async function CardById(
   switch (method) {
     case 'GET':
       try {
-        const card = await prisma.card.findMany({
-          where: { id: userId },
+        const cardsFound = await prisma.card.findMany({
+          where: { userId },
         });
 
-        const cardData = card.map((c) => ({
-          ...c,
-          card_number: c.card_number.toString(),
-        }));
-        res.status(200).json(cardData);
+        res.status(200).json(cardsFound);
       } catch (error) {
         console.log(error);
         res.status(500).json({ message: error });
@@ -32,10 +28,10 @@ export default async function CardById(
 
     case 'DELETE':
       try {
-        const cardToRemove = await prisma.card.deleteMany({
+        await prisma.card.deleteMany({
           where: { id: userId },
         });
-        res.status(200).json("The card has been removed!");
+        res.status(200).json('The card has been removed!');
       } catch (error) {
         console.log(error);
         res.status(500).json({ message: error });
