@@ -9,6 +9,7 @@ import { HiCreditCard, HiOfficeBuilding } from 'react-icons/hi';
 import ClipLoader from 'react-spinners/ClipLoader';
 import Link from 'next/link';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 interface ShippingOptionsProps {
   finalPrice: number;
@@ -21,7 +22,9 @@ export default function ShippingOptions({
 }: ShippingOptionsProps) {
   const { data: session } = useSession();
 
+  const router = useRouter();
   const [responseStatus, setResponseStatus] = useState(0);
+  console.log(responseStatus);
 
   const cart = useAppSelector((state: any) => state.cartSlice.cart);
   console.log(cart);
@@ -64,9 +67,9 @@ export default function ShippingOptions({
             subtractQuantity: quantity,
           });
 
-          console.log(
-            `Stock updated for size ${id}. Status ${response.status}`
-          );
+          if (response.status === 200) {
+            router.push('/checkout/SuccessPayment');
+          }
         })
       );
     } catch (error) {
@@ -139,10 +142,6 @@ export default function ShippingOptions({
                           .replace(/\s/g, '')
                           .replace(/(.{4})/g, '$1')}
                       </p>
-
-                      {/* <p className='font-semibold'>
-                    {address.country}, {address.phone}
-                  </p> */}
                     </div>
                   </div>
                 </div>
@@ -160,7 +159,6 @@ export default function ShippingOptions({
           onClick={async () => {
             await updateStock(cart);
           }}
-          // href={`${responseStatus === 200 && '/checkout/SuccessPayment'}`}
           className='font-medium bg-black p-2 text-white px-[12px] text-[14px] rounded-md hover:bg-gray-900 w-full flex'
         >
           Pagar{' '}
@@ -169,7 +167,6 @@ export default function ShippingOptions({
               size={35}
               color='#000000'
               loading={true}
-              // cssOverride={}
               aria-label='Loading Spinner'
               data-testid='loader'
             />
