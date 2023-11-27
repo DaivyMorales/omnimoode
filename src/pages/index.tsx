@@ -227,20 +227,6 @@ export default function Home() {
           ))}
         </div>
       </section>
-
-      {/* {status === 'authenticated' && (
-        <>
-          <h1>You are Welcome! </h1>
-          <button
-            className=' p-2 text-white'
-            onClick={() => {
-              signOut({ callbackUrl: '/login' });
-            }}
-          >
-            Salir
-          </button>
-        </>
-      )} */}
     </main>
   );
 }
