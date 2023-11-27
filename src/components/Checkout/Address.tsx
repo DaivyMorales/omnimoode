@@ -12,7 +12,11 @@ interface ILocation {
   ciudades: String[];
 }
 
-export default function Address() {
+interface AddressProps {
+  setAddress: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function Address({ setAddress }: AddressProps) {
   const { data: session } = useSession();
 
   const [info, setInfo] = useState<ILocation[]>([]);
@@ -72,6 +76,7 @@ export default function Address() {
       console.log(formData);
       const response = await axios.post('/api/address', formData);
       console.log(response);
+      if (response.status === 200) setAddress(true);
     },
   });
 
@@ -101,9 +106,9 @@ export default function Address() {
   return (
     <form
       onSubmit={formik.handleSubmit}
-      className='flex flex-col justify-center items-start gap-3'
+      className='flex flex-col col-span-1 w-full justify-center items-start gap-3'
     >
-      <div className='flex gap-3 justify-center items-center '>
+      <div className='flex gap-3 justify-center  items-center '>
         <div className=' p-2 rounded-full bg-black'>
           <HiGift size={25} color='white' />
         </div>
@@ -240,7 +245,7 @@ export default function Address() {
       <div className='grid grid-cols-2'>
         {/* NEIGHBORHOOD */}
         <div className='w-full'>
-          <label htmlFor='neighborhood'>Vecindario</label>
+          <label htmlFor='neighborhood'>Barrio</label>
           <div className='inputLogin' onClick={handleClick}>
             <input
               className={`${
@@ -252,7 +257,7 @@ export default function Address() {
               name='neighborhood'
               type='text'
               onChange={formik.handleChange}
-              placeholder='Mi vecindario'
+              placeholder='Mi barrio'
               value={formik.values.neighborhood}
               ref={inputRef}
             />

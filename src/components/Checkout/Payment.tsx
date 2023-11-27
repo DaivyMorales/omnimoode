@@ -5,7 +5,11 @@ import { useFormik } from 'formik';
 import { useSession } from 'next-auth/react';
 import * as Yup from 'yup';
 
-export default function Payment() {
+interface PaymentProps {
+  setPayment: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function Payment({ setPayment }: PaymentProps) {
   const { data: session } = useSession();
 
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -64,6 +68,9 @@ export default function Payment() {
         userId,
       };
       const response = await axios.post('/api/card', dataToSend);
+      if (response.status === 200) {
+        setPayment(true);
+      }
     },
   });
 

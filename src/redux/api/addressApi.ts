@@ -8,7 +8,7 @@ export const addressApi = createApi({
     baseUrl: '/api/',
   }),
   endpoints: (builder) => ({
-    getAddressById: builder.query<Address, { id: number }>({
+    getAddressById: builder.query<Address[], { id: number }>({
       query: ({ id }) => `address/${id}`,
     }),
   }),

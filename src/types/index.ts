@@ -55,4 +55,29 @@ export type CartProduct = {
 export type ProductCalculated = {
   id: number;
   value: number;
-}
+};
+
+export type Address = {
+  id: number;
+  country: string;
+  names: string;
+  surnames: string;
+  address: string;
+  neighborhood: string;
+  specifications: string;
+  state: string;
+  city: string;
+  phone: string;
+  userId: number;
+};
+
+export type Card = {
+  id: number;
+  card_number: string;
+  names: string;
+  surnames: string;
+  due_date: string;
+  security_code: number;
+  number_identification: number;
+  userId: number;
+};

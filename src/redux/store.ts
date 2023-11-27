@@ -10,6 +10,7 @@ import { productApi } from './api/productApi';
 import { cartApi } from './api/cartApi';
 import { newestProductApi } from './api/newestProductApi';
 import { addressApi } from './api/addressApi';
+import { cardApi } from './api/cardApi';
 
 export const store: any = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ export const store: any = configureStore({
     [cartApi.reducerPath]: cartApi.reducer,
     [newestProductApi.reducerPath]: newestProductApi.reducer,
     [addressApi.reducerPath]: addressApi.reducer,
+    [cardApi.reducerPath]: cardApi.reducer,
   },
   devTools: process.env.NODE_ENV !== 'production',
   middleware: (getDefaultMiddleware) =>
@@ -31,6 +33,7 @@ export const store: any = configureStore({
       cartApi.middleware,
       newestProductApi.middleware,
       addressApi.middleware,
+      cardApi.middleware,
     ]),
 });
 
