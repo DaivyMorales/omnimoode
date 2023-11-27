@@ -10,8 +10,6 @@ import { useGetAddressByIdQuery } from '@/redux/api/addressApi';
 import { Address, Card } from '@/types';
 import { useGetCardByIdQuery } from '@/redux/api/cardApi';
 
-
-
 export default function ProfilePage() {
   const { data: session, status } = useSession();
 
@@ -39,9 +37,14 @@ export default function ProfilePage() {
 
   useEffect(() => {
     dispach(generateNumber());
-    setAddresses(dataAddress);
-    setCards(dataCard);
   }, []);
+
+  useEffect(() => {
+    if (dataAddress && dataCard) {
+      setAddresses(dataAddress);
+      setCards(dataCard);
+    }
+  }, [dataCard, dataAddress]);
 
   const SendEmail = async () => {
     try {
@@ -91,6 +94,7 @@ export default function ProfilePage() {
             <h3>Tus domicilios</h3>
             {addresses?.map((address: Address) => (
               <div
+                key={address.id}
                 onMouseEnter={() => setOnHoverAddress(true)}
                 onMouseLeave={() => setOnHoverAddress(false)}
                 className='relative flex justify-between items-center w-full gap-y-3 border-1 rounded-lg p-3  hover:border-black'
@@ -148,6 +152,7 @@ export default function ProfilePage() {
             <h3>Tus tarjetas</h3>
             {cards?.map((card: Card) => (
               <div
+                key={card.id}
                 onMouseEnter={() => setOnHoverCard(true)}
                 onMouseLeave={() => setOnHoverCard(false)}
                 className='relative flex justify-between items-center  w-full gap-y-3 border-1 rounded-lg p-3 hover:border-black'
