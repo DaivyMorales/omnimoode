@@ -16,7 +16,6 @@ export default function Summary({ finalPrice, setFinalPrice }: SummaryProps) {
   const { data: session } = useSession();
 
   const cart = useAppSelector((state: any) => state.cartSlice.cart);
-  // console.log(cart);
   const cartId = (session?.user as { cartId?: number })?.cartId ?? 0;
 
   const { data, refetch } = useGetCartByIdQuery({
@@ -26,7 +25,8 @@ export default function Summary({ finalPrice, setFinalPrice }: SummaryProps) {
   const dispatch = useDispatch();
 
   const total = cart.reduce(
-    (sum: any, cartProduct: CartProduct) => sum + cartProduct.product.price,
+    (sum: any, cartProduct: CartProduct) =>
+      sum + cartProduct.product.price * cartProduct.quantity,
     0
   );
 
@@ -37,7 +37,7 @@ export default function Summary({ finalPrice, setFinalPrice }: SummaryProps) {
   }, [data?.products]);
 
   useEffect(() => {
-    console.log("HI!")
+    console.log('HI!');
     if (cart) {
       console.log('Changed!');
       setFinalPrice(total);
@@ -90,7 +90,7 @@ export default function Summary({ finalPrice, setFinalPrice }: SummaryProps) {
                   </div>
                   <div className='flex gap-2 items-center justify-start'>
                     <p className='text-xl font-bold'>
-                      ${cartProduct.product.price}
+                      ${cartProduct.product.price * cartProduct.quantity}
                     </p>
                     <span className='text-gray-500 text-xs'>x</span>
                     <p className='text-xl font-medium text-gray-400'>
