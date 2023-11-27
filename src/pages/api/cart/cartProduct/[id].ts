@@ -48,6 +48,17 @@ export default async function handler(
         res.status(500).json({ message: error });
       }
       break;
+
+    case 'DELETE':
+      try {
+        await prisma.cartProduct.deleteMany({
+          where: { id: Number(id) },
+        });
+        res.status(200).json('OK');
+      } catch (error) {
+        res.status(500).json({ message: error });
+      }
+      break;
     default:
       break;
   }

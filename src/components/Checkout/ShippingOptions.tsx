@@ -1,13 +1,11 @@
-import { useEffect, CSSProperties, useState } from 'react';
+import { useEffect } from 'react';
 import { useGetAddressByIdQuery } from '@/redux/api/addressApi';
-import { useGetCartByIdQuery } from '@/redux/api/cartApi';
 import { useGetCardByIdQuery } from '@/redux/api/cardApi';
 import { useAppSelector } from '@/redux/hooks';
 import { useSession } from 'next-auth/react';
 import { CartProduct, Card, Address } from '@/types';
 import { HiCreditCard, HiOfficeBuilding } from 'react-icons/hi';
 import ClipLoader from 'react-spinners/ClipLoader';
-import Link from 'next/link';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 
@@ -20,19 +18,12 @@ export default function ShippingOptions({
   finalPrice,
   setPayment,
 }: ShippingOptionsProps) {
+  
   const { data: session } = useSession();
 
   const router = useRouter();
-  const [responseStatus, setResponseStatus] = useState(0);
-  console.log(responseStatus);
 
   const cart = useAppSelector((state: any) => state.cartSlice.cart);
-  console.log(cart);
-  const cartId = (session?.user as { cartId?: number })?.cartId ?? 0;
-
-  const { data, refetch: refetchCart } = useGetCartByIdQuery({
-    id: cartId,
-  });
 
   const userId = (session?.user as { id?: number })?.id ?? 0;
 
@@ -47,12 +38,6 @@ export default function ShippingOptions({
   useEffect(() => {
     refetch();
   }, []);
-
-  const override: CSSProperties = {
-    display: 'block',
-    margin: '0 auto',
-    borderColor: 'red',
-  };
 
   const updateStock = async (cartProducts: CartProduct[]) => {
     try {
@@ -69,6 +54,8 @@ export default function ShippingOptions({
 
           if (response.status === 200) {
             router.push('/checkout/SuccessPayment');
+
+            await axios.delete(`/api/cart/cartProduct/${cartProduct.id}`);
           }
         })
       );
