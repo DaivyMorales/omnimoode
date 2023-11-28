@@ -1,4 +1,4 @@
-import { useState, ReactNode } from 'react';
+import { useState, useEffect, ReactNode } from 'react';
 import { PiUserBold } from 'react-icons/pi';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { PiMoonBold, PiSunDimBold } from 'react-icons/pi';
@@ -10,6 +10,7 @@ import CartDropDown from './Cart/CartDropDown';
 import CartIcon from '@/components/Icons/CartIcon';
 import { useAppSelector } from '@/redux/hooks';
 import Footer from '@/components/Footer';
+import DeleteAddress from './Alerts/DeleteAddress';
 
 interface NavbarProps {
   children: ReactNode;
@@ -25,6 +26,11 @@ export default function Navbar({ children }: NavbarProps) {
   const [isHovered, setIsHovered] = useState(false);
 
   const cart = useAppSelector((state) => state.cartSlice.cart);
+  const showAlertAddress = useAppSelector(
+    (state) => state.showAlertAddressSlice.showAlertAddress
+  );
+
+  console.log(showAlertAddress);
 
   const handleHover = () => {
     setIsHovered(true);
@@ -36,15 +42,21 @@ export default function Navbar({ children }: NavbarProps) {
 
   const router = useRouter();
 
-  
-
+  useEffect(() => {
+    if (showAlertAddress) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+  }, [showAlertAddress]);
   return (
-    <div className='relative'>
-        {openSearch && (
-          <SearchBar openSearch={openSearch} setOpenSearch={setOpenSearch} />
-        )}  
-      <header>
-        <nav className='sticky z-10 top-0 bg-white w-full flex justify-between items-center py-2 px-10 dark:bg-black dark:border-b-2 dark:border-gray-800'>
+    <div className='withoutScroll'>
+      {showAlertAddress && <DeleteAddress />}
+      {openSearch && (
+        <SearchBar openSearch={openSearch} setOpenSearch={setOpenSearch} />
+      )}
+      <header className=' p-2'>
+        <nav className=' top-0  w-full flex justify-between items-center py-2 px-10 dark:bg-black dark:border-b-2 dark:border-gray-800'>
           <div
             className='flex justify-center items-center cursor-pointer'
             onClick={() => router.push('/')}
@@ -114,7 +126,7 @@ export default function Navbar({ children }: NavbarProps) {
           </div>
         </nav>
       </header>
-      <main>{children}</main>
+      <main className='withoutScroll'>{children}</main>
       <Footer />
     </div>
   );

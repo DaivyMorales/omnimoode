@@ -9,14 +9,16 @@ import { HiBadgeCheck, HiSupport, HiTrash } from 'react-icons/hi';
 import { useGetAddressByIdQuery } from '@/redux/api/addressApi';
 import { Address, Card } from '@/types';
 import { useGetCardByIdQuery } from '@/redux/api/cardApi';
+import { setShowAlertAddress } from '@/redux/features/showAlertAddressSlice';
+import { setAddresses } from '@/redux/features/addressSlice';
 
 export default function ProfilePage() {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
   const [onHoverAddress, setOnHoverAddress] = useState(false);
   const [onHoverCard, setOnHoverCard] = useState(false);
 
-  const [addresses, setAddresses] = useState<any>([]);
+  const addresses = useAppSelector((state) => state.addressSlice.addresses);
   const [cards, setCards] = useState<any>([]);
 
   const dispach = useAppDispach();
@@ -31,37 +33,15 @@ export default function ProfilePage() {
     id: userId,
   });
 
-  const number = useAppSelector(
-    (state) => state.NumberValidation.numberValidation
-  );
-
-  useEffect(() => {
-    dispach(generateNumber());
-  }, []);
-
   useEffect(() => {
     if (dataAddress && dataCard) {
-      setAddresses(dataAddress);
+      dispach(setAddresses(dataAddress));
       setCards(dataCard);
     }
   }, [dataCard, dataAddress]);
 
-  const SendEmail = async () => {
-    try {
-      const respose = await axios.post(`/api/send`, {
-        subject: 'Verificacion de Email',
-        email: session?.user?.email,
-        name: session?.user?.name,
-        text: 'Haz dado click a el boton para confirmar tu email',
-        number,
-      });
-    } catch (error) {
-      console.log('Error al enviar email', error);
-    }
-  };
-
   return (
-    <div className='h-full py-24 w-full flex flex-col items-center justify-center -mt-20'>
+    <div className='relative h-full py-24 w-full flex flex-col items-center justify-center -mt-20'>
       <div className='flex flex-col gap-4 w-[650px] justify-start items-start'>
         <div>
           <h1>Mi perfil</h1>
@@ -92,49 +72,61 @@ export default function ProfilePage() {
         <div className='flex flex-col  justify-center  items-center border-1 w-full p-5 rounded-lg'>
           <div className='flex flex-col justify-start items-start gap-4 w-full'>
             <h3>Tus domicilios</h3>
-            {addresses?.map((address: Address) => (
-              <div
-                key={address.id}
-                onMouseEnter={() => setOnHoverAddress(true)}
-                onMouseLeave={() => setOnHoverAddress(false)}
-                className='relative flex justify-between items-center w-full gap-y-3 border-1 rounded-lg p-3  hover:border-black'
-              >
-                {onHoverAddress && (
-                  <div className='-top-2 -right-2 absolute p-1 border-1 rounded-full bg-white border-black cursor-pointer'>
-                    <HiTrash />
+            {addresses > 0 ? (
+              addresses?.map((address: Address) => (
+                <div
+                  key={address.id}
+                  onMouseEnter={() => setOnHoverAddress(true)}
+                  onMouseLeave={() => setOnHoverAddress(false)}
+                  className='relative flex justify-between items-center w-full gap-y-3 border-1 rounded-lg p-3  hover:border-black'
+                >
+                  {onHoverAddress && (
+                    <div
+                      onClick={() => dispach(setShowAlertAddress(true))}
+                      className='-top-2 -right-2 absolute p-1 border-1 rounded-full bg-white border-black cursor-pointer'
+                    >
+                      <HiTrash />
+                    </div>
+                  )}
+                  <div className='grid grid-cols-2  w-96'>
+                    <div>
+                      <label className='label-profile'>Nombres</label>
+                      <p className='font-semibold'>{address.names}</p>
+                    </div>
+                    <div>
+                      <label className='label-profile'>Apellidos</label>
+                      <p className='font-semibold'>{address.names}</p>
+                    </div>
+                    <div>
+                      <label className='label-profile'>Dirección</label>
+                      <p className='font-semibold'>{address.address}</p>
+                    </div>
+                    <div>
+                      <label className='label-profile'>Estado</label>
+                      <p className='font-semibold'>{address.state}</p>
+                    </div>
+                    <div>
+                      <label className='label-profile'>Ciudad</label>
+                      <p className='font-semibold'>{address.city}</p>
+                    </div>
+                    <div>
+                      <label className='label-profile'>Telefono</label>
+                      <p className='font-semibold'>{address.phone}</p>
+                    </div>
                   </div>
-                )}
-                <div className='grid grid-cols-2  w-96'>
-                  <div>
-                    <label>Nombres</label>
-                    <p className='font-semibold'>{address.names}</p>
-                  </div>
-                  <div>
-                    <label>Apellidos</label>
-                    <p className='font-semibold'>{address.names}</p>
-                  </div>
-                  <div>
-                    <label>Dirección</label>
-                    <p className='font-semibold'>{address.address}</p>
-                  </div>
-                  <div>
-                    <label>Estado</label>
-                    <p className='font-semibold'>{address.state}</p>
-                  </div>
-                  <div>
-                    <label>Ciudad</label>
-                    <p className='font-semibold'>{address.city}</p>
-                  </div>
-                  <div>
-                    <label>Telefono</label>
-                    <p className='font-semibold'>{address.phone}</p>
-                  </div>
+                  <button className=' text-[12px] bg-white border-1 text-[#666666] px-[6px] py-[5px] rounded-md'>
+                    Editar
+                  </button>
                 </div>
-                <button className=' text-[12px] bg-white border-1 text-[#666666] px-[6px] py-[5px] rounded-md'>
-                  Editar
-                </button>
+              ))
+            ) : (
+              <div>
+                <h3 className='text-[13px] text-gray-400'>
+                  No tienes ningún domicilio aún
+                </h3>
               </div>
-            ))}
+            )}
+
             <div className='w-full  flex justify-end'>
               <button
                 type='submit'
@@ -164,7 +156,7 @@ export default function ProfilePage() {
                 )}
                 <div className='grid grid-cols-2  w-96'>
                   <div>
-                    <label>Número de tarjeta</label>
+                    <label className='label-profile'>Número de tarjeta</label>
                     <p className='font-semibold'>
                       {card.card_number
                         .replace(/.(?=.{4})/g, '*')
@@ -173,15 +165,15 @@ export default function ProfilePage() {
                     </p>
                   </div>
                   <div>
-                    <label>Nombres</label>
+                    <label className='label-profile'>Nombres</label>
                     <p className='font-semibold'>{card.names}</p>
                   </div>
                   <div>
-                    <label>Apellidos</label>
+                    <label className='label-profile'>Apellidos</label>
                     <p className='font-semibold'>{card.surnames}</p>
                   </div>
                   <div>
-                    <label>Cedula</label>
+                    <label className='label-profile'>Cedula</label>
                     <p className='font-semibold'>
                       {card.number_identification}
                     </p>
