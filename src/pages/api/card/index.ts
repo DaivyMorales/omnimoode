@@ -16,6 +16,14 @@ export default async function Card(req: NextApiRequest, res: NextApiResponse) {
   } = req;
 
   switch (method) {
+    case 'GET':
+      try {
+        const allCards = await prisma.card.findMany();
+        res.status(200).json(allCards);
+      } catch (error) {
+        res.status(500).json({ message: error });
+      }
+      break;
     case 'POST':
       try {
         const newCard = await prisma.card.create({
