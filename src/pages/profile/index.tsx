@@ -8,7 +8,10 @@ import { generateNumber } from '@/redux/features/NumberValidationSlice';
 import { HiBadgeCheck, HiSupport, HiTrash } from 'react-icons/hi';
 import { useGetAddressByIdQuery } from '@/redux/api/addressApi';
 import { Address, Card } from '@/types';
-import { useGetCardByIdQuery } from '@/redux/api/cardApi';
+import {
+  useGetCardByIdQuery,
+  useGetCardByUserIdQuery,
+} from '@/redux/api/cardApi';
 import { setShowAddress, setShowCard } from '@/redux/features/showAlertsSlice';
 import { setAddresses } from '@/redux/features/addressSlice';
 import { setCards } from '@/redux/features/cardSlice';
@@ -30,11 +33,13 @@ export default function ProfilePage() {
     id: userId,
   });
 
-  console.log(addresses?.length);
 
-  const { data: dataCard } = useGetCardByIdQuery({
+  const { data: dataCard } = useGetCardByUserIdQuery({
     id: userId,
   });
+
+  console.log(dataCard)
+
 
   dispach(setAddresses(dataAddress));
   dispach(setCards(dataCard));
@@ -150,7 +155,7 @@ export default function ProfilePage() {
                   onMouseLeave={() => setOnHoverCard(card.id)}
                   className='relative flex justify-between items-center  w-full gap-y-3 border-1 rounded-lg p-3 hover:border-black'
                 >
-                  {onHoverCard === card.id && (    
+                  {onHoverCard === card.id && (
                     <div
                       onClick={() => {
                         dispach(setShowCard(card.id));

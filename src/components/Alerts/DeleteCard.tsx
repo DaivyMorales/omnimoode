@@ -1,26 +1,33 @@
 import { MouseEvent, useEffect, useState } from 'react';
-import { setShowAddress } from '@/redux/features/showAlertsSlice';
+import { setShowAddress, setShowCard } from '@/redux/features/showAlertsSlice';
 import { useAppDispach } from '@/redux/hooks';
 import { useGetAddressByIdQuery } from '@/redux/api/addressApi';
 import { useSession } from 'next-auth/react';
 import { deleteAddressById } from '@/redux/features/addressSlice';
 import axios from 'axios';
+import { useGetCardByIdQuery } from '@/redux/api/cardApi';
+import { deleteCardById } from '@/redux/features/cardSlice';
+import { useAppSelector } from '@/redux/hooks';
 
-const DeleteAddress = () => {
+const DeleteCard = () => {
   const { data: session } = useSession();
 
-  const [addressId, setAddressId] = useState(0);
+  const [cardId, setCardId] = useState(0);
 
   const dispach = useAppDispach();
 
   const userId = (session?.user as { id?: number })?.id ?? 0;
 
-  const { data: dataAddress } = useGetAddressByIdQuery({
-    id: userId,
+  const showCard = useAppSelector((state) => state.showAlertsSlice.showCard);
+
+  const { data: dataCard } = useGetCardByIdQuery({
+    id: showCard,
   });
 
+  console.log(dataCard);
+
   const handleOuterDivClick = () => {
-    dispach(setShowAddress(false));
+    dispach(setShowAddress(0));
   };
 
   const handleInnerDivClick = (event: MouseEvent) => {
@@ -28,41 +35,46 @@ const DeleteAddress = () => {
   };
 
   const deleteAddress = async (id: number) => {
-    dispach(deleteAddressById(id));
+    dispach(deleteCardById(id));
 
-    const response = await axios.delete(`/api/address/${id}`);
+    const response = await axios.delete(`/api/card/${id}`);
     console.log(response);
   };
 
   useEffect(() => {
-    if (dataAddress) {
-      dataAddress.map((address) => setAddressId(address.id));
+    if (dataCard) {
+      dataCard.map((card) => setCardId(card.id));
     }
-  }, [dataAddress]);
+  }, [dataCard]);
 
   return (
-    <div className='delete-alert' onClick={handleOuterDivClick}>
+    <div className='delete-alert bg-red-500' onClick={handleOuterDivClick}>
       <div
         className='bg-white w-[500px] border-1 rounded-lg p-3 flex flex-col justify-center items-center gap-5'
         onClick={handleInnerDivClick}
       >
         <h3 className='text-[24px] font-semibold text-black'>
-          Eliminar domicilio
+          Eliminar tarjeta
         </h3>
         <p className='text-[16px] font-normal'>
           This project will be deleted, along with all of its Deployments,
           Domains, Environment Variables, Serverless Functions, and Settings.
         </p>
         <div>
-          {dataAddress?.map((address) => (
+          {dataCard?.map((card) => (
             <div
-              key={address.id}
+              key={card.id}
               className='flex gap-1 rounded-lg p-2 border-1 bg-gray-200 border-white '
             >
-              <p className='font-medium'> {address.names},</p>
-              <p className='font-medium'> {address.surnames},</p>
-              <p className='font-medium'> {address.address},</p>
-              <p className='font-medium'>{address.city}</p>
+              <p className='font-semibold'>
+                {card.card_number
+                  .replace(/.(?=.{4})/g, '*')
+                  .replace(/\s/g, '')
+                  .replace(/(.{4})/g, '$1')}
+              </p>
+              <p className='font-medium'> {card.names},</p>
+              <p className='font-medium'> {card.surnames},</p>
+              <p className='font-medium'>{card.number_identification}</p>
             </div>
           ))}
         </div>
@@ -70,7 +82,7 @@ const DeleteAddress = () => {
           <div className='flex justify-start items-center'>
             <button
               onClick={() => {
-                dispach(setShowAddress(false));
+                dispach(setShowCard(0));
               }}
               className='font-medium bg-black p-2 bg-white border-1 px-[12px] text-[14px] rounded-md  hover:bg-gray-100'
             >
@@ -80,8 +92,8 @@ const DeleteAddress = () => {
           <div className='flex justify-end items-center'>
             <button
               onClick={() => {
-                dispach(setShowAddress(false));
-                deleteAddress(addressId);
+                dispach(setShowCard(0));
+                deleteAddress(cardId);
               }}
               type='submit'
               className='font-medium bg-red-500  p-2 text-white px-[12px] text-[14px] rounded-md hover:bg-red-300'
@@ -95,4 +107,4 @@ const DeleteAddress = () => {
   );
 };
 
-export default DeleteAddress;
+export default DeleteCard;

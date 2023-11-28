@@ -9,9 +9,19 @@ export const cardApi = createApi({
   }),
   endpoints: (builder) => ({
     getCardById: builder.query<Card[], { id: number }>({
-      query: ({ id }) => `card/${id}`,
+      query: ({ id }) => `card/null/${id}`,
+    }),
+    getCardByUserId: builder.query<Card[], { id: number }>({
+      query: ({ id }) => `card/${id}/null`,
+    }),
+    getCards: builder.query<Card[], null>({
+      query: () => 'card',
     }),
   }),
 });
 
-export const { useGetCardByIdQuery } = cardApi;
+export const {
+  useGetCardByIdQuery,
+  useGetCardsQuery,
+  useGetCardByUserIdQuery,
+} = cardApi;

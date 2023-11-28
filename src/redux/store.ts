@@ -1,8 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
 import NumberValidation from './features/NumberValidationSlice';
 import EmailRecoveryPassword from './features/EmailRecoveryPasswordSlice';
-import showAlertAddressSlice from './features/showAlertAddressSlice';
+import showAlertsSlice from './features/showAlertsSlice';
 import cartSlice from './features/cartSlice';
+import cardSlice from './features/cardSlice';
 import priceFinalSlice from './features/priceFinalSlice';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 import addressSlice from './features/addressSlice';
@@ -20,8 +21,9 @@ export const store: any = configureStore({
     EmailRecoveryPassword,
     cartSlice,
     priceFinalSlice,
-    showAlertAddressSlice,
+    showAlertsSlice,
     addressSlice,
+    cardSlice,
     [categoryApi.reducerPath]: categoryApi.reducer,
     [productApi.reducerPath]: productApi.reducer,
     [cartApi.reducerPath]: cartApi.reducer,

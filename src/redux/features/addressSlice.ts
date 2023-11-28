@@ -1,5 +1,5 @@
 import { Address } from '@/types';
-import { createSlice, Draft } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   addresses: [] as Address[],

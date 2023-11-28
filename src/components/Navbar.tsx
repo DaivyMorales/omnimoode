@@ -11,6 +11,7 @@ import CartIcon from '@/components/Icons/CartIcon';
 import { useAppSelector } from '@/redux/hooks';
 import Footer from '@/components/Footer';
 import DeleteAddress from './Alerts/DeleteAddress';
+import DeleteCard from './Alerts/DeleteCard';
 
 interface NavbarProps {
   children: ReactNode;
@@ -26,11 +27,13 @@ export default function Navbar({ children }: NavbarProps) {
   const [isHovered, setIsHovered] = useState(false);
 
   const cart = useAppSelector((state) => state.cartSlice.cart);
-  const showAlertAddress = useAppSelector(
-    (state) => state.showAlertAddressSlice.showAlertAddress
+
+  const showAddress = useAppSelector(
+    (state) => state.showAlertsSlice.showAddress
   );
 
-  console.log(showAlertAddress);
+  const showCard = useAppSelector((state) => state.showAlertsSlice.showCard);
+  console.log(showCard);
 
   const handleHover = () => {
     setIsHovered(true);
@@ -43,15 +46,16 @@ export default function Navbar({ children }: NavbarProps) {
   const router = useRouter();
 
   useEffect(() => {
-    if (showAlertAddress) {
+    if (showCard !== 0) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
     }
-  }, [showAlertAddress]);
+  }, [showAddress, showCard]);
   return (
     <div className='withoutScroll'>
-      {showAlertAddress && <DeleteAddress />}
+      {showAddress !== 0 && <DeleteAddress />}
+      {showCard !== 0 && <DeleteCard />}
       {openSearch && (
         <SearchBar openSearch={openSearch} setOpenSearch={setOpenSearch} />
       )}
