@@ -24,7 +24,6 @@ export default function ProfilePage() {
 
   const addresses = useAppSelector((state) => state.addressSlice.addresses);
   const cards = useAppSelector((state) => state.cardSlice.cards);
-
   const dispach = useAppDispach();
 
   const userId = (session?.user as { id?: number })?.id ?? 0;
@@ -33,13 +32,9 @@ export default function ProfilePage() {
     id: userId,
   });
 
-
   const { data: dataCard } = useGetCardByUserIdQuery({
     id: userId,
   });
-
-  console.log(dataCard)
-
 
   dispach(setAddresses(dataAddress));
   dispach(setCards(dataCard));
@@ -152,7 +147,7 @@ export default function ProfilePage() {
                 <div
                   key={card.id}
                   onMouseEnter={() => setOnHoverCard(card.id)}
-                  onMouseLeave={() => setOnHoverCard(card.id)}
+                  onMouseLeave={() => setOnHoverCard(0)}
                   className='relative flex justify-between items-center  w-full gap-y-3 border-1 rounded-lg p-3 hover:border-black'
                 >
                   {onHoverCard === card.id && (

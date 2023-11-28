@@ -54,6 +54,34 @@ export default async function CardById(
 
       default:
         break;
+
+      case 'DELETE':
+        if (typeof userId === 'number' && typeof cardId === 'number') {
+          res.status(404).json({ message: 'You can remove with cardId only' });
+        }
+
+        if (cardId === 'null' && typeof userId === 'number') {
+          res.status(404).json({ message: 'You can remove with cardId only' });
+        }
+
+        if (userId === 'null' && typeof cardId === 'number') {
+          try {
+            const card = await prisma.card.deleteMany({
+              where: { id: cardId },
+            });
+            if (!card) res.status(404).json({ message: 'Card  not found' });
+
+            res.status(200).json('Card has been removed!');
+          } catch (error) {
+            res.status(500).json({ message: error });
+          }
+        }
+
+        if (userId === 'null' && cardId === 'null') {
+          res.status(404).json({ message: 'Provide the cardId' });
+        }
+
+        break;
     }
   } else {
     res.status(400).json("Slug hasn't been provided");

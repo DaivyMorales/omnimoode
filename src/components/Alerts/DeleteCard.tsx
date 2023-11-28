@@ -1,30 +1,21 @@
 import { MouseEvent, useEffect, useState } from 'react';
 import { setShowAddress, setShowCard } from '@/redux/features/showAlertsSlice';
 import { useAppDispach } from '@/redux/hooks';
-import { useGetAddressByIdQuery } from '@/redux/api/addressApi';
-import { useSession } from 'next-auth/react';
-import { deleteAddressById } from '@/redux/features/addressSlice';
 import axios from 'axios';
 import { useGetCardByIdQuery } from '@/redux/api/cardApi';
 import { deleteCardById } from '@/redux/features/cardSlice';
 import { useAppSelector } from '@/redux/hooks';
 
 const DeleteCard = () => {
-  const { data: session } = useSession();
-
   const [cardId, setCardId] = useState(0);
 
   const dispach = useAppDispach();
-
-  const userId = (session?.user as { id?: number })?.id ?? 0;
 
   const showCard = useAppSelector((state) => state.showAlertsSlice.showCard);
 
   const { data: dataCard } = useGetCardByIdQuery({
     id: showCard,
   });
-
-  console.log(dataCard);
 
   const handleOuterDivClick = () => {
     dispach(setShowAddress(0));

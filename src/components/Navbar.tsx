@@ -26,14 +26,12 @@ export default function Navbar({ children }: NavbarProps) {
 
   const [isHovered, setIsHovered] = useState(false);
 
-  const cart = useAppSelector((state) => state.cartSlice.cart);
 
   const showAddress = useAppSelector(
     (state) => state.showAlertsSlice.showAddress
   );
 
   const showCard = useAppSelector((state) => state.showAlertsSlice.showCard);
-  console.log(showCard);
 
   const handleHover = () => {
     setIsHovered(true);
@@ -51,7 +49,9 @@ export default function Navbar({ children }: NavbarProps) {
     } else {
       document.body.style.overflow = '';
     }
-  }, [showAddress, showCard]);
+  }, [showCard]);
+
+
   return (
     <div className='withoutScroll'>
       {showAddress !== 0 && <DeleteAddress />}
