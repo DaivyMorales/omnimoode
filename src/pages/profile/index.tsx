@@ -15,6 +15,7 @@ import {
   setShowAddress,
   setShowCard,
   setShowCardForm,
+  setShowCardFormEdit,
 } from '@/redux/features/showAlertsSlice';
 import { setAddresses } from '@/redux/features/addressSlice';
 import { setCards } from '@/redux/features/cardSlice';
@@ -41,20 +42,24 @@ export default function ProfilePage() {
   });
 
   useEffect(() => {
+    refetch();  
+  }, [cards]);
+
+  useEffect(() => {
     dispach(setAddresses(dataAddress));
     dispach(setCards(dataCard));
   }, [dataCard, dataAddress]);
 
   return (
     <div className='relative h-full py-24 w-full flex flex-col items-center justify-center -mt-20'>
-      <div className='flex flex-col gap-4 w-[650px] justify-start items-start'>
+      <div className='flex flex-col gap-4 w-full p-10 justify-start items-start sm:w-[650px]'>
         <div>
           <h1>Mi perfil</h1>
           <p>Administra y protege tu cuenta</p>
         </div>
 
         {/* MAIN INFORMATION */}
-        <div className='flex  justify-between items-center border-1 w-full p-5 rounded-lg'>
+        <div className='flex flex-col justify-between items-center border-1 w-full p-5 rounded-lg sm:flex '>
           <div className='flex justify-center items-center gap-4 '>
             <div className='p-2 rounded-full border-4 border-blue-500 bg-gray-200'>
               <HiSupport size={50} />
@@ -80,7 +85,7 @@ export default function ProfilePage() {
             {addresses?.length > 0 ? (
               addresses?.map((address: Address) => (
                 <div
-                  key={address.id}
+                     key={address.id}
                   onMouseEnter={() => setOnHoverAddress(true)}
                   onMouseLeave={() => setOnHoverAddress(false)}
                   className='relative flex justify-between items-center w-full gap-y-3 border-1 rounded-lg p-3  hover:border-black'
@@ -93,7 +98,7 @@ export default function ProfilePage() {
                       <HiTrash />
                     </div>
                   )}
-                  <div className='grid grid-cols-2  w-96'>
+                  <div className='grid grid-cols-1 sm:grid-cols-2 w-96'>
                     <div>
                       <label className='label-profile'>Nombres</label>
                       <p className='font-semibold'>{address.names}</p>
@@ -165,7 +170,7 @@ export default function ProfilePage() {
                       <HiTrash />
                     </div>
                   )}
-                  <div className='grid grid-cols-2  w-96'>
+                  <div className='grid grid-cols-1 sm:grid-cols-2  w-96'>
                     <div>
                       <label className='label-profile'>Número de tarjeta</label>
                       <p className='font-semibold'>
@@ -190,7 +195,12 @@ export default function ProfilePage() {
                       </p>
                     </div>
                   </div>
-                  <button className=' text-[12px] bg-white border-1 text-[#666666] px-[6px] py-[5px] rounded-md'>
+                  <button
+                    onClick={() => {
+                      dispach(setShowCardFormEdit(card.id));
+                    }}
+                    className=' text-[12px] bg-white border-1 text-[#666666] px-[6px] py-[5px] rounded-md'
+                  >
                     Editar
                   </button>
                 </div>

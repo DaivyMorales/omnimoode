@@ -4,6 +4,7 @@ const initialState = {
   showAddress: 0,
   showCard: 0,
   showCardForm: false,
+  showCardFormEdit: 0,
 };
 
 export const showAlertsSlice = createSlice({
@@ -19,9 +20,16 @@ export const showAlertsSlice = createSlice({
     setShowCardForm: (state, action) => {
       state.showCardForm = action.payload;
     },
+    setShowCardFormEdit: (state, action) => {
+      state.showCardFormEdit = action.payload;
+    },
   },
 });
 
-export const { setShowAddress, setShowCard, setShowCardForm } =
-  showAlertsSlice.actions;
+export const {
+  setShowAddress,
+  setShowCard,
+  setShowCardForm,
+  setShowCardFormEdit,
+} = showAlertsSlice.actions;
 export default showAlertsSlice.reducer;
