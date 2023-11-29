@@ -11,7 +11,11 @@ import {
   useGetCardByIdQuery,
   useGetCardByUserIdQuery,
 } from '@/redux/api/cardApi';
-import { setShowAddress, setShowCard } from '@/redux/features/showAlertsSlice';
+import {
+  setShowAddress,
+  setShowCard,
+  setShowCardForm,
+} from '@/redux/features/showAlertsSlice';
 import { setAddresses } from '@/redux/features/addressSlice';
 import { setCards } from '@/redux/features/cardSlice';
 
@@ -24,7 +28,6 @@ export default function ProfilePage() {
   const addresses = useAppSelector((state) => state.addressSlice.addresses);
   const cards = useAppSelector((state) => state.cardSlice.cards);
 
-  console.log('state', cards);
   const dispach = useAppDispach();
 
   const userId = (session?.user as { id?: number })?.id ?? 0;
@@ -38,7 +41,6 @@ export default function ProfilePage() {
   });
 
   useEffect(() => {
-    console.log("I've ejecuted!");
     dispach(setAddresses(dataAddress));
     dispach(setCards(dataCard));
   }, [dataCard, dataAddress]);
@@ -202,6 +204,9 @@ export default function ProfilePage() {
             )}
             <div className='w-full  flex justify-end'>
               <button
+                onClick={() => {
+                  dispach(setShowCardForm(true));
+                }}
                 type='submit'
                 className='font-medium bg-black p-2 text-white px-[12px] text-[14px] rounded-md hover:bg-gray-900'
               >

@@ -12,6 +12,8 @@ import { useAppSelector } from '@/redux/hooks';
 import Footer from '@/components/Footer';
 import DeleteAddress from './Alerts/DeleteAddress';
 import DeleteCard from './Alerts/DeleteCard';
+import Payment from './Checkout/Payment';
+import { setShowCardForm } from '@/redux/features/showAlertsSlice';
 
 interface NavbarProps {
   children: ReactNode;
@@ -26,12 +28,14 @@ export default function Navbar({ children }: NavbarProps) {
 
   const [isHovered, setIsHovered] = useState(false);
 
-
   const showAddress = useAppSelector(
     (state) => state.showAlertsSlice.showAddress
   );
 
   const showCard = useAppSelector((state) => state.showAlertsSlice.showCard);
+  const showCardForm = useAppSelector(
+    (state) => state.showAlertsSlice.showCardForm
+  );
 
   const handleHover = () => {
     setIsHovered(true);
@@ -44,18 +48,18 @@ export default function Navbar({ children }: NavbarProps) {
   const router = useRouter();
 
   useEffect(() => {
-    if (showCard !== 0) {
+    if (showCard !== 0 || showCardForm === true) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
     }
-  }, [showCard]);
-
+  }, [showCard, showCardForm]);
 
   return (
     <div className='withoutScroll'>
       {showAddress !== 0 && <DeleteAddress />}
       {showCard !== 0 && <DeleteCard />}
+      {showCardForm && <Payment setPayment={setShowCardForm} />}
       {openSearch && (
         <SearchBar openSearch={openSearch} setOpenSearch={setOpenSearch} />
       )}
