@@ -8,6 +8,14 @@ export default async function CardById(
   const {
     method,
     query: { slug },
+    body: {
+      card_number,
+      names,
+      surnames,
+      due_date,
+      security_code,
+      number_identification,
+    },
   } = req;
 
   if (slug) {
@@ -53,6 +61,43 @@ export default async function CardById(
         break;
 
       default:
+        break;
+
+      case 'PUT':
+        if (typeof userId === 'number' && typeof cardId === 'number') {
+          res.status(404).json({ message: 'You can remove with cardId only' });
+        }
+
+        if (cardId === 'null' && typeof userId === 'number') {
+          res.status(404).json({ message: 'You can update with cardId only' });
+        }
+
+        if (userId === 'null' && typeof cardId === 'number') {
+          try {
+            const cardUpdated = await prisma.card.update({
+              where: { id: cardId },
+              data: {
+                card_number,
+                names,
+                surnames,
+                due_date,
+                security_code,
+                number_identification,
+              },
+            });
+            if (!cardUpdated)
+              res.status(404).json({ message: 'Card not found' });
+
+            res.status(200).json(cardUpdated); //Why this response with a {count: 1}
+          } catch (error) {
+            console.log(error)
+            res.status(500).json({ message: error });
+          }
+        }
+
+        if (userId === 'null' && cardId === 'null') {
+          res.status(404).json({ message: 'Provide the cardId' });
+        }
         break;
 
       case 'DELETE':
