@@ -1,4 +1,3 @@
-'use client';
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
@@ -24,6 +23,8 @@ export default function ProfilePage() {
 
   const addresses = useAppSelector((state) => state.addressSlice.addresses);
   const cards = useAppSelector((state) => state.cardSlice.cards);
+
+  console.log('state', cards);
   const dispach = useAppDispach();
 
   const userId = (session?.user as { id?: number })?.id ?? 0;
@@ -32,13 +33,15 @@ export default function ProfilePage() {
     id: userId,
   });
 
-  const { data: dataCard } = useGetCardByUserIdQuery({
+  const { data: dataCard, refetch } = useGetCardByUserIdQuery({
     id: userId,
   });
 
-  dispach(setAddresses(dataAddress));
-  dispach(setCards(dataCard));
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log("I've ejecuted!");
+    dispach(setAddresses(dataAddress));
+    dispach(setCards(dataCard));
+  }, [dataCard, dataAddress]);
 
   return (
     <div className='relative h-full py-24 w-full flex flex-col items-center justify-center -mt-20'>

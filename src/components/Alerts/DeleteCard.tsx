@@ -3,11 +3,13 @@ import { setShowAddress, setShowCard } from '@/redux/features/showAlertsSlice';
 import { useAppDispach } from '@/redux/hooks';
 import axios from 'axios';
 import { useGetCardByIdQuery } from '@/redux/api/cardApi';
-import { deleteCardById } from '@/redux/features/cardSlice';
+import { deleteCardById, setCards } from '@/redux/features/cardSlice';
 import { useAppSelector } from '@/redux/hooks';
+import { Card } from '@/types';
 
 const DeleteCard = () => {
   const [cardId, setCardId] = useState(0);
+  const [responseStatus, setResponseStatus] = useState(0);
 
   const dispach = useAppDispach();
 
@@ -25,18 +27,27 @@ const DeleteCard = () => {
     event.stopPropagation();
   };
 
-  const deleteAddress = async (id: number) => {
-    dispach(deleteCardById(id));
-
-    const response = await axios.delete(`/api/card/${id}`);
+  const deleteCard = async (id: number) => {
+    const response = await axios.delete(`/api/card/null/${id}`);
     console.log(response);
+    setResponseStatus(response.status);
+    if (responseStatus === 200) {
+    }
   };
 
   useEffect(() => {
     if (dataCard) {
-      dataCard.map((card) => setCardId(card.id));
+      dataCard.map((card: Card) => setCardId(card.id));
+      // dispach(setCards(dataCard));
     }
   }, [dataCard]);
+
+  useEffect(() => {
+    if (responseStatus === 200) {
+      dispach(setShowCard(0));
+      dispach(deleteCardById(cardId));
+    }
+  }, [responseStatus]);
 
   return (
     <div className='delete-alert bg-red-500' onClick={handleOuterDivClick}>
@@ -52,7 +63,7 @@ const DeleteCard = () => {
           Domains, Environment Variables, Serverless Functions, and Settings.
         </p>
         <div>
-          {dataCard?.map((card) => (
+          {dataCard?.map((card: Card) => (
             <div
               key={card.id}
               className='flex gap-1 rounded-lg p-2 border-1 bg-gray-200 border-white '
@@ -83,8 +94,7 @@ const DeleteCard = () => {
           <div className='flex justify-end items-center'>
             <button
               onClick={() => {
-                dispach(setShowCard(0));
-                deleteAddress(cardId);
+                deleteCard(cardId);
               }}
               type='submit'
               className='font-medium bg-red-500  p-2 text-white px-[12px] text-[14px] rounded-md hover:bg-red-300'

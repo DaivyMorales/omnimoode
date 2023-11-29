@@ -90,7 +90,7 @@ export default function CartDropDown({
       }}
       ref={dropdownRef}
       style={{ width: '500px' }}
-      className='absolute dropdown-cart shadow-lg flex flex-col justify-start items-start gap-2 bg-white rounded-md p-2 shadow-md  border-1 dark:bg-black'
+      className='z-10 absolute dropdown-cart shadow-lg flex flex-col justify-start items-start gap-2 bg-white rounded-md p-2 shadow-md  border-1 dark:bg-black'
     >
       <div className='w-full flex justify-between items-center border-b-1 py-3'>
         <h3>
