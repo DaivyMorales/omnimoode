@@ -1,9 +1,12 @@
+//[...nextauth].ts
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import prisma from "../../../../lib/prisma";
 
+
 export const authOptions = {
+  
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -20,6 +23,8 @@ export const authOptions = {
         },
       },
       async authorize(credentials, req) {
+        console.log("HIIII")
+        console.log(credentials);
         // Search User
         const userFound = await prisma.user.findFirst({
           where: {

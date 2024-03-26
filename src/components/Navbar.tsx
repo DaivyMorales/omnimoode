@@ -51,7 +51,7 @@ export default function Navbar({ children }: NavbarProps) {
 
   const router = useRouter();
 
-console.log(showCardFormEdit !== 0 ? "YES": "NO")
+// console.log(showCardFormEdit !== 0 ? "YES": "NO")
 
   useEffect(() => {
     if (showCard !== 0 || showCardForm === true || showCardFormEdit !==  0) {

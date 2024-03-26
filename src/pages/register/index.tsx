@@ -11,6 +11,7 @@ import { HiOutlineMail } from "react-icons/hi";
 
 export default function Register() {
   const [error, setError] = useState("");
+  console.log(error);
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
@@ -55,6 +56,8 @@ export default function Register() {
           password: values.password,
           redirect: false,
         });
+
+        console.log("res", res);
 
         if (res?.ok) return router.push("/register/confirm");
         setIsLoading(false);

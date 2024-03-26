@@ -5,8 +5,10 @@ import { useRouter } from "next/router";
 import { motion } from "framer-motion";
 import { HiOutlineMail } from "react-icons/hi";
 import { AiOutlineLock, AiOutlineReload } from "react-icons/ai";
+import axios from "axios";
 
 export default function LoginPage() {
+ 
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -26,11 +28,18 @@ export default function LoginPage() {
         redirect: false,
       });
 
+      console.log("response", response);
       setIsLoading(false);
 
-      if (response?.error) setError(response.error as string);
-
-      if (response?.ok) return router.push("/");
+      if (response?.ok) {
+        return router.push("/");
+      } else {
+        if (response?.error) {
+          setError(response.error as string);
+        } else {
+          setError("Ha ocurrido un error inesperado");
+        }
+      }
     },
   });
 
