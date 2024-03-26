@@ -66,7 +66,7 @@ export default function Navbar({ children }: NavbarProps) {
       {showAddress !== 0 && <DeleteAddress />}
       {showCard !== 0 && <DeleteCard />}
       {showCardForm && <Payment setPayment={setShowCardForm} />}
-      {showCardFormEdit && <EditPayment />}
+      {/* {showCardFormEdit && <EditPayment />} */}
       {openSearch && (
         <SearchBar openSearch={openSearch} setOpenSearch={setOpenSearch} />
       )}
@@ -76,7 +76,7 @@ export default function Navbar({ children }: NavbarProps) {
             className='flex justify-center items-center cursor-pointer'
             onClick={() => router.push('/')}
           >
-            {/* <img src='images/logoGood.png' alt='Logo' className='w-39 h-16' /> */}
+            <img src='images/logoGood.png' alt='Logo' className='w-39 h-16' />
           </div>
 
           <button
