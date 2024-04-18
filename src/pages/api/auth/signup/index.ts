@@ -10,7 +10,7 @@ export default async function handler(
 ) {
   const {
     method,
-    body: { id, name, email, email_verification, password },
+    body: { id, name, email, email_verification, password, roleId },
   } = req;
 
   switch (method) {
@@ -60,6 +60,7 @@ export default async function handler(
             email,
             email_verification,
             password: hashedPassword,
+            roleId: 2
           },
         });
 

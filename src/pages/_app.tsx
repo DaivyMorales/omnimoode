@@ -20,6 +20,7 @@ export default function App({
     '/recovery/changePassword',
     '/checkout',
     '/checkout/SuccessPayment',
+    '/example'
   ];
 
   const isNavbarVisible = !excludedRoutes.includes(router.pathname);

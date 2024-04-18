@@ -85,7 +85,7 @@ export default function ProductPage() {
         </motion.div>
       ) : (
         <main className="grid grid-cols-1 gap-10 w-full h-full sm:grid-cols-2">
-          <section>
+          <section className="flex justify-end items-center">
             <div className=" rounded-md ">
               {data?.imageUrl && (
                 <Image
@@ -162,9 +162,7 @@ export default function ProductPage() {
                     </>
                   )}
                 </button>
-                <button className="bg-gray-200 py-3 h-12 rounded-lg px-4 ">
-                  <PiHeartBold />
-                </button>
+               
               </section>
             </form>
           </section>
