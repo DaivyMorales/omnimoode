@@ -110,18 +110,7 @@ export default function ProfileDropDown({
             Tu cuenta
           </Link>
 
-          <Link
-            href='/buys'
-            onClick={() => {
-              setOpenProfile(false);
-            }}
-            className='flex text-xs gap-2 px-3 py-2 justify-start items-center w-full hover:bg-gray-50 cursor-pointer dark:text-gray-400 dark:hover:text-white dark:hover:bg-black'
-          >
-            <div className=''>
-              <PiShoppingCartBold size={18} />
-            </div>
-            Tus compras
-          </Link>
+        
 
           {/* LOGOUT */}
           <hr />
