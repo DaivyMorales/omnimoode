@@ -95,18 +95,7 @@ export default function Navbar({ children }: NavbarProps) {
           </button>
 
           <div className='flex items-center gap-3 '>
-            <div
-              className='p-1 cursor-pointer'
-              onClick={() => {
-                setColorMode(colorMode === 'light' ? 'dark' : 'light');
-              }}
-            >
-              {colorMode === 'light' ? (
-                <PiMoonBold size={20} color='black' />
-              ) : (
-                <PiSunDimBold size={20} color='white' />
-              )}
-            </div>
+           
             <div
               className=' cursor-pointer'
               onClick={() => {

@@ -20,7 +20,7 @@ export default function ProductPage() {
   const [sizeSelected, setSizeSelected] = useState(0);
   const [submited, setSubmited] = useState(false);
 
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   const cartId = (session?.user as { cartId?: number })?.cartId;
 
@@ -43,23 +43,29 @@ export default function ProductPage() {
       sizeId: undefined,
     },
     onSubmit: async (values) => {
-      const newCartProduct = {
-        cartId,
-        productId: values.productId,
-        sizeId: values.sizeId,
-        quantity: 1,
-        isLoaded: false,
-      };
+      if (status == "unauthenticated") {
+        router.push("/register");
+      } else if (status === "authenticated") {
+        const newCartProduct = {
+          cartId,
+          productId: values.productId,
+          sizeId: values.sizeId,
+          quantity: 1,
+          isLoaded: false,
+        };
 
-      setSubmited(true);
-      const response = await dispatch(createCartProduct(newCartProduct) as any);
+        setSubmited(true);
+        const response = await dispatch(
+          createCartProduct(newCartProduct) as any
+        );
 
-      dispatch(setCart([...cart, response.payload]));
+        dispatch(setCart([...cart, response.payload]));
 
-      if (response.payload) {
-        formik.setFieldValue("sizeId", undefined);
+        if (response.payload) {
+          formik.setFieldValue("sizeId", undefined);
+        }
+        setSubmited(false);
       }
-      setSubmited(false);
     },
   });
 
@@ -162,7 +168,6 @@ export default function ProductPage() {
                     </>
                   )}
                 </button>
-               
               </section>
             </form>
           </section>
