@@ -28,12 +28,13 @@ export default function ChangePassword() {
         .required("Debes digitar una contraseña"),
       confirmNewPassword: Yup.string()
         .oneOf(
-          [Yup.ref("password")],
+          [Yup.ref("newPassword")],
           "Las contraseñas deben ser igual, corrigela!"
         )
         .required("Debes de nuevo digitar tu contraseña"),
     }),
     onSubmit: async (values) => {
+      console.log("submit")
       setIsLoading(true)
       const response = await axios.post("/api/change_password", {
         email,
