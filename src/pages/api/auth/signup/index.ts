@@ -41,7 +41,7 @@ export default async function handler(
         if (userWithEmail?.email === email) {
           return res
             .status(400)
-            .json("There's somebody with that email, change it!");
+            .json("Hay alguien con tu mismo email, cambialo!");
         }
 
         //Password
