@@ -4,9 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import prisma from "../../../../lib/prisma";
 
-
 export const authOptions = {
-  
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -23,7 +21,6 @@ export const authOptions = {
         },
       },
       async authorize(credentials, req) {
-        console.log("HIIII")
         console.log(credentials);
         // Search User
         const userFound = await prisma.user.findFirst({
@@ -37,6 +34,7 @@ export const authOptions = {
             email_verification: true,
             password: true,
             cartId: true,
+            roleId: true,
           },
         });
 
@@ -58,6 +56,7 @@ export const authOptions = {
           email: userFound.email,
           email_verification: userFound.email_verification,
           cartId: userFound.cartId,
+          roleId: userFound.roleId,
         };
       },
     }),
