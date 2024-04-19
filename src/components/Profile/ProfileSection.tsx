@@ -8,6 +8,7 @@ function ProfileSection() {
   const { data: session, update } = useSession();
 
   const [userName, setUserName] = useState<string | undefined>("");
+  const [userEmail, setUserEmail] = useState("");
   const [nameIsUpdated, setNameIsUpdated] = useState(false);
   const [user, setUser] = useState<any>({} as any);
   const [isTyping, setIsTyping] = useState(false);
@@ -25,15 +26,20 @@ function ProfileSection() {
     if (session?.user?.name) {
       setUserName(session?.user?.name);
     }
+
+    if (session?.user?.email) {
+      setUserEmail(session?.user?.email);
+    }
   }, [session]);
 
   const profileSettings = async () => {
     setIsLoading(true);
 
-    update({ ...user, name: userName });
+    update({ ...user, name: userName, email: userEmail });
 
     const body = {
       name: userName,
+      email: userEmail,
     };
 
     const response = await axios.put(`/api/user/${userId}`, body);
@@ -53,21 +59,42 @@ function ProfileSection() {
   return (
     <div className="flex flex-col gap-5 justify-start items-center bg-white border-1 w-full pt-5 rounded-lg sm:flex">
       {session?.user?.name && (
-        <div className="flex gap-4 w-full justify-center items-center p-4">
-          <label htmlFor="" className="">
+        <div className="grid grid-cols-4 gap-4 w-full p-4">
+          <label htmlFor="" className=" flex justify-end items-center">
             Nombre de usuario
           </label>
-          <div className="inputLogin">
+          <div className="inputLogin col-span-3">
             <input
               id="email"
               name="email"
-              type="email"
+              type="text"
               className="text-xs"
               onChange={(e) => {
                 setUserName(e.target.value);
                 setIsTyping(true);
               }}
               value={userName}
+            />
+          </div>
+        </div>
+      )}
+
+      {session?.user?.email && (
+        <div className="grid grid-cols-4 gap-4 w-full p-4">
+          <label htmlFor="" className="flex justify-end items-center">
+            Email
+          </label>
+          <div className="inputLogin col-span-3">
+            <input
+              id="email"
+              name="email"
+              type="email"
+              className="text-xs"
+              onChange={(e) => {
+                setUserEmail(e.target.value);
+                setIsTyping(true);
+              }}
+              value={userEmail}
             />
           </div>
         </div>
@@ -87,8 +114,10 @@ function ProfileSection() {
             <div className="animate-spin">
               <CgSpinner size={17} />
             </div>
+          ) : isTyping ? (
+            "Guardar cambios"
           ) : (
-            isTyping ? "Guardar cambios" : "Guardar cambios"
+            "Guardar cambios"
           )}
           {/*          
           <div className="animate-spin">
