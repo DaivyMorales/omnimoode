@@ -88,7 +88,7 @@ function ProfileSection() {
               <CgSpinner size={17} />
             </div>
           ) : (
-            isTyping && "Guardar cambios"
+            isTyping ? "Guardar cambios" : "Guardar cambios"
           )}
           {/*          
           <div className="animate-spin">

@@ -67,6 +67,7 @@ export default function ProfilePage() {
         try {
           const responseUpload = await axios.post("/api/upload", formData);
           const urlObtained = responseUpload.data.imageUrl;
+          console.log(responseUpload)
 
           const body = {
             image: urlObtained,
@@ -89,7 +90,10 @@ export default function ProfilePage() {
     const body = {
       image: "",
     };
-    const responseUser = await axios.put(`/api/user/${userId}`, body);
+    await axios.put(`/api/user/${userId}`, body);
+    // const responseImage = await axios.delete(`/api/upload/${userId}`, {
+    //   imageId: ,
+    // });
     await update({ ...user, image: "" });
   };
 
@@ -145,7 +149,7 @@ export default function ProfilePage() {
           </div> */}
 
           <div className="flex flex-col items-start justify-start gap-3">
-            {profileImageSelected && (
+            {urlProfileImageUploaded && (
               <SuccessfulAlert
                 title="Tu imagen ha sido cargada existosamente."
                 description={`Te ves bien ${session?.user?.name}!`}
