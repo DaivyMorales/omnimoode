@@ -18,7 +18,6 @@ export default function App({
     '/register/confirm',
     '/recovery',
     '/recovery/changePassword',
-    '/checkout',
     '/checkout/SuccessPayment',
     '/example'
   ];

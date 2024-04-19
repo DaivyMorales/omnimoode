@@ -1,20 +1,21 @@
-import { useState, useEffect, ReactNode } from 'react';
-import { PiUserBold } from 'react-icons/pi';
-import { AiOutlineSearch } from 'react-icons/ai';
-import { PiMoonBold, PiSunDimBold } from 'react-icons/pi';
-import ProfileDropDown from './ProfileDropDown';
-import { useRouter } from 'next/router';
-import SearchBar from './SearchBar';
-import useColorMode from '@/hooks/useColorMode';
-import CartDropDown from './Cart/CartDropDown';
-import CartIcon from '@/components/Icons/CartIcon';
-import { useAppSelector } from '@/redux/hooks';
-import Footer from '@/components/Footer';
-import DeleteAddress from './Alerts/DeleteAddress';
-import DeleteCard from './Alerts/DeleteCard';
-import Payment from './Checkout/Payment';
-import { setShowCardForm } from '@/redux/features/showAlertsSlice';
-import EditPayment from './Checkout/EditPayment';
+import { useState, useEffect, ReactNode } from "react";
+import { PiUserBold } from "react-icons/pi";
+import { AiOutlineSearch } from "react-icons/ai";
+import { PiMoonBold, PiSunDimBold } from "react-icons/pi";
+import ProfileDropDown from "./ProfileDropDown";
+import { useRouter } from "next/router";
+import SearchBar from "./SearchBar";
+import useColorMode from "@/hooks/useColorMode";
+import CartDropDown from "./Cart/CartDropDown";
+import CartIcon from "@/components/Icons/CartIcon";
+import { useAppSelector } from "@/redux/hooks";
+import Footer from "@/components/Footer";
+import DeleteAddress from "./Alerts/DeleteAddress";
+import DeleteCard from "./Alerts/DeleteCard";
+import Payment from "./Checkout/Payment";
+import { setShowCardForm } from "@/redux/features/showAlertsSlice";
+import EditPayment from "./Checkout/EditPayment";
+import { useOpen } from "@/store/OpenStore";
 
 interface NavbarProps {
   children: ReactNode;
@@ -32,6 +33,8 @@ export default function Navbar({ children }: NavbarProps) {
   const showAddress = useAppSelector(
     (state) => state.showAlertsSlice.showAddress
   );
+
+  const { openPayment, setOpenPayment } = useOpen();
 
   const showCard = useAppSelector((state) => state.showAlertsSlice.showCard);
   const showCardForm = useAppSelector(
@@ -51,53 +54,53 @@ export default function Navbar({ children }: NavbarProps) {
 
   const router = useRouter();
 
-// console.log(showCardFormEdit !== 0 ? "YES": "NO")
+  // console.log(showCardFormEdit !== 0 ? "YES": "NO")
 
   useEffect(() => {
-    if (showCard !== 0 || showCardForm === true || showCardFormEdit !==  0) {
-      document.body.style.overflow = 'hidden';
+    if (showCard !== 0 || showCardForm === true || showCardFormEdit !== 0) {
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     }
   }, [showCard, showCardForm, showCardFormEdit]);
 
   return (
-    <div className='withoutScroll'>
+    <div className="withoutScroll">
       {showAddress !== 0 && <DeleteAddress />}
       {showCard !== 0 && <DeleteCard />}
-      {showCardForm && <Payment setPayment={setShowCardForm} />}
+      {/* {showCardForm && <Payment setPayment={setShowCardForm} />} */}
+      {openPayment && <Payment/>}
       {/* {showCardFormEdit && <EditPayment />} */}
       {openSearch && (
         <SearchBar openSearch={openSearch} setOpenSearch={setOpenSearch} />
       )}
-      <header className=' p-2'>
-        <nav className=' top-0  w-full flex justify-between items-center py-2 px-10 dark:bg-black dark:border-b-2 dark:border-gray-800'>
+      <header className=" p-2">
+        <nav className=" top-0  w-full flex justify-between items-center py-2 px-10 dark:bg-black dark:border-b-2 dark:border-gray-800">
           <div
-            className='flex justify-center items-center cursor-pointer'
-            onClick={() => router.push('/')}
+            className="flex justify-center items-center cursor-pointer"
+            onClick={() => router.push("/")}
           >
-            <img src='images/logoGood.png' alt='Logo' className='w-39 h-16' />
+            <img src="images/logoGood.png" alt="Logo" className="w-39 h-16" />
           </div>
 
           <button
             onClick={() => setOpenSearch(true)}
             onMouseEnter={handleHover}
             onMouseLeave={handleUnhover}
-            className='ring-1 ring-gray-200 w-64 rounded-md text-gray-400 px-3 py-2 flex justify-start items-center gap-3 cursor-pointer text-sm lg:w-64 xl:w-96 hover:ring-gray-300 hover:text-gray-500'
+            className="ring-1 ring-gray-200 w-64 rounded-md text-gray-400 px-3 py-2 flex justify-start items-center gap-3 cursor-pointer text-sm lg:w-64 xl:w-96 hover:ring-gray-300 hover:text-gray-500"
           >
             <div>
               <AiOutlineSearch
                 size={20}
-                className={`${isHovered && 'text-gray-500'}`}
+                className={`${isHovered && "text-gray-500"}`}
               />
             </div>
             ¿Buscas algo?
           </button>
 
-          <div className='flex items-center gap-3 '>
-           
+          <div className="flex items-center gap-3 ">
             <div
-              className=' cursor-pointer'
+              className=" cursor-pointer"
               onClick={() => {
                 !openProfile ? setOpenProfile(true) : setOpenProfile(false);
                 openCart && setOpenCart(false);
@@ -105,9 +108,9 @@ export default function Navbar({ children }: NavbarProps) {
             >
               <PiUserBold
                 size={20}
-                color={`${colorMode === 'dark' ? 'white' : 'black'}`}
+                color={`${colorMode === "dark" ? "white" : "black"}`}
                 className={`${
-                  colorMode === 'dark' ? 'text-white' : 'text-black'
+                  colorMode === "dark" ? "text-white" : "text-black"
                 }`}
               />
             </div>
@@ -130,7 +133,7 @@ export default function Navbar({ children }: NavbarProps) {
           </div>
         </nav>
       </header>
-      <main className='withoutScroll'>{children}</main>
+      <main className="withoutScroll">{children}</main>
       <Footer />
     </div>
   );

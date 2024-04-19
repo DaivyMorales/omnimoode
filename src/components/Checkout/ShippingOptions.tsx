@@ -1,27 +1,31 @@
-import { useEffect } from 'react';
-import { useGetAddressByIdQuery } from '@/redux/api/addressApi';
-import { useGetCardByIdQuery } from '@/redux/api/cardApi';
-import { useAppSelector } from '@/redux/hooks';
-import { useSession } from 'next-auth/react';
-import { CartProduct, Card, Address } from '@/types';
-import { HiCreditCard, HiOfficeBuilding } from 'react-icons/hi';
-import ClipLoader from 'react-spinners/ClipLoader';
-import axios from 'axios';
-import { useRouter } from 'next/router';
+import { useEffect } from "react";
+import { useGetAddressByIdQuery } from "@/redux/api/addressApi";
+import { useGetCardByIdQuery } from "@/redux/api/cardApi";
+import { useAppSelector } from "@/redux/hooks";
+import { useSession } from "next-auth/react";
+import { CartProduct, Card, Address } from "@/types";
+import { HiCreditCard, HiOfficeBuilding } from "react-icons/hi";
+import ClipLoader from "react-spinners/ClipLoader";
+import axios from "axios";
+import { useRouter } from "next/router";
+import { useOpen } from "@/store/OpenStore";
 
 interface ShippingOptionsProps {
   finalPrice: number;
   setPayment: React.Dispatch<React.SetStateAction<boolean>>;
+  userCards: never[];
 }
 
 export default function ShippingOptions({
   finalPrice,
   setPayment,
+  userCards,
 }: ShippingOptionsProps) {
-  
   const { data: session } = useSession();
 
   const router = useRouter();
+
+  const { setOpenPayment } = useOpen();
 
   const cart = useAppSelector((state: any) => state.cartSlice.cart);
 
@@ -53,49 +57,49 @@ export default function ShippingOptions({
           });
 
           if (response.status === 200) {
-            router.push('/checkout/SuccessPayment');
+            router.push("/checkout/SuccessPayment");
 
             await axios.delete(`/api/cart/cartProduct/${cartProduct.id}`);
           }
         })
       );
     } catch (error) {
-      console.error('Error updating stock:', error);
+      console.error("Error updating stock:", error);
     }
   };
 
   return (
-    <div className='flex flex-col justify-center items-center'>
-      <div className='p-2 flex flex-col gap-5 justify-center items-center'>
+    <div className="flex flex-col justify-center items-center ">
+      <div className="p-2 flex flex-col gap-5 justify-center items-center">
         {dataAddress?.length === 0 ? (
           <>
-            <button className='text-[12px] w-full bg-white border-1 text-[#666666] px-[6px] py-[5px] rounded-md '>
+            <button className="text-[12px] w-full bg-white border-1 text-[#666666] px-[6px] py-[5px] rounded-md ">
               Agregar domicilio
             </button>
           </>
         ) : (
-          <div className='border-1 p-2 shadow-sm rounded-lg'>
-            <div className='absolute p-1 border-1 rounded-full'>
+          <div className="border-1 p-2 shadow-sm rounded-lg">
+            <div className="absolute p-1 border-1 rounded-full">
               <HiOfficeBuilding size={15} />
             </div>
             {dataAddress?.map((address: Address) => (
               <div
                 key={address.id}
-                className='flex justify-between items-center gap-4 px-9 py-1'
+                className="flex justify-between items-center gap-4 px-9 py-1"
               >
-                <div className='flex flex-col gap-1'>
-                  <h4 className='font-normal text-sm'>
+                <div className="flex flex-col gap-1">
+                  <h4 className="font-normal text-sm">
                     Dirección de domicilio
                   </h4>
-                  <p className='font-semibold'>
-                    {address.city}, {address.state}, {address.address},{' '}
+                  <p className="font-semibold">
+                    {address.city}, {address.state}, {address.address},{" "}
                     {address.neighborhood}
                   </p>
-                  <p className='font-semibold'>
+                  <p className="font-semibold">
                     {address.country}, {address.phone}
                   </p>
                 </div>
-                <button className='text-[12px] bg-white border-1 text-[#666666] px-[6px] py-[5px] rounded-md '>
+                <button className="text-[12px] bg-white border-1 text-[#666666] px-[6px] py-[5px] rounded-md ">
                   Cambiar
                 </button>
               </div>
@@ -103,63 +107,61 @@ export default function ShippingOptions({
           </div>
         )}
 
-        {dataCard?.length === 0 ? (
+        {userCards.length === 0 ? (
           <>
-            <button className='text-[12px] w-full bg-white border-1 text-[#666666] px-[6px] py-[5px] rounded-md '>
+            <button
+              onClick={() => setOpenPayment(true)}
+              className="text-[12px] w-full bg-white border-1 text-[#666666] px-[6px] py-[5px] rounded-md "
+            >
               Agregar tarjeta
             </button>
           </>
         ) : (
-          <div className='relative shadow-sm border-1 p-2 rounded-lg w-full flex justify-between  items-center'>
-            <div className='absolute top-2 p-1 border-1 rounded-full'>
-              <HiCreditCard size={15} />
+          <div className="relative shadow-sm border-1 p-2 gap-3 rounded-lg w-full flex flex-col justify-start  items-start">
+            <div className="flex items-center gap-2">
+              <div className=" top-2 p-1 border-1 rounded-full">
+                <HiCreditCard size={15} />
+              </div>
+              <h3>Seleccion una tarjeta</h3>
             </div>
-            <div className='flex flex-col gap-1'>
-              {dataCard?.map((card: Card) => (
+            <div className="flex flex-col gap-1">
+              {userCards?.map((card: Card) => (
                 <div
                   key={card.id}
-                  className='flex justify-between items-center gap-4 px-9 py-1'
+                  className="flex justify-between items-center gap-4 px-9 py-1"
                 >
-                  <div className='flex gap-4 items-center'>
-                    <div className='flex flex-col gap-1'>
-                      <h4 className='font-normal text-sm'>Cuenta de pago</h4>
-                      <p className='font-semibold'>
+                  <label className="flex items-center gap-4">
+                    <input type="radio" name="selectedCard" value={card.id} />
+                    <div className="flex flex-col gap-1">
+                      <h4 className="font-normal text-sm"></h4>
+                      <p className="font-semibold">
                         {card.card_number
-                          .replace(/.(?=.{4})/g, '*')
-                          .replace(/\s/g, '')
-                          .replace(/(.{4})/g, '$1')}
+                          .replace(/.(?=.{4})/g, "*")
+                          .replace(/\s/g, "")
+                          .replace(/(.{4})/g, "$1")}
                       </p>
                     </div>
-                  </div>
+                  </label>
                 </div>
               ))}
             </div>
-            <button
-              onClick={() => setPayment(false)}
-              className='text-[12px] bg-white border-1 text-[#666666] px-[6px] py-[5px] rounded-md '
-            >
-              Agregar tarjeta
-            </button>
+            <div className="w-full flex items-center justify-center">
+              <button
+                onClick={() => setOpenPayment(true)}
+                className="text-[12px] bg-white border-1 text-[#666666] px-[6px] py-[5px] rounded-md "
+              >
+                Agregar tarjeta
+              </button>
+            </div>
           </div>
         )}
         <button
           onClick={async () => {
             await updateStock(cart);
           }}
-          className='font-medium bg-black p-2 text-white px-[12px] text-[14px] rounded-md hover:bg-gray-900 w-full flex'
+          className="font-medium bg-black p-2 text-white px-[12px] text-center text-[14px] rounded-md hover:bg-gray-900 w-full "
         >
-          Pagar{' '}
-          {finalPrice === 0 ? (
-            <ClipLoader
-              size={35}
-              color='#000000'
-              loading={true}
-              aria-label='Loading Spinner'
-              data-testid='loader'
-            />
-          ) : (
-            <>${finalPrice}</>
-          )}
+          Pagar
         </button>
       </div>
     </div>
