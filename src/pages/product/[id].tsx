@@ -46,25 +46,27 @@ export default function ProductPage() {
       if (status == "unauthenticated") {
         router.push("/register");
       } else if (status === "authenticated") {
-        const newCartProduct = {
-          cartId,
-          productId: values.productId,
-          sizeId: values.sizeId,
-          quantity: 1,
-          isLoaded: false,
-        };
+        if (sizeSelected) {
+          const newCartProduct = {
+            cartId,
+            productId: values.productId,
+            sizeId: values.sizeId,
+            quantity: 1,
+            isLoaded: false,
+          };
 
-        setSubmited(true);
-        const response = await dispatch(
-          createCartProduct(newCartProduct) as any
-        );
+          setSubmited(true);
+          const response = await dispatch(
+            createCartProduct(newCartProduct) as any
+          );
 
-        dispatch(setCart([...cart, response.payload]));
+          dispatch(setCart([...cart, response.payload]));
 
-        if (response.payload) {
-          formik.setFieldValue("sizeId", undefined);
+          if (response.payload) {
+            formik.setFieldValue("sizeId", undefined);
+          }
+          setSubmited(false);
         }
-        setSubmited(false);
       }
     },
   });
@@ -116,37 +118,44 @@ export default function ProductPage() {
                 <p className="font-bold">Omnimoode</p>
               </section>
               <h2 className="font-bold text-2xl">{data?.name}</h2>
-              <h1 className="font-black">${data?.price} COP</h1>
+              <h1 className="font-black">${data?.price} USD</h1>
               {data?.sizes.length <= 0 ? (
                 <h4 className="font-bold text-red-500">Producto agotado</h4>
               ) : (
                 <>
                   <section className="w-full">
-                    <label htmlFor="">Seleccion tu talla:</label>
+                    <label htmlFor="">Disponibilidad de tallas:</label>
                     <div className="grid grid-cols-6 gap-2">
                       {data?.sizes.map((size) => (
-                        <div
-                          key={size.id}
-                          onClick={() => {
-                            formik.setFieldValue("sizeId", size.id);
-                            setSizeSelected(size.id);
-                          }}
-                          className={`${
-                            sizeSelected === size.id
-                              ? "border-black text-black font-bold"
-                              : "border-gray-400 text-gray-400"
-                          } border-1 py-1 px-2 flex justify-center items-center rounded-md  cursor-pointer`}
-                        >
-                          <p className="text-sm font-semibold ">
-                            {size.name.toUpperCase()}
-                          </p>
+                        <div className="flex flex-col justify-center items-center gap-1">
+                          <div
+                            key={size.id}
+                            onClick={() => {
+                              formik.setFieldValue("sizeId", size.id);
+                              setSizeSelected(size.id);
+                            }}
+                            className={`${
+                              sizeSelected === size.id
+                                ? "border-black text-black font-bold"
+                                : "border-neutral-300 text-neutral-300"
+                            } border-1 py-1 px-2 flex justify-center items-center rounded-md  cursor-pointer`}
+                          >
+                            <p className="text-sm font-semibold ">
+                              {size.name.toUpperCase()}
+                            </p>
+                          </div>
+                          <div className="px-2 py-1 rounded-full border-[1px]">
+                            <p className="text-[10px] font-bold text-neutral-300">
+                              {size.quantity}
+                            </p>
+                          </div>
                         </div>
                       ))}
                     </div>
                   </section>
                   <section className="flex gap-3 justify-center items-center">
                     <button
-                      className="bg-black text-white text-semibold w-64 py-3 h-12 rounded-lg text-sm flex justify-center items-center gap-2 dark:bg-white dark:text-black"
+                      className={`${!sizeSelected ? "bg-neutral-400 cursor-not-allowed" : "bg-black"} text-white text-semibold w-64 py-3 h-12 rounded-lg text-sm flex justify-center items-center gap-2 dark:bg-white dark:text-black`}
                       type="submit"
                     >
                       {submited ? (
