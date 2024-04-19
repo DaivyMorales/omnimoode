@@ -13,8 +13,8 @@ import {
 import { useOpen } from "@/store/OpenStore";
 
 interface PaymentProps {
-  userCards: never[];
-  setUserCards: React.Dispatch<React.SetStateAction<never[]>>;
+  userCards?: never[];
+  setUserCards?: React.Dispatch<React.SetStateAction<never[]>>;
 }
 
 export default function Payment({ userCards, setUserCards }: PaymentProps) {

@@ -57,10 +57,11 @@ export default async function handler(
           data: {
             id,
             name,
+            image: "",
             email,
             email_verification,
             password: hashedPassword,
-            roleId: 2
+            roleId: 2,
           },
         });
 

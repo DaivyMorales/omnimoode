@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { v2 as cloudinary } from "cloudinary";
 import multer from "multer";
-import { Request, Response } from "express"; // Import Express types
+import { Request, Response } from "express";
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,

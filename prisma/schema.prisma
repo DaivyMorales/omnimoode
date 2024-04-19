@@ -12,6 +12,7 @@ datasource db {
 
 model User {
   id                 Int       @id @default(autoincrement())
+  image              String
   name               String
   email              String    @unique
   email_verification Boolean   @default(false)

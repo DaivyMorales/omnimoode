@@ -4,28 +4,30 @@ import axios from "axios";
 import { useAppSelector } from "@/redux/hooks";
 import { useAppDispach } from "@/redux/hooks";
 import { generateNumber } from "@/redux/features/NumberValidationSlice";
-import { HiBadgeCheck, HiSupport, HiTrash } from "react-icons/hi";
+import { HiTrash } from "react-icons/hi";
 import { useGetAddressByIdQuery } from "@/redux/api/addressApi";
 import { Address, Card } from "@/types";
-import {
-  useGetCardByIdQuery,
-  useGetCardByUserIdQuery,
-} from "@/redux/api/cardApi";
+import { TiUserOutline, TiTrash } from "react-icons/ti";
+import { useGetCardByUserIdQuery } from "@/redux/api/cardApi";
 import {
   setShowAddress,
   setShowCard,
-  setShowCardForm,
   setShowCardFormEdit,
 } from "@/redux/features/showAlertsSlice";
 import { setAddresses } from "@/redux/features/addressSlice";
 import { setCards } from "@/redux/features/cardSlice";
 import { useOpen } from "@/store/OpenStore";
+import { useFormik } from "formik";
+import SuccessfulAlert from "@/components/Alerts/SuccessfulAlert";
+import ProfileSection from "@/components/Profile/ProfileSection";
 
 export default function ProfilePage() {
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
 
   const [onHoverAddress, setOnHoverAddress] = useState(false);
   const [onHoverCard, setOnHoverCard] = useState(0);
+  const [profileImageSelected, setProfileImageSelected] = useState("");
+  const [urlProfileImageUploaded, setUrlProfileImageUploaded] = useState(false);
 
   const addresses = useAppSelector((state) => state.addressSlice.addresses);
   const cards = useAppSelector((state) => state.cardSlice.cards);
@@ -42,7 +44,7 @@ export default function ProfilePage() {
     id: userId,
   });
 
-  const { setOpenPayment, openPayment } = useOpen();
+  const { setOpenPayment, setOpenAddress } = useOpen();
 
   useEffect(() => {
     refetch();
@@ -53,33 +55,141 @@ export default function ProfilePage() {
     dispach(setCards(dataCard));
   }, [dataCard, dataAddress]);
 
+  const formik = useFormik({
+    initialValues: {
+      profileImage: "",
+    },
+    onSubmit: async (values) => {
+      if (values.profileImage) {
+        const formData = new FormData();
+        formData.append("imageUrl", values.profileImage);
+
+        try {
+          const responseUpload = await axios.post("/api/upload", formData);
+          const urlObtained = responseUpload.data.imageUrl;
+
+          const body = {
+            image: urlObtained,
+          };
+
+          const responseUser = await axios.put(`/api/user/${userId}`, body);
+          if (responseUser.status === 200) {
+            setUrlProfileImageUploaded(true);
+
+            await update({ ...user, image: urlObtained });
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    },
+  });
+
+  const deleteProfileImage = async () => {
+    const body = {
+      image: "",
+    };
+    const responseUser = await axios.put(`/api/user/${userId}`, body);
+    await update({ ...user, image: "" });
+  };
+
+  const handleFileUpload = async (file: FileList) => {
+    if (file.length > 0) {
+      formik.submitForm();
+      formik.setFieldValue("profileImage", file[0]);
+      setProfileImageSelected(URL.createObjectURL(file[0]));
+    }
+  };
+
+  const [user, setUser] = useState<any>({} as any);
+  useEffect(() => {
+    if (session && session.user) {
+      setUser(session.user as any);
+    }
+  }, [session]);
+
   return (
     <div className="relative h-full py-24 w-full flex flex-col items-center justify-center -mt-20">
       <div className="flex flex-col gap-4 w-full p-10 justify-start items-start sm:w-[650px]">
         <div>
-          <h1>Mi perfil</h1>
+          <h1>{session?.user?.name}</h1>
           <p>Administra y protege tu cuenta</p>
         </div>
 
-        {/* MAIN INFORMATION */}
-        <div className="flex flex-col justify-between items-center  w-full p-5 rounded-lg sm:flex ">
-          <div className="flex justify-center items-center gap-4 ">
-            <div className="p-2 rounded-full border-4 border-blue-500 bg-gray-200">
-              <HiSupport size={50} />
-            </div>
-            <div className="">
-              <div className="flex items-center gap-1">
-                <h3>{session?.user?.name}</h3>
+        <div className="w-full h-[1px] bg-neutral-200" />
 
-                {/* {session?.user?.email_verification && <HiBadgeCheck />} */}
+        {/* MAIN INFORMATION */}
+        <h3 className="font-bold text-xl">Foto de perfil</h3>
+        <div className="flex gap-5 justify-start items-center bg-white border-1 w-full p-5 rounded-lg sm:flex">
+          <div className="flex justify-center items-center gap-4">
+            {session?.user?.image ? (
+              <div className="rounded-full border-4 border-1 bg-gray-200">
+                <img
+                  src={session.user.image}
+                  alt=""
+                  className="w-[70px] h-[70px] rounded-full"
+                />
               </div>
-              <h4 className="text-gray-500">{session?.user?.email}</h4>
-            </div>
+            ) : (
+              <div className="rounded-full border-4 border-blue-500 bg-gray-200">
+                <TiUserOutline size={70} />
+              </div>
+            )}
           </div>
-          <button className=" text-[12px] bg-white border-1 text-[#666666] px-[6px] py-[5px] rounded-md">
-            Editar
-          </button>
+          {/* <div className="rounded-full overflow-hidden">
+            <img
+              src={profileImageSelected}
+              className="w-[50px] h-[50px] "
+              alt=""
+            />
+          </div> */}
+
+          <div className="flex flex-col items-start justify-start gap-3">
+            {profileImageSelected && (
+              <SuccessfulAlert
+                title="Tu imagen ha sido cargada existosamente."
+                description={`Te ves bien ${session?.user?.name}!`}
+              />
+            )}
+            <div className="flex items-center justify-start gap-2">
+              <label
+                htmlFor="profile_picture"
+                className="font-bold text-[12px] text-black bg-neutral-100 text-[#666666] px-[15px] py-[5px] rounded-md hover:bg-neutral-200 cursor-pointer"
+              >
+                Añadir Foto de Perfil
+                <input
+                  type="file"
+                  id="profile_picture"
+                  name="profile_picture"
+                  accept="image/jpeg, image/png, image/gif"
+                  style={{ display: "none" }}
+                  onChange={(e) => {
+                    if (e.target.files) {
+                      handleFileUpload(e.target.files);
+                    }
+                  }}
+                />
+              </label>
+              {session?.user?.image && (
+                <div
+                  onClick={() => deleteProfileImage()}
+                  className="cursor-pointer hover:text-red-500"
+                >
+                  <TiTrash />
+                </div>
+              )}
+            </div>
+            <p>Debe ser JPEG, PNG o GIF y no puede exceder los 10 MB.</p>
+          </div>
         </div>
+
+        <div className="flex flex-col justify-start items-start gap-2">
+          <h3 className="font-bold text-xl">Configuracion de Perfil</h3>
+          <p className="text-neutral-400">
+            Cambiar los datos de identificación de su cuenta
+          </p>
+        </div>
+        <ProfileSection />
 
         {/* ADDRESS INFORMATION */}
         <div className="flex flex-col  justify-center  items-center  w-full p-5 rounded-lg">
@@ -142,6 +252,9 @@ export default function ProfilePage() {
 
             <div className="w-full  flex justify-end">
               <button
+                onClick={() => {
+                  setOpenAddress(true);
+                }}
                 type="submit"
                 className="font-medium bg-black p-2 text-white px-[12px] text-[14px] rounded-md hover:bg-gray-900"
               >

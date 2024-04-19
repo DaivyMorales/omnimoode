@@ -16,6 +16,7 @@ import Payment from "./Checkout/Payment";
 import { setShowCardForm } from "@/redux/features/showAlertsSlice";
 import EditPayment from "./Checkout/EditPayment";
 import { useOpen } from "@/store/OpenStore";
+import Address from "./Checkout/Address";
 
 interface NavbarProps {
   children: ReactNode;
@@ -34,7 +35,7 @@ export default function Navbar({ children }: NavbarProps) {
     (state) => state.showAlertsSlice.showAddress
   );
 
-  const { openPayment, setOpenPayment } = useOpen();
+  const { openPayment, setOpenPayment, openAddress } = useOpen();
 
   const showCard = useAppSelector((state) => state.showAlertsSlice.showCard);
   const showCardForm = useAppSelector(
@@ -69,7 +70,8 @@ export default function Navbar({ children }: NavbarProps) {
       {showAddress !== 0 && <DeleteAddress />}
       {showCard !== 0 && <DeleteCard />}
       {/* {showCardForm && <Payment setPayment={setShowCardForm} />} */}
-      {openPayment && <Payment/>}
+      {openPayment && <Payment />}
+      {openAddress && <Address />}
       {/* {showCardFormEdit && <EditPayment />} */}
       {openSearch && (
         <SearchBar openSearch={openSearch} setOpenSearch={setOpenSearch} />
