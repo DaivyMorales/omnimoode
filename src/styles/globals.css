@@ -255,3 +255,11 @@ input[type='number']::-webkit-outer-spin-button {
 .withoutScroll {
   overflow: hidden;
 }
+
+.p-nav {
+  @apply font-medium cursor-pointer hover:text-black;
+}
+
+.section-profile-settings{
+  @apply w-full h-full text-center py-1  border-black
+}

@@ -5,6 +5,8 @@ export interface OpenStore {
   setOpenPayment: (value: boolean) => void;
   openAddress: boolean;
   setOpenAddress: (value: boolean) => void;
+  idSectionProfile: string;
+  setIdSectionProfile: (value: string) => void;
 }
 
 export const useOpen = create<OpenStore>((set) => ({
@@ -15,5 +17,9 @@ export const useOpen = create<OpenStore>((set) => ({
   openAddress: false,
   setOpenAddress: (value: boolean) => {
     set(() => ({ openAddress: value }));
+  },
+  idSectionProfile: "1",
+  setIdSectionProfile: (id: string) => {
+    set(() => ({ idSectionProfile: id }));
   },
 }));
