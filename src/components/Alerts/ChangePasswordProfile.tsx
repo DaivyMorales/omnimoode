@@ -12,6 +12,8 @@ function ChangePasswordProfile() {
 
   const { data: session } = useSession();
 
+  const userId = (session?.user as { id?: number })?.id?.toString() ?? "0";
+
   const formik = useFormik({
     initialValues: {
       lastPassword: "",
@@ -33,11 +35,21 @@ function ChangePasswordProfile() {
     onSubmit: async (values) => {
       try {
         const response = await axios.post("/api/change_password", {
-          email: session?.user?.email,
+          userId: parseInt(userId),
           newPassword: values.newPassword,
+          lastPassword: values.lastPassword,
         });
+
+        console.log(response);
+
+        if (response.status === 200) {
+          setOpenChangePassword(false);
+        }
       } catch (error: any) {
-        setError(error.response.data.error);
+        if (error.response.data.error) {
+          setError(error.response.data.error);
+        }
+        console.log(error);
       }
 
       console.log(values);
@@ -53,9 +65,10 @@ function ChangePasswordProfile() {
             {error && (
               <ErrorAlert
                 title="Hay un error para cambiar tu contraseña"
-                description={error}
+                description={error || ""}
               />
             )}
+
             <label htmlFor="">Contraseña antigua</label>
             <div className="inputLogin">
               <input
@@ -81,10 +94,7 @@ function ChangePasswordProfile() {
                 name="newPassword"
                 type="password"
                 className="text-xs"
-                onChange={(e) => {
-                  formik.setFieldValue("newPassword", e.target.value);
-                  setError("");
-                }}
+                onChange={formik.handleChange}
               />
             </div>
             {formik.touched.newPassword && formik.errors.newPassword ? (
@@ -99,10 +109,7 @@ function ChangePasswordProfile() {
                 name="confirmPassword"
                 type="password"
                 className="text-xs"
-                onChange={(e) => {
-                  formik.setFieldValue("confirmPassword", e.target.value);
-                  setError("");
-                }}
+                onChange={formik.handleChange}
               />
             </div>
             {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
@@ -114,6 +121,7 @@ function ChangePasswordProfile() {
             <button
               onClick={() => setOpenChangePassword(false)}
               className="bg-neutral-200 text-black text-xs font-bold rounded-[6px]  px-3 py-2 flex justify-center"
+              type="button"
             >
               Cancelar
             </button>
