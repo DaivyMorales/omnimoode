@@ -4,9 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import prisma from "../../../../lib/prisma";
 
-
 export const authOptions = {
-  
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -23,8 +21,6 @@ export const authOptions = {
         },
       },
       async authorize(credentials, req) {
-        console.log("HIIII")
-        console.log(credentials);
         // Search User
         const userFound = await prisma.user.findFirst({
           where: {
@@ -37,6 +33,8 @@ export const authOptions = {
             email_verification: true,
             password: true,
             cartId: true,
+            roleId: true,
+            image: true,
           },
         });
 
@@ -50,7 +48,6 @@ export const authOptions = {
 
         if (!passwordMatch)
           throw new Error("Tu correo o contraseña son incorrectos!");
-        console.log(userFound);
 
         return {
           id: userFound.id.toString(),
@@ -58,17 +55,26 @@ export const authOptions = {
           email: userFound.email,
           email_verification: userFound.email_verification,
           cartId: userFound.cartId,
+          roleId: userFound.roleId,
+          image: userFound.image,
         };
       },
     }),
   ],
   callbacks: {
-    jwt({ token, user }: any) {
+    async jwt({ token, user, trigger, session }: any) {
       if (user) token.user = user;
+
+      if (trigger === "update" && session) {
+        token = { ...token, user: session };
+        return token;
+      }
+
       return token;
     },
     session({ session, token }: any) {
       session.user = token.user;
+      session.user.id = token.user.id;
       return session;
     },
   },

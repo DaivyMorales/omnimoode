@@ -145,7 +145,7 @@ export default function EditPayment() {
     <div className='delete-alert'>
       <form
         onSubmit={formik.handleSubmit}
-        className='bg-white w-[450px] p-5 rounded-lg border-1 flex flex-col justify-start items-start gap-3'
+        className=' w-[450px] p-5 bg-red-500 rounded-lg border-1 flex flex-col justify-start items-start gap-3'
       >
         <div className='flex gap-3 justify-center items-center '>
           <div className=' p-2 rounded-full bg-black'>

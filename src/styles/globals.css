@@ -4,6 +4,8 @@
 
 :root {
   font-family: 'Inter', sans-serif;
+  background-color: #F7F7F8;
+  color: black;
 }
 
 .background {
@@ -91,7 +93,7 @@ input:focus {
 }
 
 label {
-  @apply text-xs font-medium text-gray-900;
+  @apply text-xs font-bold text-neutral-800;
 }
 
 select {
@@ -103,7 +105,7 @@ select:focus {
 }
 
 .inputLogin {
-  @apply border-1 border-gray-300 w-full px-2 py-1 flex justify-start items-center gap-2 rounded-lg;
+  @apply border-1 border-gray-300 w-full px-2 py-1 flex justify-start items-center gap-2 rounded-[5px];
 }
 
 .inputLogin:focus-within {
@@ -245,11 +247,19 @@ input[type='number']::-webkit-outer-spin-button {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(151, 151, 151, 0.9);
+  background-color: rgba(0, 0, 0, .85);
   z-index: 1;
 
 }
 
 .withoutScroll {
   overflow: hidden;
+}
+
+.p-nav {
+  @apply font-medium cursor-pointer hover:text-black;
+}
+
+.section-profile-settings{
+  @apply w-full h-full text-center py-1  border-black
 }

@@ -66,6 +66,7 @@ export type Address = {
   neighborhood: string;
   specifications: string;
   state: string;
+  stateNumber: number;
   city: string;
   phone: string;
   userId: number;

@@ -1,5 +1,5 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import prisma from '../../../../lib/prisma';
+import type { NextApiRequest, NextApiResponse } from "next";
+import prisma from "../../../../lib/prisma";
 
 export default async function Product(
   req: NextApiRequest,
@@ -14,6 +14,7 @@ export default async function Product(
       neighborhood,
       specifications,
       state,
+      stateNumber,
       city,
       phone,
       userId,
@@ -21,7 +22,7 @@ export default async function Product(
   } = req;
 
   switch (method) {
-    case 'GET':
+    case "GET":
       try {
         const address = await prisma.address.findMany();
         res.status(200).json(address);
@@ -30,25 +31,28 @@ export default async function Product(
       }
       break;
 
-    case 'POST':
+    case "POST":
+      console.log(req.body);
       try {
         const newAddress = await prisma.address.create({
           data: {
-            country: 'Colombia',
+            country: "Colombia",
             names,
             surnames,
             neighborhood,
             address,
             specifications,
             state,
+            stateNumber,
             city,
             phone,
             userId,
           },
         });
         res.status(200).json(newAddress);
-      } catch (error) {
-        res.status(400).json(error);
+      } catch (error: any) {
+        res.status(500).json({ message: error.message });
+        console.log(error);
       }
       break;
 

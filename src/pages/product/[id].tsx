@@ -20,7 +20,7 @@ export default function ProductPage() {
   const [sizeSelected, setSizeSelected] = useState(0);
   const [submited, setSubmited] = useState(false);
 
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   const cartId = (session?.user as { cartId?: number })?.cartId;
 
@@ -43,23 +43,31 @@ export default function ProductPage() {
       sizeId: undefined,
     },
     onSubmit: async (values) => {
-      const newCartProduct = {
-        cartId,
-        productId: values.productId,
-        sizeId: values.sizeId,
-        quantity: 1,
-        isLoaded: false,
-      };
+      if (status == "unauthenticated") {
+        router.push("/register");
+      } else if (status === "authenticated") {
+        if (sizeSelected) {
+          const newCartProduct = {
+            cartId,
+            productId: values.productId,
+            sizeId: values.sizeId,
+            quantity: 1,
+            isLoaded: false,
+          };
 
-      setSubmited(true);
-      const response = await dispatch(createCartProduct(newCartProduct) as any);
+          setSubmited(true);
+          const response = await dispatch(
+            createCartProduct(newCartProduct) as any
+          );
 
-      dispatch(setCart([...cart, response.payload]));
+          dispatch(setCart([...cart, response.payload]));
 
-      if (response.payload) {
-        formik.setFieldValue("sizeId", undefined);
+          if (response.payload) {
+            formik.setFieldValue("sizeId", undefined);
+          }
+          setSubmited(false);
+        }
       }
-      setSubmited(false);
     },
   });
 
@@ -85,7 +93,7 @@ export default function ProductPage() {
         </motion.div>
       ) : (
         <main className="grid grid-cols-1 gap-10 w-full h-full sm:grid-cols-2">
-          <section>
+          <section className="flex justify-end items-center">
             <div className=" rounded-md ">
               {data?.imageUrl && (
                 <Image
@@ -110,62 +118,72 @@ export default function ProductPage() {
                 <p className="font-bold">Omnimoode</p>
               </section>
               <h2 className="font-bold text-2xl">{data?.name}</h2>
-              <h1 className="font-black">${data?.price} COP</h1>
-              <section className="w-full">
-                <label htmlFor="">Seleccion tu talla:</label>
-                <div className="grid grid-cols-6 gap-2">
-                  {data?.sizes.map((size) => (
-                    <div
-                      key={size.id}
-                      onClick={() => {
-                        formik.setFieldValue("sizeId", size.id);
-                        setSizeSelected(size.id);
-                      }}
-                      className={`${
-                        sizeSelected === size.id
-                          ? "border-black text-black font-bold"
-                          : "border-gray-400 text-gray-400"
-                      } border-1 py-1 px-2 flex justify-center items-center rounded-md  cursor-pointer`}
-                    >
-                      <p className="text-sm font-semibold ">
-                        {size.name.toUpperCase()}
-                      </p>
+              <h1 className="font-black">${data?.price} USD</h1>
+              {data?.sizes.length <= 0 ? (
+                <h4 className="font-bold text-red-500">Producto agotado</h4>
+              ) : (
+                <>
+                  <section className="w-full">
+                    <label htmlFor="">Disponibilidad de tallas:</label>
+                    <div className="grid grid-cols-6 gap-2">
+                      {data?.sizes.map((size) => (
+                        <div className="flex flex-col justify-center items-center gap-1" key={size.id}>
+                          <div
+                            key={size.id}
+                            onClick={() => {
+                              formik.setFieldValue("sizeId", size.id);
+                              setSizeSelected(size.id);
+                            }}
+                            className={`${
+                              sizeSelected === size.id
+                                ? "border-black text-black font-bold"
+                                : "border-neutral-300 text-neutral-300"
+                            } border-1 py-1 px-2 flex justify-center items-center rounded-md  cursor-pointer`}
+                          >
+                            <p className="text-sm font-semibold ">
+                              {size.name.toUpperCase()}
+                            </p>
+                          </div>
+                          <div className="px-2 py-1 rounded-full border-[1px]">
+                            <p className="text-[10px] font-bold text-neutral-300">
+                              {size.quantity}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </section>
-              <section className="flex gap-3 justify-center items-center">
-                <button
-                  className="bg-black text-white text-semibold w-64 py-3 h-12 rounded-lg text-sm flex justify-center items-center gap-2 dark:bg-white dark:text-black"
-                  type="submit"
-                >
-                  {submited ? (
-                    <>
-                      <motion.div
-                        style={{
-                          display: "inline-block",
-                        }}
-                        animate={{ rotate: "360deg" }}
-                        transition={{
-                          duration: 0.7,
-                          ease: "linear",
-                          repeat: Infinity,
-                        }}
-                      >
-                        <AiOutlineReload size={22} />
-                      </motion.div>
-                    </>
-                  ) : (
-                    <>
-                      <PiShoppingBagOpenBold size={16} />
-                      Agregar a carrito
-                    </>
-                  )}
-                </button>
-                <button className="bg-gray-200 py-3 h-12 rounded-lg px-4 ">
-                  <PiHeartBold />
-                </button>
-              </section>
+                  </section>
+                  <section className="flex gap-3 justify-center items-center">
+                    <button
+                      className={`${!sizeSelected ? "bg-neutral-400 cursor-not-allowed" : "bg-black"} text-white text-semibold w-64 py-3 h-12 rounded-lg text-sm flex justify-center items-center gap-2 dark:bg-white dark:text-black`}
+                      type="submit"
+                    >
+                      {submited ? (
+                        <>
+                          <motion.div
+                            style={{
+                              display: "inline-block",
+                            }}
+                            animate={{ rotate: "360deg" }}
+                            transition={{
+                              duration: 0.7,
+                              ease: "linear",
+                              repeat: Infinity,
+                            }}
+                          >
+                            <AiOutlineReload size={22} />
+                          </motion.div>
+                        </>
+                      ) : (
+                        <>
+                          <PiShoppingBagOpenBold size={16} />
+                          Agregar a carrito
+                        </>
+                      )}
+                    </button>
+                  </section>
+                </>
+              )}
             </form>
           </section>
         </main>

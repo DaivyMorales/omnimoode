@@ -21,7 +21,7 @@ interface EmailProps {
 
 export default function RecoverPassword({ nameFound }: EmailProps) {
 
-  const linkChange = "http://localhost:3000/recovery/changePassword";
+  const linkChange = "/recovery/changePassword";
 
   return (
     <Html lang="es">

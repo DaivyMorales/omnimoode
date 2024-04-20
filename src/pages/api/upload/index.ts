@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { v2 as cloudinary } from "cloudinary";
 import multer from "multer";
-import { Request, Response } from "express"; // Import Express types
+import { Request, Response } from "express";
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -21,6 +21,8 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  // const { imageId } = req.body;
+
   if (req.method === "POST") {
     // Express Request and Response objects
     const expressReq = req as unknown as Request;
@@ -51,6 +53,10 @@ export default async function handler(
           .json({ error: "Upload to cloudinary failed", message: error });
       }
     });
+  // } else if (req.method === "DELETE") {
+  //   cloudinary.api
+  //     .delete_resources(imageId, { type: "upload", resource_type: "image" })
+  //     .then(console.log);
   } else {
     res.status(405).json({ error: "Method not allowed" });
   }

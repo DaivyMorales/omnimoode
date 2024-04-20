@@ -63,18 +63,18 @@ export default function Register() {
         setIsLoading(false);
       } catch (error) {
         if (error instanceof AxiosError) {
-          setError(error.response?.data.message);
+          setError(error.response?.data);
+          setIsLoading(false);
         }
       }
 
-      resetForm();
+    
     },
   });
 
   return (
     <div className=" h-screen grid grid-cols-1 lg:grid-cols-2">
       <div className="background hidden lg:block h-full"></div>
-      {error && <div className="bg-red-500 text-red-800 p-2 mb-2">{error}</div>}
       <form
         onSubmit={formik.handleSubmit}
         className=" flex flex-col w-full  gap-5 justify-center items-center p-3"
@@ -120,6 +120,12 @@ export default function Register() {
               {formik.touched.email && formik.errors.email ? (
                 <p className="form-errors">{formik.errors.email}</p>
               ) : null}
+
+              {
+                error === "Hay alguien con tu mismo email, cambialo!" && (
+                  <p className="form-errors">{error}</p>
+                )
+              }
             </div>
 
             {/* Name */}

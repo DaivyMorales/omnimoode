@@ -25,6 +25,7 @@ export default function ConfirmPage() {
   );
 
   console.log("number", number);
+  console.log(session)
 
   const SendEmail = async () => {
     try {

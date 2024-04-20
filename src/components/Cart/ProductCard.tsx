@@ -6,6 +6,7 @@ import { setCart, deleteCartProduct } from "@/redux/features/cartSlice";
 import { useAppSelector } from "@/redux/hooks";
 import { useDispatch } from "react-redux";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 interface MyProps {
   cartProduct: CartProduct;
@@ -19,6 +20,8 @@ export default function ProductCard({
   setPrices,
 }: MyProps) {
   const price = cartProduct.product.price;
+
+  const router = useRouter();
 
   const [quantity, setquantity] = useState(cartProduct.quantity);
   const [hoverDelete, setHoverDelete] = useState(false);
@@ -52,27 +55,6 @@ export default function ProductCard({
     }
   };
 
-  const handleQuantityChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const inputText = e.target.value;
-
-    if (inputText === "") {
-      setAllInputsEmpty(true);
-    } else {
-      const numberSelected = Number(inputText);
-      setquantity(numberSelected);
-
-      const pricesToAdd = Array(numberSelected).fill(price);
-
-      setPrices((prevPrices) => [...prevPrices, ...pricesToAdd]);
-
-      setTimeout(() => {
-        updateCartProductQuantity(numberSelected);
-      }, 700);
-
-      setAllInputsEmpty(false);
-    }
-  };
-
   const calculateFinalPrice = price * quantity;
 
   return (
@@ -84,13 +66,18 @@ export default function ProductCard({
           height={50}
           alt="Product Image"
           style={{ width: "auto", height: "auto" }}
-          className="border-1 rounded-md"
+          className="border-1 rounded-md cursor-pointer"
+          onClick={() => router.push(`/product/${cartProduct.product.id}`)}
         />
       </td>
       <td className="w-2/5 ">
         <p className="text-sm font-medium">{cartProduct.product.name}</p>
         <p className="text-gray-600">
-          Hoddie <span className="text-gray-300">|</span> Blanco{" "}
+          {cartProduct.product.categoryId === 4
+            ? "Hoddie"
+            : cartProduct.product.categoryId === 5
+            ? "Shirt"
+            : "Pant"}{" "}
           <span className="text-gray-300">| </span>
           {cartProduct.size.name.toUpperCase()}{" "}
         </p>
@@ -119,21 +106,20 @@ export default function ProductCard({
           >
             -
           </button>
-          <input
-            type="number"
-            className="w-6 text-center font-semibold text-xs text-gray-800 inputSizeCart"
-            value={quantity === 0 ? "" : quantity}
-            onChange={handleQuantityChange}
-          />
+          <p className="w-6 text-center font-semibold text-xs text-gray-800 inputSizeCart">
+            {quantity}
+          </p>
 
           <button
             className="text-lg font-normal text-gray-500"
             onClick={async () => {
               const sumQuantity = quantity + 1;
-              setquantity(sumQuantity);
-              updateCartProductQuantity(sumQuantity);
-              setFinalValue(finalValue + price);
-              setPrices((prevPrices) => [...prevPrices, objectInfoProduct]);
+              if (sumQuantity <= cartProduct.size.quantity) {
+                setquantity(sumQuantity);
+                updateCartProductQuantity(sumQuantity);
+                setFinalValue(finalValue + price);
+                setPrices((prevPrices) => [...prevPrices, objectInfoProduct]);
+              }
             }}
           >
             +
