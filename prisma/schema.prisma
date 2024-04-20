@@ -99,6 +99,7 @@ model Address {
   neighborhood   String @db.VarChar(30)
   specifications String
   state          String @db.VarChar(20)
+  stateNumber    Int
   city           String @db.VarChar(30)
   phone          String @db.VarChar(15)
   User           User?  @relation(fields: [userId], references: [id])

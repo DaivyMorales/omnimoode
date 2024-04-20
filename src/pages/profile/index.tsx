@@ -1,50 +1,11 @@
-import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import axios from "axios";
-import { useAppSelector } from "@/redux/hooks";
-import { useAppDispach } from "@/redux/hooks";
-import { generateNumber } from "@/redux/features/NumberValidationSlice";
-import { HiTrash } from "react-icons/hi";
-import { useGetAddressByIdQuery } from "@/redux/api/addressApi";
-import { Address, Card } from "@/types";
-import { useGetCardByUserIdQuery } from "@/redux/api/cardApi";
-import {
-  setShowAddress,
-  setShowCard,
-  setShowCardFormEdit,
-} from "@/redux/features/showAlertsSlice";
-import { setAddresses } from "@/redux/features/addressSlice";
-import { setCards } from "@/redux/features/cardSlice";
 import { useOpen } from "@/store/OpenStore";
-import { useFormik } from "formik";
-import SuccessfulAlert from "@/components/Alerts/SuccessfulAlert";
 import ProfileSection from "@/components/Profile/ProfileSection";
-import SeguritySection from "@/components/Profile/SecuritySection";
 import SecuritySection from "@/components/Profile/SecuritySection";
 import InformationSection from "@/components/Profile/InformationSection";
 
 export default function ProfilePage() {
-  const { data: session, update } = useSession();
-
-  const [onHoverAddress, setOnHoverAddress] = useState(false);
-  const [onHoverCard, setOnHoverCard] = useState(0);
-  const [profileImageSelected, setProfileImageSelected] = useState("");
-  const [urlProfileImageUploaded, setUrlProfileImageUploaded] = useState(false);
-
-  const addresses = useAppSelector((state) => state.addressSlice.addresses);
-  const cards = useAppSelector((state) => state.cardSlice.cards);
-
-  const dispach = useAppDispach();
-
-  const userId = (session?.user as { id?: number })?.id ?? 0;
-
-  const { data: dataAddress } = useGetAddressByIdQuery({
-    id: userId,
-  });
-
-  const { data: dataCard, refetch } = useGetCardByUserIdQuery({
-    id: userId,
-  });
+  const { data: session } = useSession();
 
   const {
     setOpenPayment,
@@ -52,15 +13,6 @@ export default function ProfilePage() {
     setIdSectionProfile,
     idSectionProfile,
   } = useOpen();
-
-  useEffect(() => {
-    refetch();
-  }, [cards]);
-
-  useEffect(() => {
-    dispach(setAddresses(dataAddress));
-    dispach(setCards(dataCard));
-  }, [dataCard, dataAddress]);
 
   return (
     <div className="relative h-full py-24 w-full flex flex-col items-center justify-center -mt-20">

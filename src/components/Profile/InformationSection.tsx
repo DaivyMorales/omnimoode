@@ -1,158 +1,122 @@
-// import React from "react";
+import React, { useEffect, useState } from "react";
+import { useGetAddressByIdQuery } from "@/redux/api/addressApi";
+import { useSession } from "next-auth/react";
+import { useAppDispach } from "@/redux/hooks";
+import { useGetCardByUserIdQuery } from "@/redux/api/cardApi";
+import { setAddresses } from "@/redux/features/addressSlice";
+import { setCards } from "@/redux/features/cardSlice";
+import { useAppSelector } from "@/redux/hooks";
+import { Address } from "@/types";
+import { HiTrash } from "react-icons/hi";
+import AddressComponent from "../Address/AddressComponent";
+import EditAddress from "../Address/EditAddress";
+import { useOpen } from "@/store/OpenStore";
+import AddAddress from "../Address/AddAddress";
 
-// function InformationSection() {
-//   return (
-//     <div>
-//       <div className="flex flex-col  justify-center  items-center  w-full p-5 rounded-lg">
-//         <div className="flex flex-col justify-start items-start gap-4 w-full">
-//           <h3>Tus domicilios</h3>
-//           {addresses?.length > 0 ? (
-//             addresses?.map((address: Address) => (
-//               <div
-//                 key={address.id}
-//                 onMouseEnter={() => setOnHoverAddress(true)}
-//                 onMouseLeave={() => setOnHoverAddress(false)}
-//                 className="relative flex justify-between items-center w-full gap-y-3 border-1 rounded-lg p-3  hover:border-black"
-//               >
-//                 {onHoverAddress && (
-//                   <div
-//                     onClick={() => dispach(setShowAddress(true))}
-//                     className="-top-2 -right-2 absolute p-1 border-1 rounded-full bg-white border-black cursor-pointer"
-//                   >
-//                     <HiTrash />
-//                   </div>
-//                 )}
-//                 <div className="grid grid-cols-1 sm:grid-cols-2 w-96">
-//                   <div>
-//                     <label className="label-profile">Nombres</label>
-//                     <p className="font-semibold">{address.names}</p>
-//                   </div>
-//                   <div>
-//                     <label className="label-profile">Apellidos</label>
-//                     <p className="font-semibold">{address.names}</p>
-//                   </div>
-//                   <div>
-//                     <label className="label-profile">Dirección</label>
-//                     <p className="font-semibold">{address.address}</p>
-//                   </div>
-//                   <div>
-//                     <label className="label-profile">Estado</label>
-//                     <p className="font-semibold">{address.state}</p>
-//                   </div>
-//                   <div>
-//                     <label className="label-profile">Ciudad</label>
-//                     <p className="font-semibold">{address.city}</p>
-//                   </div>
-//                   <div>
-//                     <label className="label-profile">Telefono</label>
-//                     <p className="font-semibold">{address.phone}</p>
-//                   </div>
-//                 </div>
-//                 <button className=" text-[12px] bg-white border-1 text-[#666666] px-[6px] py-[5px] rounded-md">
-//                   Editar
-//                 </button>
-//               </div>
-//             ))
-//           ) : (
-//             <div>
-//               <h3 className="text-[13px] text-gray-400">
-//                 No tienes ningún domicilio aún
-//               </h3>
-//             </div>
-//           )}
+function InformationSection() {
+  const { data: session } = useSession();
+  const [onHoverAddress, setOnHoverAddress] = useState(false);
 
-//           <div className="w-full  flex justify-end">
-//             <button
-//               onClick={() => {
-//                 setOpenAddress(true);
-//               }}
-//               type="submit"
-//               className="font-medium bg-black p-2 text-white px-[12px] text-[14px] rounded-md hover:bg-gray-900"
-//             >
-//               Añadir
-//             </button>
-//           </div>
-//         </div>
-//       </div>
-//       {/* CARDS */}
-//       <div className="flex flex-col  justify-center  items-center  w-full p-5 rounded-lg">
-//         <div className="flex flex-col justify-start items-start gap-4 w-full">
-//           <h3>Tus tarjetas</h3>
-//           {cards?.length > 0 ? (
-//             cards?.map((card: Card) => (
-//               <div
-//                 key={card.id}
-//                 onMouseEnter={() => setOnHoverCard(card.id)}
-//                 onMouseLeave={() => setOnHoverCard(0)}
-//                 className="relative flex justify-between items-center  w-full gap-y-3 border-1 rounded-lg p-3 hover:border-black"
-//               >
-//                 {onHoverCard === card.id && (
-//                   <div
-//                     onClick={() => {
-//                       dispach(setShowCard(card.id));
-//                     }}
-//                     className="-top-2 -right-2 absolute p-1 border-1 rounded-full bg-white border-black cursor-pointer"
-//                   >
-//                     <HiTrash />
-//                   </div>
-//                 )}
-//                 <div className="grid grid-cols-1 sm:grid-cols-2  w-96">
-//                   <div>
-//                     <label className="label-profile">Número de tarjeta</label>
-//                     <p className="font-semibold">
-//                       {card.card_number
-//                         .replace(/.(?=.{4})/g, "*")
-//                         .replace(/\s/g, "")
-//                         .replace(/(.{4})/g, "$1")}
-//                     </p>
-//                   </div>
-//                   <div>
-//                     <label className="label-profile">Nombres</label>
-//                     <p className="font-semibold">{card.names}</p>
-//                   </div>
-//                   <div>
-//                     <label className="label-profile">Apellidos</label>
-//                     <p className="font-semibold">{card.surnames}</p>
-//                   </div>
-//                   <div>
-//                     <label className="label-profile">Cedula</label>
-//                     <p className="font-semibold">
-//                       {card.number_identification}
-//                     </p>
-//                   </div>
-//                 </div>
-//                 <button
-//                   onClick={() => {
-//                     dispach(setShowCardFormEdit(card.id));
-//                   }}
-//                   className=" text-[12px] bg-white border-1 text-[#666666] px-[6px] py-[5px] rounded-md"
-//                 >
-//                   Editar
-//                 </button>
-//               </div>
-//             ))
-//           ) : (
-//             <div>
-//               <h3 className="text-[13px] text-gray-400">
-//                 No tienes ningúna tarjeta aún
-//               </h3>
-//             </div>
-//           )}
-//           <div className="w-full  flex justify-end">
-//             <button
-//               onClick={() => {
-//                 setOpenPayment(true);
-//               }}
-//               type="submit"
-//               className="font-medium bg-black p-2 text-white px-[12px] text-[14px] rounded-md hover:bg-gray-900"
-//             >
-//               Añadir
-//             </button>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
+  const {
+    openEditAddress,
+    openAddAddress,
+    setOpenAddAddress,
+    address,
+    setAddress,
+  } = useOpen();
 
-// export default InformationSection;
+  const userId = (session?.user as { id?: number })?.id ?? 0;
+
+  const { data: dataAddress } = useGetAddressByIdQuery({
+    id: userId,
+  });
+
+  const { data: dataCard, refetch } = useGetCardByUserIdQuery({
+    id: userId,
+  });
+
+  // const addresses = useAppSelector((state) => state.addressSlice.addresses);
+  const cards = useAppSelector((state) => state.cardSlice.cards);
+
+  console.log(dataAddress);
+
+  const dispach = useAppDispach();
+
+  useEffect(() => {
+    setAddress(dataAddress?.map((address) => address));
+    dispach(setCards(dataCard));
+  }, [dataCard, dataAddress]);
+
+  useEffect(() => {
+    refetch();
+  }, [cards]);
+
+  return (
+    <div className="flex flex-col gap-6 w-full">
+      <div className="flex flex-col justify-start items-start gap-2">
+        <h3 className="font-bold text-xl">Tus Domicilios</h3>
+        <p className="text-neutral-400">
+          Gestiona los lugares donde enviaremos tu pedido
+        </p>
+      </div>
+
+      {openEditAddress ? (
+        <EditAddress />
+      ) : openAddAddress ? (
+        <AddAddress />
+      ) : address?.length > 0 ? (
+        <div className="flex w-full flex-col gap-1 justify-start items-center bg-white border-1  rounded-lg sm:flex">
+          {address.map((address: Address) => (
+            <AddressComponent key={address.id} address={address} />
+          ))}
+          <div className="w-full flex gap-3 justify-end bg-neutral-200 py-4 px-4">
+            <button
+              onClick={() => setOpenAddAddress(true)}
+              // } text-xs font-bold rounded-[6px] min-w-[130px] px-3 py-2 flex justify-center`}
+              className="bg-black text-white text-xs font-bold rounded-[6px] min-w-[130px] px-3 py-2 flex justify-center"
+            >
+              {/* {nameIsUpdated ? (
+              <TiTick size={17} />
+            ) : isLoading ? (
+              <div className="animate-spin">
+                <CgSpinner size={17} />
+              </div>
+            ) : isTyping ? (
+              "Guardar cambios"
+            ) : (
+              "Guardar cambios"
+            )} */}
+              Añadir Dirección
+              {/*          
+          <div className="animate-spin">
+                <CgSpinner size={17} />
+              </div> */}
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div>
+          <h3 className="text-[13px] text-gray-400">
+            No tienes ningún domicilio aún,{" "}
+            <span
+              onClick={() => setOpenAddAddress(true)}
+              className="underline font-bold text-black cursor-pointer"
+            >
+              Crear Dirección.
+            </span>
+          </h3>
+        </div>
+      )}
+
+      <div className="flex flex-col justify-start items-start gap-2">
+        <h3 className="font-bold text-xl">Tus Tarjetas</h3>
+        <p className="text-neutral-400">
+          Gestiona informacion de tus tarjetas para pagar
+        </p>
+      </div>
+      <div className="flex flex-col gap-5 justify-start items-center bg-white border-1 w-full py-5 rounded-lg sm:flex"></div>
+    </div>
+  );
+}
+
+export default InformationSection;

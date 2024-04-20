@@ -18,6 +18,7 @@ import EditPayment from "./Checkout/EditPayment";
 import { useOpen } from "@/store/OpenStore";
 import Address from "./Checkout/Address";
 import ChangePasswordProfile from "./Alerts/ChangePasswordProfile";
+import EditAddress from "./Address/EditAddress";
 
 interface NavbarProps {
   children: ReactNode;
@@ -36,7 +37,7 @@ export default function Navbar({ children }: NavbarProps) {
     (state) => state.showAlertsSlice.showAddress
   );
 
-  const { openPayment, setOpenPayment, openAddress, openChangePassword } =
+  const { openPayment, openAddress, openChangePassword } =
     useOpen();
 
   const showCard = useAppSelector((state) => state.showAlertsSlice.showCard);
@@ -71,11 +72,9 @@ export default function Navbar({ children }: NavbarProps) {
     <div className="withoutScroll">
       {showAddress !== 0 && <DeleteAddress />}
       {showCard !== 0 && <DeleteCard />}
-      {/* {showCardForm && <Payment setPayment={setShowCardForm} />} */}
       {openPayment && <Payment />}
       {openAddress && <Address />}
       {openChangePassword && <ChangePasswordProfile />}
-      {/* {showCardFormEdit && <EditPayment />} */}
       {openSearch && (
         <SearchBar openSearch={openSearch} setOpenSearch={setOpenSearch} />
       )}

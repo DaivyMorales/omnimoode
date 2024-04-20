@@ -1,0 +1,67 @@
+import { useOpen } from "@/store/OpenStore";
+import { Address } from "@/types";
+import React from "react";
+import { TiPencil, TiTrash } from "react-icons/ti";
+import { useSession } from "next-auth/react";
+import axios from "axios";
+
+interface AddressComponentProps {
+  address: Address;
+}
+
+function AddressComponent({ address }: AddressComponentProps) {
+  const {
+    setOpenEditAddress,
+    setDataEditAddress,
+    setAddress,
+    address: allAddress,
+  } = useOpen();
+
+  const { data: session } = useSession();
+
+  const deleteAddress = async () => {
+    const response = await axios.delete(`/api/address/${address.id}`);
+
+    const updatedAddresses = allAddress.filter(
+      (addr) => addr.id !== address.id
+    );
+
+    setAddress(updatedAddresses);
+  };
+
+  return (
+    <div
+      key={address.id}
+      className="relative flex justify-between items-center w-full gap-y-3 rounded-lg py-5 px-8 "
+    >
+      <div className="flex flex-col justify-start items-start gap-1">
+        <div className="w-full flex gap-2">
+          <h3 className="font-bold">{address.address}</h3>
+          {session?.user?.image && (
+            <div
+              onClick={() => deleteAddress()}
+              className="cursor-pointer rounded-lg p-1 hover:bg-neutral-100 hover:text-red-500"
+            >
+              <TiTrash />
+            </div>
+          )}
+        </div>
+        <div className="flex gap-1">
+          <p className="font-semibold">{address.state},</p>
+          <p className="font-semibold">{address.city}</p>
+        </div>
+      </div>
+      <div
+        onClick={() => {
+          setOpenEditAddress(true);
+          setDataEditAddress(address);
+        }}
+        className="cursor-pointer p-1 rounded-lg hover:bg-neutral-100"
+      >
+        <TiPencil />
+      </div>
+    </div>
+  );
+}
+
+export default AddressComponent;
