@@ -16,7 +16,7 @@ import Payment from "./Checkout/Payment";
 import { setShowCardForm } from "@/redux/features/showAlertsSlice";
 import EditPayment from "./Checkout/EditPayment";
 import { useOpen } from "@/store/OpenStore";
-import Address from "./Checkout/Address";
+// import Address from "./Checkout/Address";
 import ChangePasswordProfile from "./Alerts/ChangePasswordProfile";
 import EditAddress from "./Address/EditAddress";
 
@@ -73,7 +73,7 @@ export default function Navbar({ children }: NavbarProps) {
       {showAddress !== 0 && <DeleteAddress />}
       {showCard !== 0 && <DeleteCard />}
       {openPayment && <Payment />}
-      {openAddress && <Address />}
+      {/* {openAddress && <Address />} */}
       {openChangePassword && <ChangePasswordProfile />}
       {openSearch && (
         <SearchBar openSearch={openSearch} setOpenSearch={setOpenSearch} />
