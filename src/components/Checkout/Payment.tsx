@@ -100,17 +100,16 @@ export default function Payment({ userCards, setUserCards }: PaymentProps) {
   const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.target.value;
     const numericValue = rawValue.replace(/\D/g, ""); // Eliminar todos los caracteres que no sean dígitos
-  
+
     // Dar formato al número de tarjeta cada 4 dígitos
     const formattedValue = numericValue
       .replace(/\s/g, "")
       .match(/.{1,4}/g)
       ?.join(" ");
-  
+
     formik.handleChange(e);
     formik.setFieldValue("card_number", formattedValue || "");
   };
-  
 
   const handleDueDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.target.value;
@@ -134,7 +133,7 @@ export default function Payment({ userCards, setUserCards }: PaymentProps) {
   const handleNamesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.target.value;
     const lettersOnly = rawValue.replace(/[^A-Za-z]/g, ""); // Eliminar todos los caracteres que no sean letras
-  
+
     formik.handleChange(e);
     formik.setFieldValue("names", lettersOnly);
   };
@@ -142,11 +141,10 @@ export default function Payment({ userCards, setUserCards }: PaymentProps) {
   const handleSurnamesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.target.value;
     const lettersOnly = rawValue.replace(/[^A-Za-z]/g, ""); // Eliminar todos los caracteres que no sean letras
-  
+
     formik.handleChange(e);
     formik.setFieldValue("surnames", lettersOnly);
   };
-  
 
   return (
     <div className="delete-alert">
@@ -170,17 +168,17 @@ export default function Payment({ userCards, setUserCards }: PaymentProps) {
             <label htmlFor="card_number">Número de tarjeta</label>
             <div className="inputLogin">
               <input
-                className={`${
-                  formik.touched.card_number &&
-                  formik.errors.card_number &&
+                className={`text-xs ${
+                  formik.touched.names &&
+                  formik.errors.names &&
                   "placeholder-red-300"
                 }`}
-                id="card_number"
-                name="card_number"
+                id="names"
+                name="names"
                 type="text"
-                onChange={handleCardNumberChange}
-                placeholder="1234 1234 1234 1234"
-                value={formik.values.card_number}
+                onChange={formik.handleChange}
+                placeholder="John"
+                value={formik.values.names}
               />
             </div>
             {/* ERROR CARD_NUMBER */}

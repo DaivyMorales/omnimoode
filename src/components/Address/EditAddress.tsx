@@ -56,18 +56,10 @@ function EditAddress() {
         .required("Haz olvidado escribir tu telefono")
         .max(10, "No puedes sobrepasar los 10 caracteres!"),
     }),
-    onSubmit: async (values, { resetForm }) => {
+    onSubmit: async (values) => {
       const userId = (session?.user as { id?: number })?.id?.toString() ?? "0";
 
       try {
-        const formData = {
-          ...values,
-          stateNumber:
-            idDeparmentSelected === dataEditAddress.stateNumber
-              ? dataEditAddress.stateNumber
-              : idDeparmentSelected,
-          userId: parseInt(userId),
-        };
         const response = await axios.put(`/api/address/${dataEditAddress.id}`, {
           ...values,
           stateNumber:
@@ -81,7 +73,6 @@ function EditAddress() {
           setAddress(
             address.map((addr) => {
               if (addr.id === dataEditAddress.id) {
-                // Actualiza solo el objeto que coincide con el ID de dataEditAddress
                 return {
                   ...addr,
                   ...values,
@@ -92,7 +83,7 @@ function EditAddress() {
                   userId: parseInt(userId),
                 };
               } else {
-                return addr; // Devuelve los objetos que no se están actualizando
+                return addr;
               }
             })
           );

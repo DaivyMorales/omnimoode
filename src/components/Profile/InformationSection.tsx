@@ -6,12 +6,15 @@ import { useGetCardByUserIdQuery } from "@/redux/api/cardApi";
 import { setAddresses } from "@/redux/features/addressSlice";
 import { setCards } from "@/redux/features/cardSlice";
 import { useAppSelector } from "@/redux/hooks";
-import { Address } from "@/types";
+import { Address, Card } from "@/types";
 import { HiTrash } from "react-icons/hi";
 import AddressComponent from "../Address/AddressComponent";
 import EditAddress from "../Address/EditAddress";
 import { useOpen } from "@/store/OpenStore";
 import AddAddress from "../Address/AddAddress";
+import EditCard from "../Card/EditCard";
+import AddCard from "../Card/AddCard";
+import CardComponent from "../Card/CardComponent";
 
 function InformationSection() {
   const { data: session } = useSession();
@@ -23,6 +26,11 @@ function InformationSection() {
     setOpenAddAddress,
     address,
     setAddress,
+    openEditCard,
+    openAddCard,
+    setOpenAddCard,
+    card,
+    setCard,
   } = useOpen();
 
   const userId = (session?.user as { id?: number })?.id ?? 0;
@@ -35,21 +43,16 @@ function InformationSection() {
     id: userId,
   });
 
-  // const addresses = useAppSelector((state) => state.addressSlice.addresses);
-  const cards = useAppSelector((state) => state.cardSlice.cards);
-
-  console.log(dataAddress);
-
   const dispach = useAppDispach();
 
   useEffect(() => {
     setAddress(dataAddress?.map((address) => address));
-    dispach(setCards(dataCard));
+    setCard(dataCard?.map((crd) => crd));
   }, [dataCard, dataAddress]);
 
   useEffect(() => {
     refetch();
-  }, [cards]);
+  }, [card]);
 
   return (
     <div className="flex flex-col gap-6 w-full">
@@ -67,7 +70,11 @@ function InformationSection() {
       ) : address?.length > 0 ? (
         <div className="flex w-full flex-col gap-1 justify-start items-center bg-white border-1  rounded-lg sm:flex">
           {address.map((address: Address) => (
-            <AddressComponent key={address.id} address={address} isCheckout={false}/>
+            <AddressComponent
+              key={address.id}
+              address={address}
+              isCheckout={false}
+            />
           ))}
           <div className="w-full flex gap-3 justify-end bg-neutral-200 py-4 px-4">
             <button
@@ -99,7 +106,37 @@ function InformationSection() {
           Gestiona informacion de tus tarjetas para pagar
         </p>
       </div>
-      <div className="flex flex-col gap-5 justify-start items-center bg-white border-1 w-full py-5 rounded-lg sm:flex"></div>
+      {openEditCard ? (
+        <EditCard />
+      ) : openAddCard ? (
+        <AddCard />
+      ) : card?.length > 0 ? (
+        <div className="flex w-full flex-col gap-1 justify-start items-center bg-white border-1  rounded-lg sm:flex">
+          {card.map((crd: Card) => (
+            <CardComponent key={crd.id} crd={crd} isCheckout={false} />
+          ))}
+          <div className="w-full flex gap-3 justify-end bg-neutral-200 py-4 px-4">
+            <button
+              onClick={() => setOpenAddCard(true)}
+              className="bg-black text-white text-xs font-bold rounded-[6px] min-w-[130px] px-3 py-2 flex justify-center"
+            >
+              Añadir Tarjeta
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div>
+          <h3 className="text-[13px] text-gray-400">
+            No tienes ninguna tarjeta aún,{" "}
+            <span
+              onClick={() => setOpenAddCard(true)}
+              className="underline font-bold text-black cursor-pointer"
+            >
+              Añadir tarjeta
+            </span>
+          </h3>
+        </div>
+      )}
     </div>
   );
 }

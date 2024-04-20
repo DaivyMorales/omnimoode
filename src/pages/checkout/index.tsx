@@ -64,28 +64,15 @@ export default function Checkout() {
           <h1>Checkout</h1>
           <div className="w-full h-full grid grid-cols-1 sm:grid-cols-2 px-6 lg:px-20  gap-6 w-full">
             <div className="px-6 flex flex-col gap-4  justify-center items-center">
-              {userCards.length === 0 ? (
-                <Payment setUserCards={setUserCards} userCards={userCards} />
-              ) : (
-                <ShippingOptions
-                  finalPrice={finalPrice}
-                  setPayment={setPayment}
-                  userCards={userCards}
-                />
-              )}
-
-              {/* {!payment && <Payment />} */}
-              {/* <ShippingOptions
+              <ShippingOptions
                 finalPrice={finalPrice}
                 setPayment={setPayment}
                 userCards={userCards}
-              /> */}
+              />
             </div>
             <div>
               <Summary finalPrice={finalPrice} setFinalPrice={setFinalPrice} />
             </div>
-            {/* <Address />
-       <Summary /> */}
           </div>
         </main>
       )}
