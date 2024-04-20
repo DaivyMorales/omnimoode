@@ -127,7 +127,7 @@ export default function ProductPage() {
                     <label htmlFor="">Disponibilidad de tallas:</label>
                     <div className="grid grid-cols-6 gap-2">
                       {data?.sizes.map((size) => (
-                        <div className="flex flex-col justify-center items-center gap-1">
+                        <div className="flex flex-col justify-center items-center gap-1" key={size.id}>
                           <div
                             key={size.id}
                             onClick={() => {
