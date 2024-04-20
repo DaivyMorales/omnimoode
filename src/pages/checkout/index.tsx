@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Payment from "@/components/Checkout/Payment";
-import Address from "@/components/Checkout/Address";
+// import Address from "@/components/Checkout/Address";
 import Head from "next/head";
 import Summary from "@/components/Checkout/Summary";
 import { useSession } from "next-auth/react";
