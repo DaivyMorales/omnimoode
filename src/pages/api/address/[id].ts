@@ -1,5 +1,5 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import prisma from '../../../../lib/prisma';
+import type { NextApiRequest, NextApiResponse } from "next";
+import prisma from "../../../../lib/prisma";
 
 export default async function ProductById(
   req: NextApiRequest,
@@ -14,7 +14,7 @@ export default async function ProductById(
       address,
       specifications,
       state,
-      stateId,
+      stateNumber,
       city,
       phone,
       userId,
@@ -26,7 +26,7 @@ export default async function ProductById(
   const idNumber = parseInt(id as string);
 
   switch (method) {
-    case 'GET':
+    case "GET":
       try {
         const addressesFound = await prisma.address.findMany({
           where: { userId: idNumber },
@@ -41,7 +41,7 @@ export default async function ProductById(
       }
       break;
 
-    case 'PUT':
+    case "PUT":
       try {
         const addressUpdated = await prisma.address.update({
           where: {
@@ -55,7 +55,7 @@ export default async function ProductById(
             address,
             specifications,
             state,
-            stateId,
+            stateNumber,
             city,
             phone,
             userId,
@@ -68,7 +68,7 @@ export default async function ProductById(
       }
       break;
 
-    case 'DELETE':
+    case "DELETE":
       try {
         const addressToRemove = await prisma.address.deleteMany({
           where: { id: idNumber },
@@ -76,14 +76,14 @@ export default async function ProductById(
         if (!addressToRemove)
           return res.status(500).json("Address doesn't found");
 
-        res.status(200).json('Address removed sucessfully');
+        res.status(200).json("Address removed sucessfully");
       } catch (error) {
         res.status(500).json(error);
       }
       break;
 
     default:
-      res.status(500).json('That method is invalid');
+      res.status(500).json("That method is invalid");
       break;
   }
 }
