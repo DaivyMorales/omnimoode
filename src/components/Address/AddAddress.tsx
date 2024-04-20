@@ -72,7 +72,9 @@ function AddAddress() {
           setAddress([
             ...address,
             {
-              formData,
+              ...values,
+              stateNumber: idDeparmentSelected,
+              userId: parseInt(userId),
             },
           ]);
         }

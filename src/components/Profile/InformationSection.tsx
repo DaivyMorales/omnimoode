@@ -67,7 +67,7 @@ function InformationSection() {
       ) : address?.length > 0 ? (
         <div className="flex w-full flex-col gap-1 justify-start items-center bg-white border-1  rounded-lg sm:flex">
           {address.map((address: Address) => (
-            <AddressComponent key={address.id} address={address} />
+            <AddressComponent key={address.id} address={address} isCheckout={false}/>
           ))}
           <div className="w-full flex gap-3 justify-end bg-neutral-200 py-4 px-4">
             <button
@@ -75,22 +75,7 @@ function InformationSection() {
               // } text-xs font-bold rounded-[6px] min-w-[130px] px-3 py-2 flex justify-center`}
               className="bg-black text-white text-xs font-bold rounded-[6px] min-w-[130px] px-3 py-2 flex justify-center"
             >
-              {/* {nameIsUpdated ? (
-              <TiTick size={17} />
-            ) : isLoading ? (
-              <div className="animate-spin">
-                <CgSpinner size={17} />
-              </div>
-            ) : isTyping ? (
-              "Guardar cambios"
-            ) : (
-              "Guardar cambios"
-            )} */}
               Añadir Dirección
-              {/*          
-          <div className="animate-spin">
-                <CgSpinner size={17} />
-              </div> */}
             </button>
           </div>
         </div>
