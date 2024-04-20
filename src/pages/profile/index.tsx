@@ -19,7 +19,9 @@ import { useOpen } from "@/store/OpenStore";
 import { useFormik } from "formik";
 import SuccessfulAlert from "@/components/Alerts/SuccessfulAlert";
 import ProfileSection from "@/components/Profile/ProfileSection";
-import SeguritySection from "@/components/Profile/SeguritySection";
+import SeguritySection from "@/components/Profile/SecuritySection";
+import SecuritySection from "@/components/Profile/SecuritySection";
+import InformationSection from "@/components/Profile/InformationSection";
 
 export default function ProfilePage() {
   const { data: session, update } = useSession();
@@ -105,8 +107,10 @@ export default function ProfilePage() {
 
         {idSectionProfile === "1" ? (
           <ProfileSection />
+        ) : idSectionProfile === "2" ? (
+          <SecuritySection />
         ) : (
-          idSectionProfile === "2" && <SeguritySection />
+          <InformationSection />
         )}
       </div>
     </div>

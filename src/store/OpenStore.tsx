@@ -7,6 +7,8 @@ export interface OpenStore {
   setOpenAddress: (value: boolean) => void;
   idSectionProfile: string;
   setIdSectionProfile: (value: string) => void;
+  openChangePassword: boolean;
+  setOpenChangePassword: (value: boolean) => void;
 }
 
 export const useOpen = create<OpenStore>((set) => ({
@@ -21,5 +23,9 @@ export const useOpen = create<OpenStore>((set) => ({
   idSectionProfile: "1",
   setIdSectionProfile: (id: string) => {
     set(() => ({ idSectionProfile: id }));
+  },
+  openChangePassword: false,
+  setOpenChangePassword: (value: boolean) => {
+    set(() => ({ openChangePassword: value }));
   },
 }));

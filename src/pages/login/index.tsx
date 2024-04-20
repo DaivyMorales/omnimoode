@@ -65,7 +65,7 @@ export default function LoginPage() {
 
           <div className="flex flex-col gap-3 justify-center items-center p-2 w-72">
             {/* Email */}
-            <div className="inputLogin">
+            <div className="inputLogin bg-white">
               <div className="bg-white p-2 rounded-md">
                 <HiOutlineMail />
               </div>
@@ -80,7 +80,7 @@ export default function LoginPage() {
             </div>
 
             {/* Password */}
-            <div className="inputLogin">
+            <div className="inputLogin bg-white">
               <div className="bg-white p-2 rounded-md">
                 <AiOutlineLock />
               </div>

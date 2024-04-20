@@ -7,8 +7,9 @@ import ErrorAlert from "../Alerts/ErrorAlert";
 import axios from "axios";
 import SuccessPayment from "@/pages/checkout/SuccessPayment";
 import SuccessfulAlert from "../Alerts/SuccessfulAlert";
+import { useOpen } from "@/store/OpenStore";
 
-function SeguritySection() {
+function SecuritySection() {
   const { data: session, update } = useSession();
   const [openEmailForm, setOpenEmailForm] = useState(false);
   const [user, setUser] = useState<any>({} as any);
@@ -21,7 +22,7 @@ function SeguritySection() {
     }
   }, [session]);
 
-
+  const { openChangePassword, setOpenChangePassword } = useOpen();
 
   const userId = (session?.user as { id?: number })?.id ?? 0;
 
@@ -110,9 +111,9 @@ function SeguritySection() {
                         name="email"
                         type="email"
                         className="text-xs"
-                         onChange={(e) => {
-                            formik.setFieldValue("email", e.target.value)
-                            setError("")
+                        onChange={(e) => {
+                          formik.setFieldValue("email", e.target.value);
+                          setError("");
                         }}
                         value={formik.values.email || ""}
                       />
@@ -134,8 +135,11 @@ function SeguritySection() {
                         type="email"
                         className="text-xs"
                         onChange={(e) => {
-                            formik.setFieldValue("emailVerificated", e.target.value)
-                            setError("")
+                          formik.setFieldValue(
+                            "emailVerificated",
+                            e.target.value
+                          );
+                          setError("");
                         }}
                         value={formik.values.emailVerificated || ""}
                       />
@@ -189,7 +193,10 @@ function SeguritySection() {
           </label>
           <div className="col-span-3 ">
             <p>
-              <span className="underline font-bold cursor-pointer">
+              <span
+                onClick={() => setOpenChangePassword(true)}
+                className="underline font-bold cursor-pointer"
+              >
                 Cambiar contraseña.
               </span>{" "}
               Mejora tu seguridad con una contraseña segura
@@ -201,4 +208,4 @@ function SeguritySection() {
   );
 }
 
-export default SeguritySection;
+export default SecuritySection;
