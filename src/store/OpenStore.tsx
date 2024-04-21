@@ -1,5 +1,6 @@
-import { Address, Card } from "@/types";
+import { Address, Card, Product } from "@/types";
 import { create } from "zustand";
+import axios from "axios";
 
 export interface OpenStore {
   //OPEN COMPONENTS
@@ -19,10 +20,19 @@ export interface OpenStore {
   setOpenEditCard: (value: boolean) => void;
   openAddCard: boolean;
   setOpenAddCard: (value: boolean) => void;
+  inventoryDropdownId: number;
+  setInventoryDropdownId: (value: number) => void;
+  openEditProduct: boolean;
+  setOpenEditProduct: (value: boolean) => void;
+  openAddProduct: boolean;
+  setOpenAddProduct: (value: boolean) => void;
 
   //DATA
   dataEditAddress: Address;
   setDataEditAddress: (address: Address) => void;
+
+  dataEditProduct: Product;
+  setDataEditProduct: (product: Product) => void;
 
   address: any[];
   setAddress: (value: any) => void;
@@ -32,6 +42,12 @@ export interface OpenStore {
 
   card: any[];
   setCard: (value: any) => void;
+
+  products: any[];
+  setProducts: (product: any) => void;
+
+  //PRODUCTS
+  getProducts: () => Promise<any>;
 }
 
 export const useOpen = create<OpenStore>((set) => ({
@@ -67,6 +83,18 @@ export const useOpen = create<OpenStore>((set) => ({
   setOpenAddCard: (value: boolean) => {
     set(() => ({ openAddCard: value }));
   },
+  inventoryDropdownId: 0,
+  setInventoryDropdownId: (value: number) => {
+    set(() => ({ inventoryDropdownId: value }));
+  },
+  openEditProduct: false,
+  setOpenEditProduct: (value: boolean) => {
+    set(() => ({ openEditProduct: value }));
+  },
+  openAddProduct: false,
+  setOpenAddProduct: (value: boolean) => {
+    set(() => ({ openAddProduct: value }));
+  },
   dataEditAddress: {
     id: 0,
     country: "",
@@ -83,6 +111,20 @@ export const useOpen = create<OpenStore>((set) => ({
   },
   setDataEditAddress: (address: Address) => {
     set(() => ({ dataEditAddress: address }));
+  },
+  dataEditProduct: {
+    id: 0,
+    name: "",
+    description: "",
+    price: 0,
+    categoryId: 0,
+    sizes: [],
+    imageUrl: "",
+    createdAt: "",
+    updatedAt: "",
+  },
+  setDataEditProduct: (product: Product) => {
+    set(() => ({ dataEditProduct: product }));
   },
   address: [],
   setAddress: (value: any) => {
@@ -105,5 +147,20 @@ export const useOpen = create<OpenStore>((set) => ({
   card: [],
   setCard: (value: any) => {
     set(() => ({ card: value }));
+  },
+  products: [],
+  setProducts: (product: any) => {
+    set(() => ({ products: product }));
+  },
+
+  getProducts: async () => {
+    try {
+      const response = await axios.get("/api/product");
+      set(() => ({ products: response.data }));
+      console.log(response);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      throw error;
+    }
   },
 }));

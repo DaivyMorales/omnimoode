@@ -218,10 +218,7 @@ function ProfileSection() {
             ) : (
               "Guardar cambios"
             )}
-            {/*          
-          <div className="animate-spin">
-                <CgSpinner size={17} />
-              </div> */}
+           
           </button>
         </div>
       </div>
