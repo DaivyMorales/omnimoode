@@ -85,8 +85,7 @@ function SidebarEditProduct() {
         formik.values.imageLink = urlObtained;
       }
 
-      const sizeEdited = dataEditProduct.sizes.forEach(async (size) => {
-        // Obtener el nombre de la talla actual
+      dataEditProduct.sizes.forEach(async (size) => {
         const sizeName = size.name;
 
         if (values.sizes.hasOwnProperty(sizeName)) {
@@ -98,8 +97,6 @@ function SidebarEditProduct() {
               await axios.put(`/api/size/${size.id}`, {
                 quantity,
               });
-
-              // console.log("Tamaño actualizado:", sizeUpdateResponse.data);
             } catch (error) {
               console.error("Error al actualizar la talla:", error);
             }

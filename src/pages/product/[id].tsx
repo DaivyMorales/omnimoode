@@ -15,6 +15,7 @@ import { useAppSelector } from "@/redux/hooks";
 import { motion } from "framer-motion";
 import { AiOutlineReload } from "react-icons/ai";
 import { useSession } from "next-auth/react";
+import { Size } from "@/types";
 
 export default function ProductPage() {
   const [sizeSelected, setSizeSelected] = useState(0);
@@ -31,7 +32,7 @@ export default function ProductPage() {
   const dispatch = useDispatch();
 
   const productId = {
-    id: parseInt(router.query.id as string),
+    id: router.query.id as string,
   };
 
   const { isLoading, isFetching, data, error } =
@@ -126,7 +127,7 @@ export default function ProductPage() {
                   <section className="w-full">
                     <label htmlFor="">Disponibilidad de tallas:</label>
                     <div className="grid grid-cols-6 gap-2">
-                      {data?.sizes.map((size) => (
+                      {data?.sizes.map((size: Size) => (
                         <div className="flex flex-col justify-center items-center gap-1" key={size.id}>
                           <div
                             key={size.id}
@@ -144,11 +145,11 @@ export default function ProductPage() {
                               {size.name.toUpperCase()}
                             </p>
                           </div>
-                          <div className="px-2 py-1 rounded-full border-[1px]">
+                          {/* <div className="px-2 py-1 rounded-full border-[1px]">
                             <p className="text-[10px] font-bold text-neutral-300">
                               {size.quantity}
                             </p>
-                          </div>
+                          </div> */}
                         </div>
                       ))}
                     </div>

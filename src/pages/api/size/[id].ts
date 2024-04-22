@@ -11,7 +11,7 @@ export default async function SizeById(
     query: { id },
   } = req;
 
-  const sizeId = Number(id as string);
+  const sizeId = id as string;
 
   switch (method) {
     case "PATCH":

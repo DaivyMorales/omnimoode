@@ -3,6 +3,8 @@ import { useOpen } from "@/store/OpenStore";
 import { Product } from "@/types";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 export interface InventoryProps {
   data: [];
@@ -11,49 +13,61 @@ export interface InventoryProps {
 function Inventory({ data }: InventoryProps) {
   const { setProducts, products, setOpenAddProduct } = useOpen();
 
+  const router = useRouter();
+
+  const { data: session, status } = useSession();
+
   useEffect(() => {
     setProducts(data);
   }, []);
 
-  // console.log(products)
+  useEffect(() => {
+    if (session?.user?.roleId === 2) {
+      router.push("/");
+    }
+  }, [session]);
 
   return (
     <div className="w-full z-50 text-sm text-left text-gray-500 flex flex-col justify-center items-center">
-      <div className="overflow-x-auto">
-        <div className="w-full">
-          <button
-            onClick={() => setOpenAddProduct(true)}
-            className="bg-black text-white text-xs font-bold rounded-[6px] min-w-[130px] px-3 py-2 flex justify-center"
-          >
-            Añadir Producto
-          </button>
+      {session?.user?.roleId === 1 ? (
+        <div className="overflow-x-auto">
+          <div className="w-full">
+            <button
+              onClick={() => setOpenAddProduct(true)}
+              className="bg-black text-white text-xs font-bold rounded-[6px] min-w-[130px] px-3 py-2 flex justify-center"
+            >
+              Añadir Producto
+            </button>
+          </div>
+          <div className="py-10">
+            <table className="w-full  px-5 table-auto">
+              <thead className="text-xs text-gray-700  bg-gray-50 ">
+                <tr>
+                  <th className="px-4 py-2">Image</th>
+                  <th className="px-4 py-2">Name</th>
+                  <th className="px-4 py-2">Category</th>
+                  <th className="px-4 py-2">Price</th>
+                  <th className="px-4 py-2">xs</th>
+                  <th className="px-4 py-2">s</th>
+                  <th className="px-4 py-2">m</th>
+                  <th className="px-4 py-2">l</th>
+                  <th className="px-4 py-2">xl</th>
+                  <th className="px-4 py-2">xxl</th>
+                  <th className="px-2 py-2"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {products &&
+                  products.map((product: Product) => (
+                    <RowProduct product={product} key={product.id} />
+                  ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div className="py-10">
-          <table className="w-full  px-5 table-auto">
-            <thead className="text-xs text-gray-700  bg-gray-50 ">
-              <tr>
-                <th className="px-4 py-2">Image</th>
-                <th className="px-4 py-2">Name</th>
-                <th className="px-4 py-2">Category</th>
-                <th className="px-4 py-2">Price</th>
-                <th className="px-4 py-2">xs</th>
-                <th className="px-4 py-2">s</th>
-                <th className="px-4 py-2">m</th>
-                <th className="px-4 py-2">l</th>
-                <th className="px-4 py-2">xl</th>
-                <th className="px-4 py-2">xxl</th>
-                <th className="px-2 py-2"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {products &&
-                products.map((product: Product) => (
-                  <RowProduct product={product} key={product.id} />
-                ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }
@@ -77,7 +91,6 @@ export async function getServerSideProps() {
       props: { data },
     };
   } catch (error) {
-    console.error("Error fetching products:", error);
     return {
       props: { products: [] },
     };

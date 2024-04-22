@@ -62,14 +62,17 @@ function DropdownOptions({ product }: DropdownOptionsProps) {
           setOpenEditProduct(true);
           setInventoryDropdownId(0);
           setDataEditProduct(product);
-          console.log(product);
+          // console.log(product);
         }}
         className="px-4 border-b py-1 hover:bg-neutral-100 cursor-pointer"
       >
         <p className="font-bold text-[10px]">Editar</p>
       </div>
       <div
-        onClick={() => deleteProduct()}
+        onClick={() => {
+          deleteProduct();
+          setInventoryDropdownId(0);
+        }}
         className="flex items-center justify-center gap-1    px-4 py-1 hover:bg-neutral-100 cursor-pointer hover:text-red-500"
       >
         <TiTrash size={10} />

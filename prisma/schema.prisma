@@ -40,7 +40,7 @@ model Category {
 }
 
 model Product {
-  id          Int           @id @default(autoincrement())
+  id          String        @id @default(cuid())
   name        String
   description String?
   price       Float
@@ -54,11 +54,11 @@ model Product {
 }
 
 model Size {
-  id        Int           @id @default(autoincrement())
+  id        String        @id @default(cuid())
   name      String
   quantity  Int
   product   Product       @relation(fields: [productId], references: [id])
-  productId Int
+  productId String
   carts     CartProduct[]
 }
 
@@ -74,8 +74,8 @@ model Cart {
 model CartProduct {
   id        Int      @id @default(autoincrement())
   cartId    Int
-  productId Int
-  sizeId    Int
+  productId String
+  sizeId    String
   quantity  Int
   isLoaded  Boolean  @default(false)
   createdAt DateTime @default(now())

@@ -1,7 +1,7 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import prisma from '../../../../lib/prisma';
+import type { NextApiRequest, NextApiResponse } from "next";
+import prisma from "../../../../lib/prisma";
 
-export default async function Product(
+export default async function Size(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
@@ -11,7 +11,7 @@ export default async function Product(
   } = req;
 
   switch (method) {
-    case 'POST':
+    case "POST":
       try {
         const newProduct = await prisma.size.create({
           data: {
@@ -23,11 +23,12 @@ export default async function Product(
         res.status(200).json(newProduct);
       } catch (error) {
         res.status(500).json(error);
+        console.log(error);
       }
       break;
 
     default:
-      res.status(500).json('That method is invalid');
+      res.status(500).json("That method is invalid");
       break;
   }
 }
