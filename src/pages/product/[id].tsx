@@ -18,7 +18,7 @@ import { useSession } from "next-auth/react";
 import { Size } from "@/types";
 
 export default function ProductPage() {
-  const [sizeSelected, setSizeSelected] = useState(0);
+  const [sizeSelected, setSizeSelected] = useState<any>(0);
   const [submited, setSubmited] = useState(false);
 
   const { data: session, status } = useSession();

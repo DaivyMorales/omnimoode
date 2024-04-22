@@ -20,10 +20,9 @@ export interface OpenStore {
   setOpenEditCard: (value: boolean) => void;
   openAddCard: boolean;
   setOpenAddCard: (value: boolean) => void;
-  inventoryDropdownId: number;
-  setInventoryDropdownId: (value: number) => void;
+  inventoryDropdownId: any;
+  setInventoryDropdownId: (value: any) => void;
   openEditProduct: boolean;
-  setOpenEditProduct: (value: boolean) => void;
   openAddProduct: boolean;
   setOpenAddProduct: (value: boolean) => void;
 
@@ -113,7 +112,7 @@ export const useOpen = create<OpenStore>((set) => ({
     set(() => ({ dataEditAddress: address }));
   },
   dataEditProduct: {
-    id: 0,
+    id: "",
     name: "",
     description: "",
     price: 0,

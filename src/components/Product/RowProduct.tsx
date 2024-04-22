@@ -69,17 +69,17 @@ function RowProduct({ product }: RowProductProps) {
       </td>
       <td className="px-4 py-2">
         <div className="text-[10px] font-bold p-1 border-1 rounded-[6px] flex justify-center w-[25px]">
-          {product.sizes.find(size => size.name === "l")?.quantity || "0"}
+          {product.sizes.find((size) => size.name === "l")?.quantity || "0"}
         </div>
       </td>
       <td className="px-4 py-2">
         <div className="text-[10px] font-bold p-1 border-1 rounded-[6px] flex justify-center w-[25px]">
-          {product.sizes.find(size => size.name === "xl")?.quantity || "0"}
+          {product.sizes.find((size) => size.name === "xl")?.quantity || "0"}
         </div>
       </td>
       <td className="px-4 py-2">
         <div className="text-[10px] font-bold p-1 border-1 rounded-[6px] flex justify-center w-[25px]">
-          {product.sizes.find(size => size.name === "xxl")?.quantity || "0"}
+          {product.sizes.find((size) => size.name === "xxl")?.quantity || "0"}
         </div>
       </td>
       <td className="relative px-2 py-2">
