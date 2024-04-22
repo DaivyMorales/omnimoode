@@ -23,6 +23,7 @@ export interface OpenStore {
   inventoryDropdownId: any;
   setInventoryDropdownId: (value: any) => void;
   openEditProduct: boolean;
+  setOpenEditProduct: (value: boolean) => void;
   openAddProduct: boolean;
   setOpenAddProduct: (value: boolean) => void;
 
