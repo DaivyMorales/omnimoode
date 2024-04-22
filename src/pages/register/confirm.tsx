@@ -25,7 +25,7 @@ export default function ConfirmPage() {
   );
 
   console.log("number", number);
-  console.log(session)
+  console.log(session);
 
   const SendEmail = async () => {
     try {
@@ -46,6 +46,8 @@ export default function ConfirmPage() {
     dispach(generateNumber());
   }, []);
 
+  const userId = (session?.user as { id?: number })?.id?.toString() ?? "0";
+
   const formik = useFormik({
     initialValues: {
       number_one: "",
@@ -64,12 +66,9 @@ export default function ConfirmPage() {
       );
 
       if (formNumber === number) {
-        const response = await axios.put(
-          `/api/user/${(session?.user as { id: string }).id}`,
-          {
-            email_verification: true,
-          }
-        );
+        const response = await axios.put(`/api/user/${userId}`, {
+          email_verification: true,
+        });
         console.log(response);
         router.push("/");
       } else {
