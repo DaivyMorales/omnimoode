@@ -7,14 +7,14 @@ export type User = {
 };
 
 export type Size = {
-  id: number;
+  id: string;
   name: string;
   quantity: number;
   productId: number;
 };
 
 export type Product = {
-  id: number;
+  id: string;
   name: string;
   description?: string;
   price: number;

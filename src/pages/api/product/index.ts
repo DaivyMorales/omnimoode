@@ -13,7 +13,11 @@ export default async function Product(
   switch (method) {
     case "GET":
       try {
-        const products = await prisma.product.findMany();
+        const products = await prisma.product.findMany({
+          include: {
+            sizes: true,
+          },
+        });
         res.status(200).json(products);
       } catch (error) {
         res.status(400).json(error);

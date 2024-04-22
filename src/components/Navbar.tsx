@@ -1,4 +1,4 @@
-import { useState, useEffect, ReactNode } from "react";
+import { useState, useEffect, ReactNode, useRef } from "react";
 import { PiUserBold } from "react-icons/pi";
 import { AiOutlineSearch } from "react-icons/ai";
 import { PiMoonBold, PiSunDimBold } from "react-icons/pi";
@@ -19,6 +19,8 @@ import { useOpen } from "@/store/OpenStore";
 // import Address from "./Checkout/Address";
 import ChangePasswordProfile from "./Alerts/ChangePasswordProfile";
 import EditAddress from "./Address/EditAddress";
+import SidebarEditProduct from "./Product/SidebarEditProduct";
+import SidebarAddProduct from "./Product/SidebarAddProduct";
 
 interface NavbarProps {
   children: ReactNode;
@@ -37,8 +39,14 @@ export default function Navbar({ children }: NavbarProps) {
     (state) => state.showAlertsSlice.showAddress
   );
 
-  const { openPayment, openAddress, openChangePassword } =
-    useOpen();
+  const {
+    openPayment,
+    openAddress,
+    openChangePassword,
+    setInventoryDropdownId,
+    openEditProduct,
+    openAddProduct,
+  } = useOpen();
 
   const showCard = useAppSelector((state) => state.showAlertsSlice.showCard);
   const showCardForm = useAppSelector(
@@ -58,8 +66,6 @@ export default function Navbar({ children }: NavbarProps) {
 
   const router = useRouter();
 
-  // console.log(showCardFormEdit !== 0 ? "YES": "NO")
-
   useEffect(() => {
     if (showCard !== 0 || showCardForm === true || showCardFormEdit !== 0) {
       document.body.style.overflow = "hidden";
@@ -75,6 +81,8 @@ export default function Navbar({ children }: NavbarProps) {
       {openPayment && <Payment />}
       {/* {openAddress && <Address />} */}
       {openChangePassword && <ChangePasswordProfile />}
+      {openEditProduct && <SidebarEditProduct />}
+      {openAddProduct && <SidebarAddProduct />}
       {openSearch && (
         <SearchBar openSearch={openSearch} setOpenSearch={setOpenSearch} />
       )}

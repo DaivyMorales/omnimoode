@@ -5,6 +5,7 @@ import Link from "next/link";
 import { PiUserBold, PiShoppingCartBold } from "react-icons/pi";
 import { TbLogout } from "react-icons/tb";
 import { motion } from "framer-motion";
+import { TiUpload } from "react-icons/ti";
 
 interface DropDownProps {
   openProfile: boolean;
@@ -106,6 +107,21 @@ export default function ProfileDropDown({
           <hr />
 
           {/* OPTIONS */}
+
+          {session?.user.roleId === 1 && (
+            <Link
+              href="/inventory"
+              onClick={() => {
+                setOpenProfile(false);
+              }}
+              className="flex text-xs gap-2 px-3 py-2 justify-start items-center w-full hover:bg-gray-50 cursor-pointer dark:text-gray-400 dark:hover:text-white  dark:hover:bg-black"
+            >
+              <div className="">
+                <TiUpload size={18} />
+              </div>
+              Gestionar inventario
+            </Link>
+          )}
 
           <Link
             href="/profile"
